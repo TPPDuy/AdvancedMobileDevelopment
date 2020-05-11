@@ -17,6 +17,8 @@
     "airbnb-base"
   ],
   "rules": {
+    "class-methods-use-this": "off",
+    "no-use-before-define": "off",
     "linebreak-style": "off",
     "no-unused-vars": "warn"
   },

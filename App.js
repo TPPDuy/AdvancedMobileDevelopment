@@ -1,19 +1,27 @@
+import { registerRootComponent } from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import SignIn from './src/components/authen/sign-in';
 
-export default function App() {
+function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <SignIn />
     </View>
   );
 }
 
+const white = '#FFF';
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
+    backgroundColor: white,
+    flex: 1,
     justifyContent: 'center',
   },
 });
+
+registerRootComponent(App);
+
+export default App;
