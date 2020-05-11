@@ -1,12 +1,12 @@
 import { registerRootComponent } from 'expo';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import SignIn from './src/components/authen/sign-in';
+import SignUp from './src/components/authen/sign-up';
 
 function App() {
   return (
     <View style={styles.container}>
-      <SignIn />
+      <SignUp />
     </View>
   );
 }

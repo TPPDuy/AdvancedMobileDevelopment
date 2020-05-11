@@ -4,41 +4,34 @@ import {
   View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import LoginOption from './LoginOptionButton';
 import CustomInput from '../../common/input';
 
-const SignIn = () => {
+const SignUp = () => {
   const imgSource = {
+    name: require('../../../../assets/authen/name-icon.png'),
     email: require('../../../../assets/authen/email-icon.png'),
     password: require('../../../../assets/authen/password-icon.png'),
-    google: require('../../../../assets/authen/google-icon.png'),
-    facebook: require('../../../../assets/authen/facebook-icon.png'),
   };
 
   return (
     <LinearGradient colors={['#5f00a3', 'rgba(157,22,163,1)', 'rgba(35,121,255,0.9808298319327731)']} style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Sign In</Text>
+        <Text style={styles.title}>Sign Up</Text>
       </View>
       <View style={styles.optionContainer}>
         <View style={styles.formContainer}>
+          <CustomInput icon={imgSource.name} isHideContent={false} placeHolder="Name"/>
           <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>
           <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Password"/>
           <TouchableOpacity style={styles.buttonSignIn}>
-            <Text style={styles.buttonText}>Sign in</Text>
+            <Text style={styles.buttonText}>Create account</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.signIn}>
+            <Text style={styles.signInText}>Have an account? Sign in now!</Text>
+      </TouchableOpacity>
         </View>
-        <View style={styles.dividerContainer}>
-          <View style={styles.dividerLine}/>
-          <Text style={styles.dividerText}>or</Text>
-          <View style={styles.dividerLine}/>
-        </View>
-        <LoginOption title="Sign in with Google" icon={imgSource.google} onChooseOption={null}/>
-        <LoginOption title="Sign in with Facebook" icon={imgSource.facebook} onChooseOption={null}/>
       </View>
-      <View style={styles.createAccountContainer}>
-        <Text style={styles.createAccount}>New here? Create an account now!</Text>
-      </View>
+      <Text style={styles.descText}>By clicking on "Create account" you agree to our Terms of Use and Privacy Policy.</Text>
     </LinearGradient>
   );
 };
@@ -48,6 +41,7 @@ const colorSource = {
   black: '#000',
   transparent: '#ffffff00',
   divider: '#ffffff5F',
+  purple: '#9d16a3',
 };
 
 const styles = StyleSheet.create({
@@ -70,39 +64,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     paddingBottom: 15,
     paddingHorizontal: 15,
     paddingTop: 30,
     width: '100%',
   },
-  createAccount: {
+  descText: {
     color: colorSource.white,
-    fontSize: 15,
-    marginTop: 50,
-    textDecorationLine: 'underline',
-  },
-  createAccountContainer: {
-    flexDirection: 'column',
-    height: '25%',
-    justifyContent: 'flex-start',
-  },
-  dividerContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 20,
-    marginTop: 20,
-    width: '100%',
-  },
-  dividerLine: {
-    backgroundColor: colorSource.divider,
-    height: 1,
-    width: '45%',
-  },
-  dividerText: {
-    color: colorSource.white,
-    fontSize: 15,
-    margin: 15,
+    fontSize: 12,
+    marginTop: 12,
+    textAlign: 'center',
   },
   formContainer: {
     alignItems: 'center',
@@ -113,11 +85,14 @@ const styles = StyleSheet.create({
   optionContainer: {
     alignItems: 'center',
     flexDirection: 'column',
-    height: '50%',
     justifyContent: 'center',
     paddingBottom: 15,
     paddingHorizontal: 15,
     width: '100%',
+  },
+  signInText: {
+    color: colorSource.white,
+    marginTop: 30,
   },
   title: {
     color: colorSource.white,
@@ -125,9 +100,9 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'column',
-    height: '25%',
     justifyContent: 'center',
+    marginTop: 50,
   },
 });
 
-export default SignIn;
+export default SignUp;
