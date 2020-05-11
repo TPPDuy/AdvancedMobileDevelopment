@@ -15,10 +15,8 @@ const SignUp = () => {
 
   return (
     <LinearGradient colors={['#5f00a3', 'rgba(157,22,163,1)', 'rgba(35,121,255,0.9808298319327731)']} style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Sign Up</Text>
-      </View>
       <View style={styles.formContainer}>
+          <Text style={styles.title}>Sign Up</Text>
           <CustomInput icon={imgSource.name} isHideContent={false} placeHolder="Name"/>
           <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>
           <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Password"/>
@@ -62,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingBottom: 15,
     paddingHorizontal: 15,
     paddingTop: 30,
@@ -77,6 +75,7 @@ const styles = StyleSheet.create({
   formContainer: {
     alignItems: 'center',
     flexDirection: 'column',
+    height: '90%',
     justifyContent: 'center',
     paddingBottom: 15,
     paddingHorizontal: 15,
@@ -89,11 +88,7 @@ const styles = StyleSheet.create({
   title: {
     color: colorSource.white,
     fontSize: 30,
-  },
-  titleContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginTop: 50,
+    marginBottom: 50,
   },
 });
 

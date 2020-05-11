@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 15,
     paddingHorizontal: 15,
-    paddingTop: 30,
     width: '100%',
   },
   descText: {
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: 50,
   },
 });
 

@@ -17,28 +17,24 @@ const SignIn = () => {
 
   return (
     <LinearGradient colors={['#5f00a3', 'rgba(157,22,163,1)', 'rgba(35,121,255,0.9808298319327731)']} style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Sign In</Text>
-      </View>
-      <View style={styles.optionContainer}>
-        <View style={styles.formContainer}>
+      <Text style={styles.title}>Sign In</Text>
+      <View style={styles.formContainer}>
           <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>
           <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Password"/>
           <TouchableOpacity style={styles.buttonSignIn}>
             <Text style={styles.buttonText}>Sign in</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.dividerContainer}>
+      <View style={styles.dividerContainer}>
           <View style={styles.dividerLine}/>
           <Text style={styles.dividerText}>or</Text>
           <View style={styles.dividerLine}/>
         </View>
-        <LoginOption title="Sign in with Google" icon={imgSource.google} onChooseOption={null}/>
-        <LoginOption title="Sign in with Facebook" icon={imgSource.facebook} onChooseOption={null}/>
-      </View>
-      <View style={styles.createAccountContainer}>
+      <LoginOption title="Sign in with Google" icon={imgSource.google} onChooseOption={null}/>
+      <LoginOption title="Sign in with Facebook" icon={imgSource.facebook} onChooseOption={null}/>
+      <TouchableOpacity style={styles.createAccountContainer}>
         <Text style={styles.createAccount}>New here? Create an account now!</Text>
-      </View>
+      </TouchableOpacity>
     </LinearGradient>
   );
 };
@@ -70,10 +66,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'flex-start',
-    paddingBottom: 15,
-    paddingHorizontal: 15,
-    paddingTop: 30,
+    justifyContent: 'center',
+    paddingHorizontal: 30,
     width: '100%',
   },
   createAccount: {
@@ -84,7 +78,6 @@ const styles = StyleSheet.create({
   },
   createAccountContainer: {
     flexDirection: 'column',
-    height: '25%',
     justifyContent: 'flex-start',
   },
   dividerContainer: {
@@ -110,23 +103,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
-  optionContainer: {
-    alignItems: 'center',
-    flexDirection: 'column',
-    height: '50%',
-    justifyContent: 'center',
-    paddingBottom: 15,
-    paddingHorizontal: 15,
-    width: '100%',
-  },
   title: {
     color: colorSource.white,
     fontSize: 30,
-  },
-  titleContainer: {
-    flexDirection: 'column',
-    height: '25%',
-    justifyContent: 'center',
+    marginBottom: 50,
   },
 });
 
