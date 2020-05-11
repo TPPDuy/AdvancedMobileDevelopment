@@ -6,30 +6,23 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../../common/input';
 
-const SignUp = () => {
+const ForgotPassword = () => {
   const imgSource = {
-    name: require('../../../../assets/authen/name-icon.png'),
     email: require('../../../../assets/authen/email-icon.png'),
-    password: require('../../../../assets/authen/password-icon.png'),
   };
 
   return (
     <LinearGradient colors={['#5f00a3', 'rgba(157,22,163,1)', 'rgba(35,121,255,0.9808298319327731)']} style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Sign Up</Text>
+        <Text style={styles.title}>Reset Password</Text>
+        <Text style={styles.descText}>Enter the email associated with your account and we will send you a link to reset your password.</Text>
       </View>
       <View style={styles.formContainer}>
-          <CustomInput icon={imgSource.name} isHideContent={false} placeHolder="Name"/>
           <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>
-          <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Password"/>
           <TouchableOpacity style={styles.buttonSignIn}>
-            <Text style={styles.buttonText}>Create account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.signIn}>
-            <Text style={styles.signInText}>Have an account? Sign in now!</Text>
+            <Text style={styles.buttonText}>Reset password</Text>
           </TouchableOpacity>
       </View>
-      <Text style={styles.descText}>By clicking on "Create account" you agree to our Terms of Use and Privacy Policy.</Text>
     </LinearGradient>
   );
 };
@@ -62,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingBottom: 15,
     paddingHorizontal: 15,
     paddingTop: 30,
@@ -75,26 +68,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   formContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexDirection: 'column',
     justifyContent: 'center',
+    marginTop: 50,
     paddingBottom: 15,
     paddingHorizontal: 15,
     width: '100%',
-  },
-  signInText: {
-    color: colorSource.white,
-    marginTop: 30,
   },
   title: {
     color: colorSource.white,
     fontSize: 30,
   },
   titleContainer: {
+    alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
     marginTop: 50,
   },
 });
 
-export default SignUp;
+export default ForgotPassword;
