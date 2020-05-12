@@ -1,21 +1,24 @@
 /* eslint-disable global-require */
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
-  View, Text, Image, StyleSheet, TouchableOpacity,
+  View, Image, StyleSheet, Text, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { string } from 'prop-types';
 import { Rating } from 'react-native-ratings';
-import { formatMonthYearType, formatHourType } from '../../../utils/DateTimeUtils';
+import { formatMonthYearType, formatHourType } from '../../utils/DateTimeUtils';
+import colorSource from '../../../assets/color/color';
 
-const ItemCourseCategory = ({
+const ItemCourse = ({
   name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu,
 }) => (
-      <View style={styles.container}>
-          <Image source={{ uri: thumbnail }} style={{
-            width: '22%', height: 60, borderRadius: 2, marginRight: 10,
-          }}/>
-          <View style={styles.infoContainer}>
+        <View style={styles.container}>
+            <View style={styles.thumbnailContainer}>
+                <Image source={{ ui: thumbnail }} style={styles.thumbnail}/>
+                <TouchableOpacity onPress={() => onShowMenu}>
+                  <Image source={require('../../../assets/common/menu-icon.png')} style={styles.menuIcon} />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.infoContainer}>
                 <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
                 <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
                 <Text numberOfLines={1} style={styles.normalText}>
@@ -34,26 +37,19 @@ const ItemCourseCategory = ({
                     <Text style={styles.normalText}>({numOfJudgement})</Text>
                 </View>
             </View>
-            <TouchableOpacity>
-                <Image source={require('../../../../assets/common/menu-black-icon.png')} style={{ width: 20, height: 20 }} />
-            </TouchableOpacity>
-      </View>
+        </View>
 );
-
-const colorSource = {
-  transparent: '#ffffff00',
-  black: '#000',
-  gray: '#808080',
-  borderColor: '#ebebeb',
-};
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: 115,
-    justifyContent: 'space-between',
-    width: '100%',
+    alignItems: 'flex-start',
+    borderColor: colorSource.borderColor,
+    borderRadius: 7,
+    borderWidth: 1,
+    flexDirection: 'column',
+    height: 230,
+    margin: 10,
+    width: 240,
   },
   courseName: {
     color: colorSource.black,
@@ -61,11 +57,23 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   infoContainer: {
-    alignItems: 'flex-start',
-    flexDirection: 'column',
-    flex: 1,
+    backgroundColor: colorSource.courseBackground,
+    borderBottomLeftRadius: 7,
+    borderBottomRightRadius: 7,
+    borderTopColor: colorSource.borderColor,
+    borderTopWidth: 1,
+    height: '50%',
     justifyContent: 'center',
-    paddingRight: 10,
+    padding: 8,
+    width: '100%',
+  },
+  menuIcon: {
+    height: 20,
+    marginRight: 10,
+    marginTop: 15,
+    position: 'absolute',
+    right: 0,
+    width: 20,
   },
   normalText: {
     color: colorSource.gray,
@@ -84,9 +92,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
   },
+  thumbnail: {
+    borderTopLeftRadius: 7,
+    borderTopRightRadius: 7,
+    height: '100%',
+    position: 'absolute',
+    width: '100%',
+  },
+  thumbnailContainer: {
+    height: '50%',
+    width: '100%',
+    zIndex: 9,
+  },
 });
 
-ItemCourseCategory.propTypes = {
+ItemCourse.propTypes = {
   name: PropTypes.string,
   thumbnail: PropTypes.number,
   authors: PropTypes.arrayOf(string),
@@ -98,18 +118,4 @@ ItemCourseCategory.propTypes = {
   onShowMenu: PropTypes.func,
 };
 
-ItemCourseCategory.defaultProps = {
-  name: 'Java Programming',
-  thumbnail: 'https://pluralsight.imgix.net/course-images/java-fundamentals-language-v1.jpg',
-  authors: [
-    'Ben Piper',
-    'Scott Allen',
-  ],
-  level: 'Beginner',
-  date: 1589250813000,
-  duration: 600,
-  rating: 4.5,
-  numOfJudgement: 326,
-};
-
-export default ItemCourseCategory;
+export default ItemCourse;

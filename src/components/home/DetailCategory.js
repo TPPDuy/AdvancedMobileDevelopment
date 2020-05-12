@@ -4,8 +4,8 @@ import {
   View, Text, StyleSheet, SafeAreaView, FlatList,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import colorSource from '../../../../assets/color/color';
-import ItemCourseCategory from './ItemCourseCategory';
+import colorSource from '../../../assets/color/color';
+import ItemCourse from '../common/ItemCourseRowType';
 
 const renderSeparator = () => (
     <View style={{ height: 1, backgroundColor: colorSource.borderColor }}/>
@@ -17,7 +17,7 @@ const DetailCategory = ({ title, courses }) => (
             <SafeAreaView>
                 <FlatList
                     data={courses}
-                    renderItem={({ item }) => <ItemCourseCategory
+                    renderItem={({ item }) => <ItemCourse
                             name={item.name}
                             thumbnail={item.thumbnail}
                             authors={item.authors}

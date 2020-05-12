@@ -7,7 +7,7 @@ import {
   View, Text, StyleSheet, FlatList, SafeAreaView, Image, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import ItemCourse from './ItemCourse';
+import ItemCourse from '../common/ItemCourseBlockType';
 
 const SectionCourse = ({ title, courses }) => {
   const showActionSheet = () => {

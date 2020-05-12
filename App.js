@@ -6,8 +6,7 @@ import SignUp from './src/components/authen/sign-up';
 import SignIn from './src/components/authen/sign-in';
 import SectionCourse from './src/components/home/SectionCourse';
 import Home from './src/components/home';
-import ItemCourseCategory from './src/components/home/detail-category/ItemCourseCategory';
-import DetailCategory from './src/components/home/detail-category/DetailCategory';
+import DetailCategory from './src/components/home/DetailCategory';
 
 function App() {
   return (

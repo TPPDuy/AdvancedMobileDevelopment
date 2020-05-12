@@ -4,6 +4,7 @@ import {
   View, StyleSheet, TextInput, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import colorSource from '../../../assets/color/color';
 
 const CustomInput = ({
   icon, placeHolder, isHideContent, onTextChange,
@@ -28,10 +29,6 @@ const CustomInput = ({
   );
 };
 
-const colorSource = {
-  transparent: '#ffffff00',
-  white: '#fff',
-};
 const styles = StyleSheet.create({
   input: {
     backgroundColor: colorSource.transparent,

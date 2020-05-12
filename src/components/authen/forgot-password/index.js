@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../../common/input';
+import colorSource from '../../../../assets/color/color';
 
 const ForgotPassword = () => {
   const imgSource = {
@@ -25,14 +26,6 @@ const ForgotPassword = () => {
       </View>
     </LinearGradient>
   );
-};
-
-const colorSource = {
-  white: '#fff',
-  black: '#000',
-  transparent: '#ffffff00',
-  divider: '#ffffff5F',
-  purple: '#9d16a3',
 };
 
 const styles = StyleSheet.create({

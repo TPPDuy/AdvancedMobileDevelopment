@@ -6,6 +6,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import LoginOption from './LoginOptionButton';
 import CustomInput from '../../common/input';
+import colorSource from '../../../../assets/color/color';
 
 const SignIn = () => {
   const imgSource = {
@@ -37,13 +38,6 @@ const SignIn = () => {
       </TouchableOpacity>
     </LinearGradient>
   );
-};
-
-const colorSource = {
-  white: '#fff',
-  black: '#000',
-  transparent: '#ffffff00',
-  divider: '#ffffff5F',
 };
 
 const styles = StyleSheet.create({

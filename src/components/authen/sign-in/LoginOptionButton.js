@@ -3,6 +3,7 @@ import {
   Text, Image, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import colorSource from '../../../../assets/color/color';
 
 const LoginOption = ({ title, icon, onChooseOption }) => (
     <TouchableOpacity style={styles.buttonContainer} onPress={() => onChooseOption}>
@@ -11,13 +12,11 @@ const LoginOption = ({ title, icon, onChooseOption }) => (
     </TouchableOpacity>
 );
 
-const white = '#FFF';
-const black = '#000';
 
 const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
-    backgroundColor: white,
+    backgroundColor: colorSource.white,
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     width: 25,
   },
   textTitle: {
-    color: black,
+    color: colorSource.black,
     fontSize: 15,
     marginLeft: 15,
   },
