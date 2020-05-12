@@ -7,11 +7,13 @@ import SignIn from './src/components/authen/sign-in';
 import SectionCourse from './src/components/home/SectionCourse';
 import Home from './src/components/home';
 import DetailCategory from './src/components/home/DetailCategory';
+import ItemCategory from './src/components/browse/ItemCategory';
+import Browse from './src/components/browse';
 
 function App() {
   return (
       <View style={styles.container}>
-        <DetailCategory />
+        <Browse />
       </View>
   );
 }

@@ -6,6 +6,9 @@ const colorSource = {
   borderColor: '#ebebeb',
   divider: '#ffffff5F',
   purple: '#9d16a3',
+  darkOverlay: 'rgba(0,0,0,0.5)',
+  blue: 'rgba(35,121,255,0.98)',
+  lightGray: '#d0d0d0',
 };
 
 export default colorSource;

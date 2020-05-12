@@ -35,7 +35,7 @@ const ItemCourse = ({
                     <Text style={styles.normalText}>({numOfJudgement})</Text>
                 </View>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onShowMenu}>
                 <Image source={require('../../../assets/common/menu-black-icon.png')} style={{ width: 20, height: 20 }} />
             </TouchableOpacity>
       </View>

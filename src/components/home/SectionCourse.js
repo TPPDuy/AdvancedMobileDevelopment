@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable global-require */
-import React, { createRef } from 'react';
+import React from 'react';
 import {
   View, Text, StyleSheet, FlatList, SafeAreaView, Image, TouchableOpacity,
 } from 'react-native';
