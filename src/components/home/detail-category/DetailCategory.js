@@ -1,31 +1,23 @@
-/* eslint-disable no-return-assign */
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react-native/no-color-literals */
-/* eslint-disable global-require */
-import React, { createRef } from 'react';
+import React from 'react';
 import {
-  View, Text, StyleSheet, FlatList, SafeAreaView, Image, TouchableOpacity,
+  View, Text, StyleSheet, SafeAreaView, FlatList,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import ItemCourse from './ItemCourse';
+import colorSource from '../../../../assets/color/color';
+import ItemCourseCategory from './ItemCourseCategory';
 
-const SectionCourse = ({ title, courses }) => {
-  const showActionSheet = () => {
-  };
-  return (
+const renderSeparator = () => (
+    <View style={{ height: 1, backgroundColor: colorSource.borderColor }}/>
+);
+
+const DetailCategory = ({ title, courses }) => (
         <View style={styles.container}>
-            <View style={styles.titleBlock}>
-                <Text style={styles.title}>{title}</Text>
-                <TouchableOpacity style={styles.seeAllBlock}>
-                    <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
-                    <Image style={{ width: 8, height: 8 }} source={require('../../../assets/common/right-arrow-icon.png')}/>
-                </TouchableOpacity>
-            </View>
-            <SafeAreaView style={styles.listContainer}>
+            <Text style={styles.title}>{title}</Text>
+            <SafeAreaView>
                 <FlatList
-                    showsHorizontalScrollIndicator={false}
                     data={courses}
-                    renderItem={({ item }) => <ItemCourse
+                    renderItem={({ item }) => <ItemCourseCategory
                             name={item.name}
                             thumbnail={item.thumbnail}
                             authors={item.authors}
@@ -33,49 +25,32 @@ const SectionCourse = ({ title, courses }) => {
                             date={item.date}
                             duration={item.duration}
                             rating={item.rating}
-                            numOfJudgement={item.numOfJudgement}
-                            onShowMenu={showActionSheet()}/>}
-                    keyExtractor={(item) => item.id}
-                    horizontal={true}/>
+                            numOfJudgement={item.numOfJudgement}/>}
+                    showsVerticalScrollIndicator={false}
+                    ItemSeparatorComponent={renderSeparator}/>
             </SafeAreaView>
         </View>
-  );
-};
-
-const colorSource = {
-  white: '#fff',
-  black: '#000',
-};
-
+);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    height: 270,
-    marginVertical: 10,
-  },
-  seeAllBlock: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    paddingHorizontal: 15,
   },
   title: {
     color: colorSource.black,
-    fontSize: 18,
+    fontSize: 23,
     fontWeight: '600',
-  },
-  titleBlock: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
+    paddingVertical: 20,
   },
 });
 
-SectionCourse.propTypes = {
+DetailCategory.propTypes = {
   title: PropTypes.string,
   courses: PropTypes.arrayOf(object),
 };
-SectionCourse.defaultProps = {
-  title: 'Software development',
+
+DetailCategory.defaultProps = {
+  title: 'Software Development',
   courses: [
     {
       id: 1,
@@ -146,4 +121,4 @@ SectionCourse.defaultProps = {
   ],
 };
 
-export default SectionCourse;
+export default DetailCategory;
