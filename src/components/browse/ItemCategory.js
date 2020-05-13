@@ -5,11 +5,11 @@ import {
 import PropTypes from 'prop-types';
 import colorSource from '../../../assets/color/color';
 
-const ItemCategory = ({ title, thumbnail }) => (
+const ItemCategory = ({ title, thumbnail, fontSize }) => (
     <TouchableOpacity style={styles.container}>
         <ImageBackground resizeMode='cover' source={{ uri: thumbnail }} style={styles.background}>
             <View style={styles.overlay}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={{ ...styles.title, fontSize }}>{title}</Text>
             </View>
         </ImageBackground>
     </TouchableOpacity>
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colorSource.white,
-    fontSize: 27,
     fontWeight: '700',
     letterSpacing: 2,
     paddingHorizontal: 10,
@@ -47,11 +46,13 @@ const styles = StyleSheet.create({
 ItemCategory.propTypes = {
   title: PropTypes.string,
   thumbnail: PropTypes.string,
+  fontSize: PropTypes.number,
 };
 
 ItemCategory.defaultProps = {
   title: 'NEW RELEASES',
   thumbnail: 'https://www.freecoursesonline.me/wp-content/uploads/2017/11/software-development.jpg',
+  fontSize: 27,
 };
 
 export default ItemCategory;
