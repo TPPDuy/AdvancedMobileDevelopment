@@ -3,13 +3,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, Text, StyleSheet, Image,
+  View, Text, StyleSheet, Image, TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import colorSource from '../../../assets/color/color';
 
 const ItemSkills = ({ name, isInterested }) => (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container}>
             {isInterested
               ? <LinearGradient colors={['#ff6600', '#ff0084']} style={styles.tickInterested}>
                     <Image source={require('../../../assets/common/tick-white-icon.png')} style={{ width: 12, height: 12 }}/>
@@ -17,7 +17,7 @@ const ItemSkills = ({ name, isInterested }) => (
               : null
             }
             <Text style={styles.name}>{name}</Text>
-        </View>
+        </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

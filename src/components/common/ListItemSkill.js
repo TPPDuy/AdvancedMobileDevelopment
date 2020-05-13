@@ -8,7 +8,9 @@ import ItemSkills from './ItemSkill';
 const renderSeparator = () => (
     <View style={{ width: 5 }}/>
 );
-
+const renderSpaceHeader = () => (
+  <View style={{ width: 10 }}/>
+);
 const ListItemSkill = ({ listSkills }) => (
     <SafeAreaView>
         <FlatList
@@ -17,6 +19,7 @@ const ListItemSkill = ({ listSkills }) => (
             showsHorizontalScrollIndicator={false}
             ItemSeparatorComponent={renderSeparator}
             renderItem={({ item }) => <ItemSkills name={item.name} isInterested={item.isInterested}/>}
+            ListHeaderComponent={renderSpaceHeader}
         />
     </SafeAreaView>
 );

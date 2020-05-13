@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import LoginOption from './LoginOptionButton';
-import CustomInput from '../../common/input';
+import CustomInput from '../../common/Input';
 import colorSource from '../../../../assets/color/color';
 
 const SignIn = () => {

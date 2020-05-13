@@ -4,7 +4,7 @@ import {
   View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import CustomInput from '../../common/input';
+import CustomInput from '../../common/Input';
 import colorSource from '../../../../assets/color/color';
 
 const ForgotPassword = () => {

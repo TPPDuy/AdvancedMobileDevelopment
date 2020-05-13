@@ -13,7 +13,7 @@ const ItemCourse = ({
 }) => (
         <View style={styles.container}>
             <View style={styles.thumbnailContainer}>
-                <Image source={{ ui: thumbnail }} style={styles.thumbnail}/>
+                <Image source={{ uri: thumbnail }} style={styles.thumbnail}/>
                 <TouchableOpacity onPress={() => onShowMenu}>
                   <Image source={require('../../../assets/common/menu-icon.png')} style={styles.menuIcon} />
                 </TouchableOpacity>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'column',
     height: 230,
-    margin: 10,
+    marginHorizontal: 10,
     width: 240,
   },
   courseName: {

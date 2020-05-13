@@ -8,7 +8,8 @@ const colorSource = {
   purple: '#9d16a3',
   darkOverlay: 'rgba(0,0,0,0.5)',
   blue: 'rgba(35,121,255,0.98)',
-  lightGray: '#d0d0d0',
+  lightGray: '#c0c0c0',
+  darkGray: '#404040',
 };
 
 export default colorSource;
