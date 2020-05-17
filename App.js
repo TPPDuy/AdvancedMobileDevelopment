@@ -9,17 +9,17 @@ import Home from './src/components/home';
 import DetailCategory from './src/components/home/DetailCategory';
 import ItemCategory from './src/components/browse/ItemCategory';
 import Browse from './src/components/browse';
+import CourseDetails from './src/components/course-detail/CourseDetails';
 
 function App() {
   return (
       <View style={styles.container}>
-        <Browse />
+        <CourseDetails />
       </View>
   );
 }
 
 const white = '#FFF';
-const dark = '#000';
 
 const styles = StyleSheet.create({
   container: {

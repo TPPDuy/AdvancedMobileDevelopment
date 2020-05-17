@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
     color: colorSource.black,
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 10,
     marginLeft: 10,
+    marginVertical: 10,
   },
   topAuthorsText: {
     color: colorSource.black,

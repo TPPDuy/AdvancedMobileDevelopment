@@ -10,6 +10,7 @@ const colorSource = {
   blue: 'rgba(35,121,255,0.98)',
   lightGray: '#c0c0c0',
   darkGray: '#404040',
+  green: '#006909',
 };
 
 export default colorSource;
