@@ -2,7 +2,7 @@
 /* eslint-disable global-require */
 import React from 'react';
 import {
-  View, Text, StyleSheet, TouchableWithoutFeedback, Image, FlatList,
+  View, Text, StyleSheet, TouchableWithoutFeedback, Image, FlatList, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import colorSource from '../../../assets/color/color';
@@ -22,7 +22,7 @@ const ProgressBar = ({ progress, total }) => {
 const ItemLesson = ({
   name, duration, isCompleted, isPlaying,
 }) => (
-      <View style={styles.lessonContainer}>
+      <TouchableOpacity style={styles.lessonContainer}>
           {isPlaying
             ? <Image source={require('../../../assets/course-detail/play-icon.png')} style={{ ...styles.lessonStatus, backgroundColor: colorSource.black }}/>
             : isCompleted
@@ -31,7 +31,7 @@ const ItemLesson = ({
           }
           <Text style={styles.lessonName}>{name}</Text>
           <Text style={styles.lessonDuration}>{formatHourType2(duration)}</Text>
-      </View>
+      </TouchableOpacity>
 );
 
 const ItemSeparator = () => (

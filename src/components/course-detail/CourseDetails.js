@@ -10,6 +10,7 @@ import PropTypes, { object } from 'prop-types';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../../assets/color/color';
 import ItemAuthorHorizontal from './ItemAuthor';
+import Content from './Content';
 
 const ItemFunction = ({ name, icon }) => (
   <View style={styles.itemFunctionContainer}>
@@ -78,6 +79,9 @@ const CourseDetails = ({
 
             <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
             <ButtonFunction name='View related paths & courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
+          </View>
+          <View style={{paddingHorizontal: 15, backgroundColor: colorSource.black}}>
+            <Content/>
           </View>
         </ScrollView>
     </View>

@@ -15,7 +15,7 @@ import Module from './src/components/course-detail/ItemContent';
 function App() {
   return (
       <View style={styles.container}>
-        <Module />
+        <CourseDetails />
       </View>
   );
 }
