@@ -11,6 +11,7 @@ import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils'
 import colorSource from '../../../assets/color/color';
 import ItemAuthorHorizontal from './ItemAuthor';
 import Content from './Content';
+import CollapsableDescription from '../common/CollapsableDescription';
 
 const ItemFunction = ({ name, icon }) => (
   <View style={styles.itemFunctionContainer}>
@@ -33,23 +34,20 @@ const authorSeparator = () => (
 );
 
 const CourseDetails = ({
-  id, name, authors, level, date, duration, description, content, transcript,
+  id, name, authors, level, date, duration, description, content, transcript, isBookmarked,
 }) => {
-  const [isExpand, setExpand] = useState(false);
-
-  const expandIcon = isExpand ? require('../../../assets/course-detail/up-arrow-icon.png') : require('../../../assets/course-detail/down-arrow-icon.png');
-  const descHeight = isExpand ? null : 70;
-
+  const iconBookmarked = isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
   return (
     <View style={styles.container}>
         <Video source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
         shouldPlay
-        resizeMode='cover'
+        resizeMode={Video.RESIZE_MODE_CONTAIN}
         useNativeControls={true}
         usePoster={true}
         volume={1.0}
         rate={1.0}
-        style={styles.video}/>
+        style={styles.video}
+        />
         <ScrollView>
           <View style={styles.infoCourseBlock}>
             <Text style={styles.title}>{name}</Text>
@@ -63,25 +61,19 @@ const CourseDetails = ({
             <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}</Text>
             <View style={styles.func}>
               <View style={styles.functionContainer}>
-                <ItemFunction name='Bookmark' icon={require('../../../assets/course-detail/bookmark-icon.png')}/>
+                <ItemFunction name='Bookmark' icon={iconBookmarked}/>
                 <ItemFunction name='Add to Channel' icon={require('../../../assets/course-detail/channel-icon.png')}/>
                 <ItemFunction name='Download' icon={require('../../../assets/course-detail/download-icon.png')}/>
               </View>
             </View>
-            <View style={styles.descContainer}>
-              <Text style={{ ...styles.textDesc, height: descHeight }}>{description}</Text>
-              <TouchableWithoutFeedback onPress={() => setExpand(!isExpand)}>
-                <View style={styles.expandContainer}>
-                  <Image style={styles.expandIcon} source={expandIcon} resizeMode='contain'/>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
+
+            <CollapsableDescription minHeight={70} description={description}/>
 
             <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
             <ButtonFunction name='View related paths & courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
           </View>
-          <View style={{paddingHorizontal: 15, backgroundColor: colorSource.black}}>
-            <Content/>
+          <View style={{ paddingHorizontal: 15 }}>
+            <Content />
           </View>
         </ScrollView>
     </View>
@@ -102,27 +94,9 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   container: {
+    backgroundColor: colorSource.black,
     height: '100%',
     width: '100%',
-  },
-  descContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  expandContainer: {
-    alignItems: 'center',
-    backgroundColor: colorSource.gray,
-    borderRadius: 3,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: 20,
-  },
-  expandIcon: {
-    flex: 1,
-    height: 12,
-    width: 12,
   },
   functionContainer: {
     flexDirection: 'row',
@@ -161,12 +135,6 @@ const styles = StyleSheet.create({
     color: colorSource.white,
     fontSize: 14,
   },
-  textDesc: {
-    color: colorSource.white,
-    fontSize: 14,
-    textAlign: 'justify',
-    width: '92%',
-  },
   title: {
     color: colorSource.white,
     fontSize: 25,
@@ -197,6 +165,7 @@ CourseDetails.propTypes = {
   description: PropTypes.string,
   content: PropTypes.arrayOf(object),
   transcript: PropTypes.string,
+  isBookmarked: PropTypes.bool,
 };
 
 CourseDetails.defaultProps = {
@@ -212,11 +181,12 @@ CourseDetails.defaultProps = {
     },
   ],
   level: 'Intermediate',
-  date: 0,
-  duration: 890,
+  date: 1589782861000,
+  duration: 2449000,
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
   content: [],
   transcript: '',
+  isBookmarked: true,
 };
 
 export default CourseDetails;

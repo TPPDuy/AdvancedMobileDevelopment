@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, Image, Text, StyleSheet,
+  View, Image, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import colorSource from '../../../assets/color/color';
 
 const ItemAuthorHorizontal = ({ name, avatar }) => (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
         <Image source={{ uri: avatar }} resizeMode='cover' style={styles.avatar}/>
         <Text style={styles.name}>{name}</Text>
-    </View>
+    </TouchableOpacity>
 );
 const styles = StyleSheet.create({
   avatar: {

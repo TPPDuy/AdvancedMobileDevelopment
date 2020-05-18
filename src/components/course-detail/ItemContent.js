@@ -75,7 +75,7 @@ const Module = ({
 
 const styles = StyleSheet.create({
   itemSeparator: {
-    height: 10,
+    height: 20,
   },
   lessonContainer: {
     alignItems: 'center',
@@ -147,9 +147,9 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     alignItems: 'center',
-    backgroundColor: colorSource.gray,
+    backgroundColor: colorSource.darkGray,
     flexDirection: 'column',
-    height: 40,
+    height: 45,
     justifyContent: 'center',
     width: '15%',
   },
