@@ -7,7 +7,7 @@ import {
   View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import { formatMonthYearType, formatHourType } from '../../utils/DateTimeUtils';
+import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../../assets/color/color';
 import ItemAuthorHorizontal from './ItemAuthor';
 
@@ -59,7 +59,7 @@ const CourseDetails = ({
               ItemSeparatorComponent={authorSeparator}
               renderItem={({ item }) => <ItemAuthorHorizontal name={item.name} avatar={item.avatar}/>}
             />
-            <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType(duration)}</Text>
+            <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}</Text>
             <View style={styles.func}>
               <View style={styles.functionContainer}>
                 <ItemFunction name='Bookmark' icon={require('../../../assets/course-detail/bookmark-icon.png')}/>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   info: {
     color: colorSource.lightGray,
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 10,
   },
   infoCourseBlock: {

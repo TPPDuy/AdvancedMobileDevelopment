@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import PropTypes, { string } from 'prop-types';
 import { Rating } from 'react-native-ratings';
-import { formatMonthYearType, formatHourType } from '../../utils/DateTimeUtils';
+import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../../assets/color/color';
 
 const ItemCourse = ({
@@ -20,7 +20,7 @@ const ItemCourse = ({
                 <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
                 <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
                 <Text numberOfLines={1} style={styles.normalText}>
-                    {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType(duration)}
+                    {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
                 </Text>
                 <View style={styles.ratingContainer}>
                     <Rating

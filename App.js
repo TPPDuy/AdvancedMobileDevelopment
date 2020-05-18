@@ -10,11 +10,12 @@ import DetailCategory from './src/components/home/DetailCategory';
 import ItemCategory from './src/components/browse/ItemCategory';
 import Browse from './src/components/browse';
 import CourseDetails from './src/components/course-detail/CourseDetails';
+import Module from './src/components/course-detail/ItemContent';
 
 function App() {
   return (
       <View style={styles.container}>
-        <CourseDetails />
+        <Module />
       </View>
   );
 }
@@ -23,7 +24,6 @@ const white = '#FFF';
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     backgroundColor: white,
     flexDirection: 'column',
     flex: 1,
