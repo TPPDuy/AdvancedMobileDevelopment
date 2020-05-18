@@ -25,8 +25,6 @@ const styles = StyleSheet.create({
   descContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
   },
   expandContainer: {
     alignItems: 'center',
@@ -43,9 +41,10 @@ const styles = StyleSheet.create({
   },
   textDesc: {
     color: colorSource.white,
+    flex: 1,
     fontSize: 14,
+    marginRight: 10,
     textAlign: 'justify',
-    width: '92%',
   },
 });
 

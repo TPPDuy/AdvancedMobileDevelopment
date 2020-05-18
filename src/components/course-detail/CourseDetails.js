@@ -66,8 +66,9 @@ const CourseDetails = ({
                 <ItemFunction name='Download' icon={require('../../../assets/course-detail/download-icon.png')}/>
               </View>
             </View>
-
-            <CollapsableDescription minHeight={70} description={description}/>
+            <View style={styles.description}>
+              <CollapsableDescription minHeight={70} description={description}/>
+            </View>
 
             <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
             <ButtonFunction name='View related paths & courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
@@ -96,6 +97,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colorSource.black,
     height: '100%',
+    width: '100%',
+  },
+  description: {
+    marginBottom: 15,
     width: '100%',
   },
   functionContainer: {

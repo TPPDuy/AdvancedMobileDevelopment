@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flexDirection: 'row',
-    height: 115,
     justifyContent: 'space-between',
     width: '100%',
+    paddingVertical: 10,
   },
   courseName: {
     color: colorSource.black,

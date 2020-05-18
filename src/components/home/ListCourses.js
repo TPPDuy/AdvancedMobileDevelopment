@@ -10,46 +10,49 @@ import ItemCourse from '../common/ItemCourseRowType';
 const renderSeparator = () => (
     <View style={{ height: 1, backgroundColor: colorSource.borderColor }}/>
 );
-
-const DetailCategory = ({ title, courses }) => (
+const renderFooter = () => (
+  <View style={{ height: 20 }}/>
+);
+const ListCourses = ({ title, courses }) => (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
-            <SafeAreaView>
-                <FlatList
-                    data={courses}
-                    renderItem={({ item }) => <ItemCourse
-                            name={item.name}
-                            thumbnail={item.thumbnail}
-                            authors={item.authors}
-                            level={item.level}
-                            date={item.date}
-                            duration={item.duration}
-                            rating={item.rating}
-                            numOfJudgement={item.numOfJudgement}/>}
-                    showsVerticalScrollIndicator={false}
-                    ItemSeparatorComponent={renderSeparator}/>
-            </SafeAreaView>
+            <FlatList
+                horizontal={false}
+                data={courses}
+                renderItem={({ item }) => <ItemCourse
+                                              name={item.name}
+                                              thumbnail={item.thumbnail}
+                                              authors={item.authors}
+                                              level={item.level}
+                                              date={item.date}
+                                              duration={item.duration}
+                                              rating={item.rating}
+                                              numOfJudgement={item.numOfJudgement}/>}
+                showsVerticalScrollIndicator={false}
+                ItemSeparatorComponent={renderSeparator}
+                ListFooterComponent={renderFooter}/>
         </View>
 );
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    paddingHorizontal: 15,
+    flex: 1,
+    height: '100%',
   },
   title: {
     color: colorSource.black,
     fontSize: 23,
     fontWeight: '600',
-    paddingVertical: 20,
+    marginBottom: 20,
   },
 });
 
-DetailCategory.propTypes = {
+ListCourses.propTypes = {
   title: PropTypes.string,
   courses: PropTypes.arrayOf(object),
 };
 
-DetailCategory.defaultProps = {
+ListCourses.defaultProps = {
   title: 'Software Development',
   courses: [
     {
@@ -121,4 +124,4 @@ DetailCategory.defaultProps = {
   ],
 };
 
-export default DetailCategory;
+export default ListCourses;
