@@ -6,7 +6,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import LoginOption from './LoginOptionButton';
 import CustomInput from '../../common/Input';
-import colorSource from '../../../../assets/color/color';
+import colorSource from '../../../constants/color';
 
 const SignIn = () => {
   const imgSource = {

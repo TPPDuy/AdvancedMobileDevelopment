@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 import ItemAuthorHorizontal from './ItemAuthor';
 import Content from './Content';
 import CollapsableDescription from '../common/CollapsableDescription';

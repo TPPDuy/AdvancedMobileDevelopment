@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   View, Image, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 
 const ItemAuthorHorizontal = ({ name, avatar }) => (
     <TouchableOpacity style={styles.container}>

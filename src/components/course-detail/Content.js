@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import Module from './ItemContent';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 
 const ItemSeperator = () => (
     <View style={styles.separator}/>

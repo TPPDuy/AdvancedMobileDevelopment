@@ -3,7 +3,7 @@ import {
   ImageBackground, Text, TouchableOpacity, StyleSheet, View,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 
 const ItemCategory = ({ title, thumbnail, fontSize }) => (
     <TouchableOpacity style={styles.container}>

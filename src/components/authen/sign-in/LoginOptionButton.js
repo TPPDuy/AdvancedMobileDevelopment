@@ -3,7 +3,7 @@ import {
   Text, Image, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import colorSource from '../../../../assets/color/color';
+import colorSource from '../../../constants/color';
 
 const LoginOption = ({ title, icon, onChooseOption }) => (
     <TouchableOpacity style={styles.buttonContainer} onPress={() => onChooseOption}>

@@ -6,7 +6,7 @@ import {
 import PropTypes, { object } from 'prop-types';
 import ItemCategory from './ItemCategory';
 import ListItemSkill from '../common/ListItemSkill';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 import GroupPath from '../common/GroupPaths';
 import ListAuthors from './ListAuthors';
 

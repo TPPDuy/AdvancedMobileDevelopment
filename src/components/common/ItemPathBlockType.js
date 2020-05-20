@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   View, Text, Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 
 const ItemPath = ({
   name, numOfCourses, thumbnail, onChooseItem,

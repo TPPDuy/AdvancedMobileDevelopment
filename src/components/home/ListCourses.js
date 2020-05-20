@@ -4,7 +4,7 @@ import {
   View, Text, StyleSheet, SafeAreaView, FlatList,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 import ItemCourse from '../common/ItemCourseRowType';
 
 const renderSeparator = () => (

@@ -6,7 +6,7 @@ import PropTypes, { object } from 'prop-types';
 import {
   View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, FlatList,
 } from 'react-native';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 import ItemPath from './ItemPathBlockType';
 
 const GroupPath = ({ groupName, paths }) => (

@@ -4,7 +4,7 @@ import {
   View, Text, TouchableWithoutFeedback, Image, ScrollView, StyleSheet,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 import CollapsableDescription from '../common/CollapsableDescription';
 import ListCourses from '../home/ListCourses';
 
@@ -58,8 +58,10 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: colorSource.white,
+    borderRadius: 20,
     flexDirection: 'column',
     height: '100%',
+    paddingTop: 20,
     width: '100%',
   },
   followDesc: {

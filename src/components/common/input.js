@@ -4,7 +4,7 @@ import {
   View, StyleSheet, TextInput, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 
 const CustomInput = ({
   icon, placeHolder, isHideContent, onTextChange,

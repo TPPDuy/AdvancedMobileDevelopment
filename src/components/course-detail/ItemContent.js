@@ -5,7 +5,7 @@ import {
   View, Text, StyleSheet, TouchableWithoutFeedback, Image, FlatList, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 import { getPercentage } from '../../utils/MathUtils';
 import { formatHourType2 } from '../../utils/DateTimeUtils';
 

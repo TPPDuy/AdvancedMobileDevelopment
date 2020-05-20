@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   View, Text, StyleSheet, TouchableWithoutFeedback, Image,
 } from 'react-native';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 
 const CollapsableDescription = ({ minHeight, description }) => {
   const [isExpand, setExpand] = useState(false);

@@ -6,7 +6,7 @@ import {
 import PropTypes, { string } from 'prop-types';
 import { Rating } from 'react-native-ratings';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
-import colorSource from '../../../assets/color/color';
+import colorSource from '../../constants/color';
 
 const ItemCourse = ({
   name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu,

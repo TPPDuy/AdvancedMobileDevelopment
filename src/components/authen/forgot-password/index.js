@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../../common/Input';
-import colorSource from '../../../../assets/color/color';
+import colorSource from '../../../constants/color';
 
 const ForgotPassword = () => {
   const imgSource = {
