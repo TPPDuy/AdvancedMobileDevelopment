@@ -19,26 +19,33 @@ const ItemInterest = ({ name }) => (
 
 const Search = ({ recentSearches, interests }) => (
     <View style={styles.container}>
-        <TextInput style={styles.searchBar}/>
+      <View style={styles.searchBar}>
+        <Image source={require('../../../assets/search/search-icon.png')} style={styles.icon}/>
+        <TextInput style={styles.textInput} placeholder='Search...' placeholderTextColor={colorSource.white} returnKeyType='search' autoFocus={true}/>
+      </View>
         <ScrollView style={styles.content}>
             {recentSearches && recentSearches.length > 0
               ? <View style={styles.block}>
                     <View style={styles.blockTitle}>
                         <Text style={styles.blockTitleText}>Recent searches</Text>
-                        <Image source={require('../../../assets/search/clear-icon.png')} style={styles.icon}/>
+                        <TouchableOpacity>
+                          <Image source={require('../../../assets/search/clear-icon.png')} style={styles.icon}/>
+                        </TouchableOpacity>
                     </View>
                     <FlatList
                         data={recentSearches}
                         showsVerticalScrollIndicator={false}
                         ItemSeparatorComponent = {verticalSeparator}
-                        renderItem={({ item }) => <ItemRecentSearch searchKey = {item}/>}
+                        renderItem={({ item }) => <ItemRecentSearch searchKey = {item.name}/>}
                     />
                  </View>
               : null
             }
             <View style={styles.block}>
                 <Text style={styles.blockTitle}>Your interests</Text>
-                {interests.map((item, index) => <ItemInterest key={index} name={item.name}/>)}
+                <View style={styles.interestsBlock}>
+                   {interests.map((item, index) => <ItemInterest key={index} name={item.name}/>)}
+                </View>
             </View>
         </ScrollView>
     </View>
@@ -49,14 +56,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   blockTitle: {
-    color: colorSource.white,
+    alignItems: 'center',
+    color: colorSource.black,
     flexDirection: 'row',
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: '500',
     justifyContent: 'space-between',
+    marginBottom: 15,
   },
   blockTitleText: {
-    color: colorSource.white,
-    fontSize: 14,
+    color: colorSource.black,
+    fontSize: 16,
+    fontWeight: '500',
   },
   container: {
     flexDirection: 'column',
@@ -68,15 +79,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   icon: {
-    height: 40,
-    width: 40,
+    height: 20,
+    width: 20,
+  },
+  interestsBlock: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   itemInterestContainer: {
     alignItems: 'center',
     backgroundColor: colorSource.gray,
     borderRadius: 20,
     justifyContent: 'center',
-    marginRight: 8,
+    marginRight: 5,
+    marginVertical: 3,
     paddingHorizontal: 10,
     paddingVertical: 7,
   },
@@ -85,11 +101,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   searchBar: {
-    backgroundColor: colorSource.gray,
+    alignItems: 'center',
+    backgroundColor: colorSource.darkGray,
+    borderRadius: 20,
+    flexDirection: 'row',
+    marginHorizontal: 10,
+    marginTop: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
+  textInput: {
     color: colorSource.white,
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    fontSize: 17,
+    marginLeft: 15,
+    width: '100%',
   },
   verticalSeparator: {
     height: 20,
@@ -103,6 +128,64 @@ Search.propTypes = {
 
 ItemInterest.propTypes = {
   name: PropTypes.string,
+};
+
+Search.defaultProps = {
+  recentSearches: [
+    {
+      name: 'Android',
+    },
+    {
+      name: 'Java',
+    },
+  ],
+  interests: [
+    {
+      name: 'Android',
+    },
+    {
+      name: 'Git',
+    },
+    {
+      name: 'Java',
+    },
+    {
+      name: 'Agular',
+    },
+    {
+      name: 'React',
+    },
+    {
+      name: 'React Native',
+    },
+    {
+      name: 'Redux',
+    },
+    {
+      name: 'C/C++',
+    },
+    {
+      name: 'REST',
+    },
+    {
+      name: 'Spring',
+    },
+    {
+      name: 'Node.js',
+    },
+    {
+      name: 'HTML',
+    },
+    {
+      name: 'CSS',
+    },
+    {
+      name: 'JavaScript',
+    },
+    {
+      name: 'Spring',
+    },
+  ],
 };
 
 export default Search;

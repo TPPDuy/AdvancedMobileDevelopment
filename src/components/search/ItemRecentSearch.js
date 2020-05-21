@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   icon: {
-    height: 30,
-    width: 30,
+    height: 20,
+    marginRight: 10,
+    width: 20,
   },
   text: {
     color: colorSource.white,

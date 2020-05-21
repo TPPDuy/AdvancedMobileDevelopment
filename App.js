@@ -11,13 +11,14 @@ import Browse from './src/components/browse';
 import CourseDetails from './src/components/course-detail/index';
 import Module from './src/components/course-detail/ItemContent';
 import AuthorProfile from './src/components/author-profile';
+import Search from './src/components/search';
 
 
 function App() {
   return (
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#000" barStyle="light-content" />
-        <AuthorProfile />
+        <Search />
       </SafeAreaView>
   );
 }
@@ -27,7 +28,7 @@ const black = '#000';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: black,
+    backgroundColor: white,
     flexDirection: 'column',
     flex: 1,
     height: '100%',
