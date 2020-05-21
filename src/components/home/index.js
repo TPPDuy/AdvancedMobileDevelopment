@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import SectionCourse from './SectionCourse';
+import colorSource from '../../constants/color';
+import screenName from '../../constants/screen-name';
 
 const data = [
   {
@@ -120,15 +123,50 @@ const data = [
   },
 ];
 
-const Home = () => (
+const Home = ({ navigation }) => {
+  const onSeeAll = (categoryId) => {
+    console.log('See all');
+    navigation.navigate(screenName.AllCourses);
+  };
+  const onClickCourse = (id) => {
+    console.log('Click Item');
+    navigation.navigate(screenName.CourseDetails);
+  };
+  return (
     <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-            <SectionCourse title={data[0].title} courses={data[0].courses}/>
-            <SectionCourse title={data[1].title} courses={data[1].courses}/>
-            <SectionCourse title={data[0].title} courses={data[0].courses}/>
-            <SectionCourse title={data[1].title} courses={data[1].courses}/>
+        <View style={styles.container}>
+            <SectionCourse
+                title={data[0].title}
+                courses={data[0].courses}
+                onSeeAll={(categoty) => onSeeAll(categoty)}
+                onClickCourse={(id) => onClickCourse(id)}/>
+            <SectionCourse
+                title={data[1].title}
+                courses={data[1].courses}
+                onSeeAll={(categoty) => onSeeAll(categoty)}
+                onClickCourse={(id) => onClickCourse(id)}/>
+            <SectionCourse
+                title={data[0].title}
+                courses={data[0].courses}
+                onSeeAll={(categoty) => onSeeAll(categoty)}
+                onClickCourse={(id) => onClickCourse(id)}/>
+            <SectionCourse
+                title={data[1].title}
+                courses={data[1].courses}
+                onSeeAll={(categoty) => onSeeAll(categoty)}
+                onClickCourse={(id) => onClickCourse(id)}/>
         </View>
     </ScrollView>
-);
+  );
+};
 
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colorSource.white,
+  },
+});
+
+Home.propTypes = {
+  navigation: PropTypes.object,
+};
 export default Home;

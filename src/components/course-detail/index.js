@@ -12,6 +12,7 @@ import colorSource from '../../constants/color';
 import ItemAuthorHorizontal from './ItemAuthor';
 import Content from './Content';
 import CollapsableDescription from '../common/CollapsableDescription';
+import screenName from '../../constants/screen-name';
 
 const ItemFunction = ({ name, icon }) => (
   <View style={styles.itemFunctionContainer}>
@@ -34,11 +35,14 @@ const authorSeparator = () => (
 );
 
 const CourseDetails = ({
-  id, name, authors, level, date, duration, description, content, transcript, isBookmarked,
+  id, name, authors, level, date, duration, description, content, transcript, isBookmarked, navigation,
 }) => {
   const iconBookmarked = isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
   return (
     <View style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
+           <Image source={require('../../../assets/course-detail/down-arrow-icon.png')} style={styles.backIcon}/>
+        </TouchableOpacity>
         <Video source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
         shouldPlay
         resizeMode={Video.RESIZE_MODE_CONTAIN}
@@ -48,6 +52,7 @@ const CourseDetails = ({
         rate={1.0}
         style={styles.video}
         />
+
         <ScrollView>
           <View style={styles.infoCourseBlock}>
             <Text style={styles.title}>{name}</Text>
@@ -56,7 +61,10 @@ const CourseDetails = ({
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               ItemSeparatorComponent={authorSeparator}
-              renderItem={({ item }) => <ItemAuthorHorizontal name={item.name} avatar={item.avatar}/>}
+              renderItem={({ item }) => <ItemAuthorHorizontal
+                                            name={item.name}
+                                            avatar={item.avatar}
+                                            onItemClick={(id) => navigation.navigate(screenName.AuthorProfile)}/>}
             />
             <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}</Text>
             <View style={styles.func}>
@@ -84,6 +92,16 @@ const CourseDetails = ({
 const styles = StyleSheet.create({
   authorSeparator: {
     width: 5,
+  },
+  backIcon: {
+    alignItems: 'flex-start',
+    height: 25,
+    justifyContent: 'flex-start',
+    left: 5,
+    position: 'absolute',
+    top: 5,
+    width: 25,
+    zIndex: 9,
   },
   btnContainer: {
     alignItems: 'center',
@@ -171,6 +189,7 @@ CourseDetails.propTypes = {
   content: PropTypes.arrayOf(object),
   transcript: PropTypes.string,
   isBookmarked: PropTypes.bool,
+  navigation: PropTypes.object,
 };
 
 CourseDetails.defaultProps = {

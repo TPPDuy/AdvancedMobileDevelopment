@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   container: {
+    backgroundColor: colorSource.white,
     height: '100%',
     width: '100%',
   },

@@ -7,36 +7,39 @@ import PropTypes, { object } from 'prop-types';
 import colorSource from '../../constants/color';
 import CollapsableDescription from '../common/CollapsableDescription';
 import ListCourses from '../home/ListCourses';
+import screenName from '../../constants/screen-name';
 
 const AuthorProfile = ({
-  name, avatar, isFollowing, desc, personalLink, courses,
+  name, avatar, isFollowing, desc, personalLink, courses, navigation,
 }) => {
   const buttonBackground = isFollowing ? colorSource.transparent : colorSource.blue;
   const buttonTextColor = isFollowing ? colorSource.blue : colorSource.white;
 
   return (
-            <View style={styles.container}>
-                <View style={styles.infoBlock}>
-                    <Image source={{ uri: avatar }} style={styles.avatar} resizeMode='cover'/>
-                    <Text style={styles.name}>{name}</Text>
-                    <TouchableWithoutFeedback>
-                        <Text style={{ ...styles.btnFollow, backgroundColor: buttonBackground, color: buttonTextColor }}>{isFollowing ? 'FOLLOWING' : 'FOLLOW'}</Text>
-                    </TouchableWithoutFeedback>
-                    <Text style={styles.followDesc}>You'll be notified when new courses are published</Text>
-                    <CollapsableDescription minHeight={100} description={desc}/>
-                    <View style={styles.socialContainer}>
-                        <Image source={require('../../../assets/author/link-icon.png')} style={styles.icon}/>
-                        <Text style={styles.link}>{personalLink}</Text>
-                    </View>
-                    <View style={styles.socialContainer}>
-                        <Image source={require('../../../assets/author/facebook-icon.png')} style={styles.socialIcon}/>
-                        <Image source={require('../../../assets/author/linkedin-icon.png')} style={styles.socialIcon}/>
-                    </View>
+    <ScrollView>
+        <View style={styles.container}>
+            <View style={styles.infoBlock}>
+                <Image source={{ uri: avatar }} style={styles.avatar} resizeMode='cover'/>
+                <Text style={styles.name}>{name}</Text>
+                <TouchableWithoutFeedback>
+                    <Text style={{ ...styles.btnFollow, backgroundColor: buttonBackground, color: buttonTextColor }}>{isFollowing ? 'FOLLOWING' : 'FOLLOW'}</Text>
+                </TouchableWithoutFeedback>
+                <Text style={styles.followDesc}>You'll be notified when new courses are published</Text>
+                <CollapsableDescription minHeight={100} description={desc}/>
+                <View style={styles.socialContainer}>
+                    <Image source={require('../../../assets/author/link-icon.png')} style={styles.icon}/>
+                    <Text style={styles.link}>{personalLink}</Text>
                 </View>
-                <ScrollView style={styles.listCourses}>
-                 <ListCourses title='Courses'/>
-                </ScrollView>
+                <View style={styles.socialContainer}>
+                     <Image source={require('../../../assets/author/facebook-icon.png')} style={styles.socialIcon}/>
+                    <Image source={require('../../../assets/author/linkedin-icon.png')} style={styles.socialIcon}/>
+                </View>
             </View>
+            <View style={styles.listCourses}>
+              <ListCourses title='Courses' onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
+            </View>
+         </View>
+    </ScrollView>
   );
 };
 
@@ -120,6 +123,7 @@ AuthorProfile.propTypes = {
   desc: PropTypes.string,
   personalLink: PropTypes.string,
   courses: PropTypes.arrayOf(object),
+  navigation: PropTypes.object,
 };
 
 AuthorProfile.defaultProps = {

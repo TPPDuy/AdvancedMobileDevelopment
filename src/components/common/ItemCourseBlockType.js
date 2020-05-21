@@ -9,14 +9,11 @@ import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils'
 import colorSource from '../../constants/color';
 
 const ItemCourse = ({
-  name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu,
+  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu, onClickItem,
 }) => (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => onClickItem(id)}>
             <View style={styles.thumbnailContainer}>
                 <Image source={{ uri: thumbnail }} style={styles.thumbnail}/>
-                <TouchableOpacity onPress={() => onShowMenu}>
-                  <Image source={require('../../../assets/common/menu-icon.png')} style={styles.menuIcon} />
-                </TouchableOpacity>
             </View>
             <View style={styles.infoContainer}>
                 <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
@@ -37,7 +34,7 @@ const ItemCourse = ({
                     <Text style={styles.normalText}>({numOfJudgement})</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
@@ -66,14 +63,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
     width: '100%',
-  },
-  menuIcon: {
-    height: 20,
-    marginRight: 10,
-    marginTop: 15,
-    position: 'absolute',
-    right: 0,
-    width: 20,
   },
   normalText: {
     color: colorSource.gray,
@@ -107,6 +96,7 @@ const styles = StyleSheet.create({
 });
 
 ItemCourse.propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   thumbnail: PropTypes.number,
   authors: PropTypes.arrayOf(string),
@@ -116,6 +106,7 @@ ItemCourse.propTypes = {
   rating: PropTypes.number,
   numOfJudgement: PropTypes.number,
   onShowMenu: PropTypes.func,
+  onClickItem: PropTypes.func,
 };
 
 export default ItemCourse;

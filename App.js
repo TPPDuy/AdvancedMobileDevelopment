@@ -1,31 +1,52 @@
+/* eslint-disable global-require */
 /* eslint-disable react/display-name */
 /* eslint-disable import/no-extraneous-dependencies */
 import { registerRootComponent } from 'expo';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import {
-  StyleSheet, View, StatusBar, SafeAreaView,
+  StyleSheet, View, StatusBar, SafeAreaView, Image,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Home from './src/components/home';
+import CourseDetails from './src/components/course-detail/index';
 import Browse from './src/components/browse';
 import Search from './src/components/search';
 import screenName from './src/constants/screen-name';
 import colorSource from './src/constants/color';
+import AllCourses from './src/components/all-courses/AllCourses';
+import AuthorProfile from './src/components/author-profile/index';
 
-const HomeScreen = () => (<Home/>);
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const renderHeaderRight = () => (
+    <View style={styles.headerRightContainer}>
+      <Image source={require('./assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+      <Image source={require('./assets/common/menu-black-icon.png')} style={styles.menuIcon} />
+    </View>
+);
+
+const HomeScreen = () => (
+  <Stack.Navigator initialRouteName={screenName.Home} screenOptions={{ headerTitleStyle: { fontSize: 20, fontWeight: '500' } }}>
+    <Stack.Screen name={screenName.ListCourses} component={Home} options={{ title: 'Home', headerTitleAlign: 'left', headerRight: renderHeaderRight }}/>
+    <Stack.Screen name={screenName.AllCourses} component={AllCourses} options={{ title: '' }}/>
+    <Stack.Screen name={screenName.CourseDetails} component={CourseDetails} options={{ headerShown: false }}/>
+    <Stack.Screen name={screenName.AuthorProfile} component={AuthorProfile}/>
+  </Stack.Navigator>
+);
 const DownloadScreen = () => (<View/>);
 const BrowseScreen = () => (<Browse/>);
 const SearchScreen = () => (<Search/>);
 
-const Tab = createBottomTabNavigator();
 function App() {
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor="#000" barStyle="light-content" />
+        <StatusBar backgroundColor="#000" barStyle="default" />
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -61,11 +82,25 @@ const white = '#FFF';
 const black = '#000';
 
 const styles = StyleSheet.create({
+  avatar: {
+    height: 30,
+    marginRight: 15,
+    width: 30,
+  },
   container: {
     backgroundColor: white,
     flexDirection: 'column',
     flex: 1,
     height: '100%',
+  },
+  headerRightContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginRight: 10,
+  },
+  menuIcon: {
+    height: 18,
+    width: 18,
   },
 });
 

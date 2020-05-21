@@ -10,9 +10,9 @@ import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils'
 import colorSource from '../../constants/color';
 
 const ItemCourse = ({
-  name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu,
+  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu, onItemClick,
 }) => (
-      <View style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
           <Image source={{ uri: thumbnail }} style={{
             width: '22%', height: 60, borderRadius: 2, marginRight: 10,
           }}/>
@@ -38,7 +38,7 @@ const ItemCourse = ({
             <TouchableOpacity onPress={() => onShowMenu}>
                 <Image source={require('../../../assets/common/menu-black-icon.png')} style={{ width: 20, height: 20 }} />
             </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
     paddingVertical: 10,
+    width: '100%',
   },
   courseName: {
     color: colorSource.black,
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
 });
 
 ItemCourse.propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   thumbnail: PropTypes.number,
   authors: PropTypes.arrayOf(string),
@@ -90,6 +91,7 @@ ItemCourse.propTypes = {
   rating: PropTypes.number,
   numOfJudgement: PropTypes.number,
   onShowMenu: PropTypes.func,
+  onItemClick: PropTypes.func,
 };
 
 ItemCourse.defaultProps = {
@@ -101,7 +103,7 @@ ItemCourse.defaultProps = {
   ],
   level: 'Beginner',
   date: 1589250813000,
-  duration: 600,
+  duration: 600000,
   rating: 4.5,
   numOfJudgement: 326,
 };

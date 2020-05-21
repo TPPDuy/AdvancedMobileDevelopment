@@ -13,7 +13,7 @@ const renderSeparator = () => (
 const renderFooter = () => (
   <View style={{ height: 20 }}/>
 );
-const ListCourses = ({ title, courses }) => (
+const ListCourses = ({ title, courses, onItemClick }) => (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
             <FlatList
@@ -27,7 +27,8 @@ const ListCourses = ({ title, courses }) => (
                                               date={item.date}
                                               duration={item.duration}
                                               rating={item.rating}
-                                              numOfJudgement={item.numOfJudgement}/>}
+                                              numOfJudgement={item.numOfJudgement}
+                                              onItemClick={onItemClick}/>}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={renderSeparator}
                 ListFooterComponent={renderFooter}/>
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
 ListCourses.propTypes = {
   title: PropTypes.string,
   courses: PropTypes.arrayOf(object),
+  onItemClick: PropTypes.func,
 };
 
 ListCourses.defaultProps = {

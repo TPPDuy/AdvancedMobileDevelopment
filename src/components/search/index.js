@@ -20,8 +20,8 @@ const ItemInterest = ({ name }) => (
 const Search = ({ recentSearches, interests }) => (
     <View style={styles.container}>
       <View style={styles.searchBar}>
-        <Image source={require('../../../assets/search/search-icon.png')} style={styles.icon}/>
-        <TextInput style={styles.textInput} placeholder='Search...' placeholderTextColor={colorSource.white} returnKeyType='search' autoFocus={true}/>
+        <Image source={require('../../../assets/search/search-icon.png')} style={styles.iconSearch}/>
+        <TextInput style={styles.textInput} placeholder='Search...' placeholderTextColor={colorSource.lightGray} returnKeyType='search' autoFocus={true}/>
       </View>
         <ScrollView style={styles.content}>
             {recentSearches && recentSearches.length > 0
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   container: {
+    backgroundColor: colorSource.white,
     flexDirection: 'column',
     height: '100%',
     width: '100%',
@@ -81,6 +82,10 @@ const styles = StyleSheet.create({
   icon: {
     height: 20,
     width: 20,
+  },
+  iconSearch: {
+    height: 15,
+    width: 15,
   },
   interestsBlock: {
     flexDirection: 'row',
@@ -102,18 +107,18 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     alignItems: 'center',
-    backgroundColor: colorSource.darkGray,
+    backgroundColor: colorSource.gray,
     borderRadius: 20,
     flexDirection: 'row',
     marginHorizontal: 10,
     marginTop: 10,
     paddingHorizontal: 15,
-    paddingVertical: 8,
+    paddingVertical: 5,
   },
   textInput: {
     color: colorSource.white,
     fontSize: 17,
-    marginLeft: 15,
+    marginLeft: 10,
     width: '100%',
   },
   verticalSeparator: {

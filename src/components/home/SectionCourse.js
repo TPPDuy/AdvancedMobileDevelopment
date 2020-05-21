@@ -9,14 +9,16 @@ import {
 import PropTypes, { object } from 'prop-types';
 import ItemCourse from '../common/ItemCourseBlockType';
 
-const SectionCourse = ({ title, courses }) => {
+const SectionCourse = ({
+  id, title, courses, onSeeAll, onClickCourse,
+}) => {
   const showActionSheet = () => {
   };
   return (
         <View style={styles.container}>
             <View style={styles.titleBlock}>
                 <Text style={styles.title}>{title}</Text>
-                <TouchableOpacity style={styles.seeAllBlock}>
+                <TouchableOpacity style={styles.seeAllBlock} onPress={() => onSeeAll(id)}>
                     <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
                     <Image style={{ width: 8, height: 8 }} source={require('../../../assets/common/right-arrow-icon.png')}/>
                 </TouchableOpacity>
@@ -34,7 +36,8 @@ const SectionCourse = ({ title, courses }) => {
                             duration={item.duration}
                             rating={item.rating}
                             numOfJudgement={item.numOfJudgement}
-                            onShowMenu={showActionSheet()}/>}
+                            onShowMenu={showActionSheet()}
+                            onClickItem={onClickCourse}/>}
                     keyExtractor={(item) => item.id}
                     horizontal={true}/>
             </SafeAreaView>
@@ -71,8 +74,11 @@ const styles = StyleSheet.create({
 });
 
 SectionCourse.propTypes = {
+  id: PropTypes.string,
   title: PropTypes.string,
   courses: PropTypes.arrayOf(object),
+  onClickCourse: PropTypes.func,
+  onSeeAll: PropTypes.func,
 };
 SectionCourse.defaultProps = {
   title: 'Software development',

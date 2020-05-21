@@ -5,8 +5,10 @@ import {
 } from 'react-native';
 import colorSource from '../../constants/color';
 
-const ItemAuthorHorizontal = ({ name, avatar }) => (
-    <TouchableOpacity style={styles.container}>
+const ItemAuthorHorizontal = ({
+  id, name, avatar, onItemClick,
+}) => (
+    <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
         <Image source={{ uri: avatar }} resizeMode='cover' style={styles.avatar}/>
         <Text style={styles.name}>{name}</Text>
     </TouchableOpacity>
@@ -32,8 +34,10 @@ const styles = StyleSheet.create({
   },
 });
 ItemAuthorHorizontal.propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   avatar: PropTypes.string,
+  onItemClick: PropTypes.func,
 };
 
 export default ItemAuthorHorizontal;
