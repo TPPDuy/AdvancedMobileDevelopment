@@ -19,6 +19,7 @@ import screenName from './src/constants/screen-name';
 import colorSource from './src/constants/color';
 import AllCourses from './src/components/all-courses/AllCourses';
 import AuthorProfile from './src/components/author-profile/index';
+import SkillDetails from './src/components/skill';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,7 +32,7 @@ const renderHeaderRight = () => (
 );
 
 const HomeScreen = () => (
-  <Stack.Navigator initialRouteName={screenName.Home} screenOptions={{ headerTitleStyle: { fontSize: 20, fontWeight: '500' } }}>
+  <Stack.Navigator initialRouteName={screenName.ListCourses} screenOptions={{ headerTitleStyle: { fontSize: 20, fontWeight: '500' } }}>
     <Stack.Screen name={screenName.ListCourses} component={Home} options={{ title: 'Home', headerTitleAlign: 'left', headerRight: renderHeaderRight }}/>
     <Stack.Screen name={screenName.AllCourses} component={AllCourses} options={{ title: '' }}/>
     <Stack.Screen name={screenName.CourseDetails} component={CourseDetails} options={{ headerShown: false }}/>
@@ -39,7 +40,15 @@ const HomeScreen = () => (
   </Stack.Navigator>
 );
 const DownloadScreen = () => (<View/>);
-const BrowseScreen = () => (<Browse/>);
+const BrowseScreen = () => (
+  <Stack.Navigator initialRouteName={screenName.Browse} screenOptions={{ headerTitleStyle: { fontSize: 20, fontWeight: '500' } }}>
+    <Stack.Screen name={screenName.Browse} component={Browse} options={{ title: 'Browse', headerTitleAlign: 'left', headerRight: renderHeaderRight }}/>
+    <Stack.Screen name={screenName.CourseDetails} component={CourseDetails} options={{ headerShown: false }}/>
+    <Stack.Screen name={screenName.AllCourses} component={AllCourses} options={{ title: '' }}/>
+    <Stack.Screen name={screenName.SkillDetails} component={SkillDetails} />
+    <Stack.Screen name={screenName.AuthorProfile} component={AuthorProfile}/>
+  </Stack.Navigator>
+);
 const SearchScreen = () => (<Search/>);
 
 function App() {
@@ -65,7 +74,7 @@ function App() {
             },
           })}
           tabBarOptions={{
-            activeTintColor: colorSource.purple,
+            activeTintColor: '#ff6600',
             inactiveTintColor: 'gray',
           }}>
           <Tab.Screen name={screenName.HomeScreen} component={HomeScreen}/>

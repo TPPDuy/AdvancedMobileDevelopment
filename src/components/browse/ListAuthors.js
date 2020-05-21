@@ -5,17 +5,18 @@ import {
 } from 'react-native';
 import ItemAuthor from './ItemAuthor';
 
-const ListAuthors = ({ authors }) => (
+const ListAuthors = ({ authors, onClickItem }) => (
     <FlatList
         data={authors}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => <ItemAuthor name={item.name} avatar={item.avatar}/>}
+        renderItem={({ item }) => <ItemAuthor name={item.name} avatar={item.avatar} onChooseItem={onClickItem}/>}
         />
 );
 
 ListAuthors.propTypes = {
   authors: PropTypes.arrayOf(object),
+  onClickItem: PropTypes.func,
 };
 ListAuthors.defaultProps = {
   authors: [

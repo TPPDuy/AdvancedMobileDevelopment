@@ -11,14 +11,17 @@ const renderSeparator = () => (
 const renderSpaceHeader = () => (
   <View style={{ width: 10 }}/>
 );
-const ListItemSkill = ({ listSkills }) => (
+const ListItemSkill = ({ listSkills, onItemClick }) => (
     <SafeAreaView>
         <FlatList
             data={listSkills}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             ItemSeparatorComponent={renderSeparator}
-            renderItem={({ item }) => <ItemSkills name={item.name} isInterested={item.isInterested}/>}
+            renderItem={({ item }) => <ItemSkills 
+                                            name={item.name}
+                                            isInterested={item.isInterested}
+                                            onItemClick={onItemClick}/>}
             ListHeaderComponent={renderSpaceHeader}
         />
     </SafeAreaView>
@@ -26,6 +29,7 @@ const ListItemSkill = ({ listSkills }) => (
 
 ListItemSkill.propTypes = {
   listSkills: PropTypes.arrayOf(object),
+  onItemClick: PropTypes.func,
 };
 
 ListItemSkill.defaultProps = {

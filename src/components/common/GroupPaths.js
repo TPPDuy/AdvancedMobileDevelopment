@@ -9,14 +9,16 @@ import {
 import colorSource from '../../constants/color';
 import ItemPath from './ItemPathBlockType';
 
-const GroupPath = ({ groupName, paths }) => (
+const GroupPath = ({ groupName, paths, showSeeAll }) => (
     <View style={styles.container}>
       <View style={styles.titleBlock}>
-        <Text style={styles.title}>{groupName}</Text>
-          <TouchableOpacity style={styles.seeAllBlock}>
-            <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
-            <Image style={{ width: 8, height: 8 }} source={require('../../../assets/common/right-arrow-icon.png')}/>
-          </TouchableOpacity>
+          <Text style={styles.title}>{groupName}</Text>
+          {showSeeAll
+            ? <TouchableOpacity style={styles.seeAllBlock}>
+                <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
+                <Image style={{ width: 8, height: 8 }} source={require('../../../assets/common/right-arrow-icon.png')}/>
+              </TouchableOpacity>
+            : null}
       </View>
       <SafeAreaView style={styles.listContainer}>
           <FlatList
@@ -34,7 +36,6 @@ const GroupPath = ({ groupName, paths }) => (
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    height: 270,
     marginVertical: 10,
   },
   seeAllBlock: {
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
 GroupPath.propTypes = {
   groupName: PropTypes.string,
   paths: PropTypes.arrayOf(object),
+  showSeeAll: PropTypes.bool,
 };
 
 GroupPath.defaultProps = {
@@ -98,6 +100,7 @@ GroupPath.defaultProps = {
       thumbnail: 'https://pluralsight2.imgix.net/paths/images/pmp-3c8e439908.png',
     },
   ],
+  showSeeAll: true,
 };
 
 export default GroupPath;

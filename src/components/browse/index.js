@@ -5,10 +5,11 @@ import {
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import ItemCategory from './ItemCategory';
-import ListItemSkill from '../common/ListItemSkill';
+import ListItemSkill from '../skill/ListItemSkill';
 import colorSource from '../../constants/color';
 import GroupPath from '../common/GroupPaths';
 import ListAuthors from './ListAuthors';
+import screenName from '../../constants/screen-name';
 
 const renderSeparator = () => (
     <View style={{ width: 5 }}/>
@@ -17,7 +18,7 @@ const renderSpaceHeader = () => (
   <View style={{ width: 10 }}/>
 );
 
-const Browse = ({ categories, popularSkills, paths }) => (
+const Browse = ({ categories, popularSkills, paths, navigation }) => (
     <ScrollView>
         <View style={styles.container}>
             <View style={styles.bigCategoryBlock}>
@@ -39,20 +40,23 @@ const Browse = ({ categories, popularSkills, paths }) => (
                 renderItem={({ item }) => <View style={{ width: 150 }}><ItemCategory title={item.title} thumbnail={item.thumbnail} fontSize={15}/></View>}/>
             <View style={styles.popularSkills}>
                 <Text style={styles.textPopularSkills}>Popular Skills</Text>
-                <ListItemSkill />
+                <ListItemSkill onItemClick={(id) => navigation.navigate(screenName.SkillDetails)}/>
             </View>
 
             <GroupPath/>
 
-            <View>
+            <View style={styles.authorsContainer}>
                 <Text style={styles.topAuthorsText}>Top authors</Text>
-                <ListAuthors/>
+                <ListAuthors onClickItem={(id) => navigation.navigate(screenName.AuthorProfile)}/>
             </View>
         </View>
     </ScrollView>
 );
 
 const styles = StyleSheet.create({
+  authorsContainer: {
+    marginVertical: 15,
+  },
   bigCategory: {
     height: 120,
     marginVertical: 5,
@@ -91,6 +95,7 @@ Browse.propTypes = {
   categories: PropTypes.arrayOf(object),
   popularSkills: PropTypes.arrayOf(object),
   paths: PropTypes.arrayOf(object),
+  navigation: PropTypes.object,
 };
 Browse.defaultProps = {
   categories: [

@@ -8,8 +8,10 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import colorSource from '../../constants/color';
 
-const ItemSkills = ({ name, isInterested }) => (
-        <TouchableOpacity style={styles.container}>
+const ItemSkills = ({
+  id, name, isInterested, onItemClick,
+}) => (
+        <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
             {isInterested
               ? <LinearGradient colors={['#ff6600', '#ff0084']} style={styles.tickInterested}>
                     <Image source={require('../../../assets/common/tick-white-icon.png')} style={{ width: 12, height: 12 }}/>
@@ -47,12 +49,15 @@ const styles = StyleSheet.create({
 });
 
 ItemSkills.propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   isInterested: PropTypes.bool,
+  onItemClick: PropTypes.func,
 };
 ItemSkills.defaultProps = {
   name: 'Android',
   isInterested: false,
+  onItemClick: (f) => f,
 };
 
 export default ItemSkills;
