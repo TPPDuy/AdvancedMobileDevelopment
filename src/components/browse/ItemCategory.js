@@ -5,8 +5,10 @@ import {
 import PropTypes from 'prop-types';
 import colorSource from '../../constants/color';
 
-const ItemCategory = ({ title, thumbnail, fontSize }) => (
-    <TouchableOpacity style={styles.container}>
+const ItemCategory = ({
+  id, title, thumbnail, fontSize, onItemClick,
+}) => (
+    <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
         <ImageBackground resizeMode='cover' source={{ uri: thumbnail }} style={styles.background}>
             <View style={styles.overlay}>
                 <Text style={{ ...styles.title, fontSize }}>{title}</Text>
@@ -44,9 +46,11 @@ const styles = StyleSheet.create({
 });
 
 ItemCategory.propTypes = {
+  id: PropTypes.string,
   title: PropTypes.string,
   thumbnail: PropTypes.string,
   fontSize: PropTypes.number,
+  onItemClick: PropTypes.func,
 };
 
 ItemCategory.defaultProps = {

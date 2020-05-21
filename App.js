@@ -20,6 +20,7 @@ import colorSource from './src/constants/color';
 import AllCourses from './src/components/all-courses/AllCourses';
 import AuthorProfile from './src/components/author-profile/index';
 import SkillDetails from './src/components/skill';
+import CategoryDetails from './src/components/category/CategoryDetails';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,6 +46,7 @@ const BrowseScreen = () => (
     <Stack.Screen name={screenName.Browse} component={Browse} options={{ title: 'Browse', headerTitleAlign: 'left', headerRight: renderHeaderRight }}/>
     <Stack.Screen name={screenName.CourseDetails} component={CourseDetails} options={{ headerShown: false }}/>
     <Stack.Screen name={screenName.AllCourses} component={AllCourses} options={{ title: '' }}/>
+    <Stack.Screen name={screenName.CategoryDetails} component={CategoryDetails} options={{headerShown: false}}/>
     <Stack.Screen name={screenName.SkillDetails} component={SkillDetails} />
     <Stack.Screen name={screenName.AuthorProfile} component={AuthorProfile}/>
   </Stack.Navigator>

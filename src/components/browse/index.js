@@ -37,7 +37,13 @@ const Browse = ({ categories, popularSkills, paths, navigation }) => (
                 ItemSeparatorComponent={renderSeparator}
                 ListHeaderComponent={renderSpaceHeader}
                 ListFooterComponent={renderSpaceHeader}
-                renderItem={({ item }) => <View style={{ width: 150 }}><ItemCategory title={item.title} thumbnail={item.thumbnail} fontSize={15}/></View>}/>
+                renderItem={({ item }) => <View style={{ width: 150 }}>
+                                              <ItemCategory
+                                                  title={item.title}
+                                                  thumbnail={item.thumbnail}
+                                                  fontSize={15}
+                                                  onItemClick={(id) => navigation.navigate(screenName.CategoryDetails)}/>
+                                          </View>}/>
             <View style={styles.popularSkills}>
                 <Text style={styles.textPopularSkills}>Popular Skills</Text>
                 <ListItemSkill onItemClick={(id) => navigation.navigate(screenName.SkillDetails)}/>

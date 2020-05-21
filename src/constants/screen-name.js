@@ -9,6 +9,7 @@ const screenName = {
   AuthorProfile: 'Author',
   Browse: 'Browse Home',
   SkillDetails: 'Skill Details',
+  CategoryDetails: 'Category Details',
 };
 
 export default screenName;
