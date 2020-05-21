@@ -10,6 +10,7 @@ const screenName = {
   Browse: 'Browse Home',
   SkillDetails: 'Skill Details',
   CategoryDetails: 'Category Details',
+  CategoryListDetails: 'Category List Details',
 };
 
 export default screenName;

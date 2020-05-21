@@ -10,6 +10,7 @@ import colorSource from '../../constants/color';
 import GroupPath from '../common/GroupPaths';
 import ListAuthors from './ListAuthors';
 import screenName from '../../constants/screen-name';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const renderSeparator = () => (
     <View style={{ width: 5 }}/>
@@ -23,10 +24,16 @@ const Browse = ({ categories, popularSkills, paths, navigation }) => (
         <View style={styles.container}>
             <View style={styles.bigCategoryBlock}>
                 <View style={styles.bigCategory}>
-                    <ItemCategory title="NEW RELEASES" thumbnail="https://pluralsight.imgix.net/course-images/whats-new-vsphere-6-5-v1.jpg"/>
+                    <ItemCategory
+                        title="NEW RELEASES"
+                        thumbnail="https://pluralsight.imgix.net/course-images/whats-new-vsphere-6-5-v1.jpg"
+                        onItemClick={(id) => navigation.navigate(screenName.CategoryListDetails)}/>
                 </View>
                 <View style={styles.bigCategory}>
-                    <ItemCategory title=" RECOMMENDED FOR YOU" thumbnail="https://cdn.dribbble.com/users/13774/screenshots/11120020/freeapril_4x.jpg"/>
+                    <ItemCategory
+                        title=" RECOMMENDED FOR YOU"
+                        thumbnail="https://cdn.dribbble.com/users/13774/screenshots/11120020/freeapril_4x.jpg"
+                        onItemClick={(id) => navigation.navigate(screenName.CategoryListDetails)}/>
                 </View>
             </View>
             <FlatList
