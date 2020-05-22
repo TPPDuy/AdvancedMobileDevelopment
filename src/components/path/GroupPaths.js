@@ -9,12 +9,12 @@ import {
 import colorSource from '../../constants/color';
 import ItemPath from './ItemPathBlockType';
 
-const GroupPath = ({ groupName, paths, showSeeAll }) => (
+const GroupPath = ({ groupName, paths, showSeeAllButton, onShowSeeAll, onClickItem }) => (
     <View style={styles.container}>
       <View style={styles.titleBlock}>
           <Text style={styles.title}>{groupName}</Text>
-          {showSeeAll
-            ? <TouchableOpacity style={styles.seeAllBlock}>
+          {showSeeAllButton
+            ? <TouchableOpacity style={styles.seeAllBlock} onPress={onShowSeeAll}>
                 <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
                 <Image style={{ width: 8, height: 8 }} source={require('../../../assets/common/right-arrow-icon.png')}/>
               </TouchableOpacity>
@@ -25,9 +25,10 @@ const GroupPath = ({ groupName, paths, showSeeAll }) => (
             showsHorizontalScrollIndicator={false}
             data={paths}
             renderItem={({ item }) => <ItemPath
-                                  name={item.name}
-                                  numOfCourses={item.numOfCourses}
-                                  thumbnail={item.thumbnail}/>}
+                                          name={item.name}
+                                          numOfCourses={item.numOfCourses}
+                                          thumbnail={item.thumbnail}
+                                          onChooseItem={onClickItem}/>}
             horizontal={true}/>
       </SafeAreaView>
     </View>
@@ -58,7 +59,9 @@ const styles = StyleSheet.create({
 GroupPath.propTypes = {
   groupName: PropTypes.string,
   paths: PropTypes.arrayOf(object),
-  showSeeAll: PropTypes.bool,
+  showSeeAllButton: PropTypes.bool,
+  onShowSeeAll: PropTypes.func,
+  onClickItem: PropTypes.func,
 };
 
 GroupPath.defaultProps = {
@@ -100,7 +103,7 @@ GroupPath.defaultProps = {
       thumbnail: 'https://pluralsight2.imgix.net/paths/images/pmp-3c8e439908.png',
     },
   ],
-  showSeeAll: true,
+  showSeeAllButton: true,
 };
 
 export default GroupPath;

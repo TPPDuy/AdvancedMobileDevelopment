@@ -36,7 +36,7 @@ const ItemCourse = ({
                 </View>
             </View>
             <TouchableOpacity onPress={() => onShowMenu}>
-                <Image source={require('../../../assets/common/menu-black-icon.png')} style={{ width: 20, height: 20 }} />
+                <Image source={require('../../../assets/common/menu-black-icon.png')} style={{ width: 15, height: 15 }} />
             </TouchableOpacity>
       </TouchableOpacity>
 );

@@ -6,13 +6,13 @@ import {
 } from 'react-native';
 import colorSource from '../../constants/color';
 
-const CollapsableDescription = ({ minHeight, description }) => {
+const CollapsableDescription = ({ minHeight, description, textColor }) => {
   const [isExpand, setExpand] = useState(false);
   const expandIcon = isExpand ? require('../../../assets/course-detail/up-arrow-icon.png') : require('../../../assets/course-detail/down-arrow-icon.png');
   const descHeight = isExpand ? null : minHeight;
   return (
         <View style={styles.descContainer}>
-              <Text style={{ ...styles.textDesc, height: descHeight }}>{description}</Text>
+              <Text style={{ ...styles.textDesc, height: descHeight, color: textColor }}>{description}</Text>
               <TouchableWithoutFeedback onPress={() => setExpand(!isExpand)}>
                 <View style={styles.expandContainer}>
                   <Image style={styles.expandIcon} source={expandIcon} resizeMode='contain'/>
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     width: 12,
   },
   textDesc: {
-    color: colorSource.white,
     flex: 1,
     fontSize: 14,
     marginRight: 10,
@@ -51,6 +50,11 @@ const styles = StyleSheet.create({
 CollapsableDescription.propTypes = {
   minHeight: PropTypes.number,
   description: PropTypes.string,
+  textColor: PropTypes.number,
 };
 
+CollapsableDescription.defaultProps = {
+  minHeight: 60,
+  textColor: colorSource.white,
+};
 export default CollapsableDescription;

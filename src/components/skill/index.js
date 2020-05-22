@@ -3,7 +3,7 @@ import PropTypes, { object } from 'prop-types';
 import {
   View, ScrollView, FlatList, Text, StyleSheet,
 } from 'react-native';
-import GroupPath from '../common/GroupPaths';
+import GroupPath from '../path/GroupPaths';
 import SectionCourse from '../home/SectionCourse';
 import ListAuthors from '../browse/ListAuthors';
 import screenName from '../../constants/screen-name';

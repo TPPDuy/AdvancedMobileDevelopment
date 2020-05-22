@@ -7,9 +7,9 @@ import {
 import colorSource from '../../constants/color';
 
 const ItemPath = ({
-  name, numOfCourses, thumbnail, onChooseItem,
+  id, name, numOfCourses, thumbnail, onChooseItem,
 }) => (
-    <TouchableOpacity style={styles.container} onPress={() => onChooseItem}>
+    <TouchableOpacity style={styles.container} onPress={() => onChooseItem(id)}>
         <Image source={{ uri: thumbnail }} style={styles.thumbnailContainer} resizeMode="contain"/>
         <View style={styles.infoContainer}>
             <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
 });
 
 ItemPath.propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   numOfCourses: PropTypes.number,
   thumbnail: PropTypes.string,
@@ -70,7 +71,6 @@ ItemPath.defaultProps = {
   name: 'CCSP (Certified Cloud Security Professional)',
   numOfCourses: 9,
   thumbnail: 'https://pluralsight2.imgix.net/paths/images/comptia-security-plus-5d8ab8e621.png',
-  onChooseItem: (f) => f,
 };
 
 export default ItemPath;

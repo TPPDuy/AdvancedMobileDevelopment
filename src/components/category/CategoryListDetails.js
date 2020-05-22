@@ -21,7 +21,7 @@ const CategoryListDetails = ({
   id, name, thumbnail, courses, navigation,
 }) => (
     <ScrollView style={styles.container}>
-        <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail}>
+        <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode='cover'>
             <LinearGradient colors={['#ffffff00', '#fff']} style={styles.posterContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
                     <Image source={require('../../../assets/common/back-icon.png')} style={styles.icon} />
@@ -30,21 +30,22 @@ const CategoryListDetails = ({
             </LinearGradient>
         </ImageBackground>
         <FlatList
-                horizontal={false}
-                data={courses}
-                renderItem={({ item }) => <ItemCourse
-                                              name={item.name}
-                                              thumbnail={item.thumbnail}
-                                              authors={item.authors}
-                                              level={item.level}
-                                              date={item.date}
-                                              duration={item.duration}
-                                              rating={item.rating}
-                                              numOfJudgement={item.numOfJudgement}
-                                              onItemClick={(id) => navigation.navigate(screenName.CourseDetails)}/>}
-                showsVerticalScrollIndicator={false}
-                ItemSeparatorComponent={renderSeparator}
-                ListFooterComponent={renderFooter}/>
+            style={styles.listCourses}
+            horizontal={false}
+            data={courses}
+            renderItem={({ item }) => <ItemCourse
+                                          name={item.name}
+                                          thumbnail={item.thumbnail}
+                                          authors={item.authors}
+                                          level={item.level}
+                                          date={item.date}
+                                          duration={item.duration}
+                                          rating={item.rating}
+                                          numOfJudgement={item.numOfJudgement}
+                                          onItemClick={(id) => navigation.navigate(screenName.CourseDetails)}/>}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={renderSeparator}
+            ListFooterComponent={renderFooter}/>
     </ScrollView>
 );
 
@@ -63,6 +64,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     margin: 15,
   },
+  listCourses: {
+    paddingHorizontal: 10,
+  },
   posterContainer: {
     alignItems: 'center',
     height: '100%',
@@ -77,9 +81,10 @@ const styles = StyleSheet.create({
     color: colorSource.darkGray,
     fontSize: 40,
     fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 10,
     paddingHorizontal: 15,
     textAlign: 'center',
-    marginBottom: 15,
   },
 });
 

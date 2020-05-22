@@ -22,6 +22,9 @@ import AuthorProfile from './src/components/author-profile/index';
 import SkillDetails from './src/components/skill';
 import CategoryDetails from './src/components/category/CategoryDetails';
 import CategoryListDetails from './src/components/category/CategoryListDetails';
+import ListGroupPaths from './src/components/path/ListGroupPaths';
+import ListPaths from './src/components/path/ListPaths';
+import PathDetails from './src/components/path/PathDetails';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,6 +54,9 @@ const BrowseScreen = () => (
     <Stack.Screen name={screenName.CategoryListDetails} component={CategoryListDetails} options={{ headerShown: false }}/>
     <Stack.Screen name={screenName.SkillDetails} component={SkillDetails} />
     <Stack.Screen name={screenName.AuthorProfile} component={AuthorProfile}/>
+    <Stack.Screen name={screenName.ListGroupPaths} component={ListGroupPaths} options={{ title: 'Paths' }}/>
+    <Stack.Screen name={screenName.ListPaths} component={ListPaths} options={{ title: 'Paths' }}/>
+    <Stack.Screen name={screenName.PathDetails} component={PathDetails} options={{ title: 'Details' }}/>
   </Stack.Navigator>
 );
 const SearchScreen = () => (<Search/>);

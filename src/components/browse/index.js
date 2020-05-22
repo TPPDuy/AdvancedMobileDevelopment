@@ -4,13 +4,13 @@ import {
   View, StyleSheet, Text, ScrollView, FlatList,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemCategory from './ItemCategory';
 import ListItemSkill from '../skill/ListItemSkill';
 import colorSource from '../../constants/color';
-import GroupPath from '../common/GroupPaths';
+import GroupPath from '../path/GroupPaths';
 import ListAuthors from './ListAuthors';
 import screenName from '../../constants/screen-name';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const renderSeparator = () => (
     <View style={{ width: 5 }}/>
@@ -19,8 +19,10 @@ const renderSpaceHeader = () => (
   <View style={{ width: 10 }}/>
 );
 
-const Browse = ({ categories, popularSkills, paths, navigation }) => (
-    <ScrollView>
+const Browse = ({
+  categories, popularSkills, paths, navigation,
+}) => (
+    <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
             <View style={styles.bigCategoryBlock}>
                 <View style={styles.bigCategory}>
@@ -56,7 +58,8 @@ const Browse = ({ categories, popularSkills, paths, navigation }) => (
                 <ListItemSkill onItemClick={(id) => navigation.navigate(screenName.SkillDetails)}/>
             </View>
 
-            <GroupPath/>
+            <GroupPath onShowSeeAll={() => navigation.navigate(screenName.ListGroupPaths)}
+                      onClickItem={() => navigation.navigate(screenName.PathDetails)}/>
 
             <View style={styles.authorsContainer}>
                 <Text style={styles.topAuthorsText}>Top authors</Text>

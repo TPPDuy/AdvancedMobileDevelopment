@@ -7,7 +7,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import ListItemSkill from '../skill/ListItemSkill';
 import screenName from '../../constants/screen-name';
-import GroupPath from '../common/GroupPaths';
+import GroupPath from '../path/GroupPaths';
 import ListAuthors from '../browse/ListAuthors';
 import colorSource from '../../constants/color';
 import SectionCourse from '../home/SectionCourse';
@@ -17,7 +17,7 @@ const CategoryDetails = ({
   name, thumbnail, skills, paths, groupCourses, topAuthors, navigation,
 }) => (
     <ScrollView style={styles.container}>
-        <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail}>
+        <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode='cover'>
             <LinearGradient colors={['#ffffff00', '#ffffffEA', '#fff']} style={styles.posterContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
                     <Image source={require('../../../assets/common/back-icon.png')} style={styles.icon} />
@@ -35,7 +35,7 @@ const CategoryDetails = ({
         </ImageBackground>
         {
             paths && paths.length > 0
-              ? <GroupPath groupName={`Paths in ${name}`}/>
+              ? <GroupPath groupName={`Paths in ${name}`} showSeeAllButton={false}/>
               : null
         }
         {

@@ -16,7 +16,7 @@ const AuthorProfile = ({
   const buttonTextColor = isFollowing ? colorSource.blue : colorSource.white;
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
             <View style={styles.infoBlock}>
                 <Image source={{ uri: avatar }} style={styles.avatar} resizeMode='cover'/>

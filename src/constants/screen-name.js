@@ -11,6 +11,9 @@ const screenName = {
   SkillDetails: 'Skill Details',
   CategoryDetails: 'Category Details',
   CategoryListDetails: 'Category List Details',
+  ListGroupPaths: 'List Group Paths',
+  ListPaths: 'List Paths',
+  PathDetails: 'Path Details',
 };
 
 export default screenName;
