@@ -1,4 +1,9 @@
 const screenName = {
+  Authen: 'Authentication',
+  Main: 'Main',
+  SignUp: 'Sign Up',
+  SignIn: 'Sign In',
+  ForgotPass: 'Forgot Password',
   HomeScreen: 'Home',
   DownloadScreen: 'Downloads',
   BrowseScreen: 'Browse',

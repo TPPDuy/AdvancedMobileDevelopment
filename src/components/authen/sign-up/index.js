@@ -4,10 +4,12 @@ import {
   View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import PropTypes from 'prop-types';
 import CustomInput from '../../common/Input';
 import colorSource from '../../../constants/color';
+import screenName from '../../../constants/screen-name';
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
   const imgSource = {
     name: require('../../../../assets/authen/name-icon.png'),
     email: require('../../../../assets/authen/email-icon.png'),
@@ -21,10 +23,10 @@ const SignUp = () => {
           <CustomInput icon={imgSource.name} isHideContent={false} placeHolder="Name"/>
           <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>
           <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Password"/>
-          <TouchableOpacity style={styles.buttonSignIn}>
+          <TouchableOpacity style={styles.buttonSignIn} onPress={() => navigation.replace(screenName.Main)}>
             <Text style={styles.buttonText}>Create account</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.signIn}>
+          <TouchableOpacity style={styles.signIn} onPress={() => navigation.goBack()}>
             <Text style={styles.signInText}>Have an account? Sign in now!</Text>
           </TouchableOpacity>
       </View>
@@ -84,5 +86,9 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
 });
+
+SignUp.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default SignUp;

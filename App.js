@@ -25,6 +25,9 @@ import CategoryListDetails from './src/components/category/CategoryListDetails';
 import ListGroupPaths from './src/components/path/ListGroupPaths';
 import ListPaths from './src/components/path/ListPaths';
 import PathDetails from './src/components/path/PathDetails';
+import SignIn from './src/components/authen/sign-in';
+import SignUp from './src/components/authen/sign-up';
+import ForgotPassword from './src/components/authen/forgot-password';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -36,6 +39,14 @@ const renderHeaderRight = () => (
     </View>
 );
 
+
+const AuthenScreens = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name={screenName.SignIn} component={SignIn}/>
+    <Stack.Screen name={screenName.SignUp} component={SignUp}/>
+    <Stack.Screen name={screenName.ForgotPass} component={ForgotPassword}/>
+  </Stack.Navigator>
+);
 const HomeScreen = () => (
   <Stack.Navigator initialRouteName={screenName.ListCourses} screenOptions={{ headerTitleStyle: { fontSize: 20, fontWeight: '500' } }}>
     <Stack.Screen name={screenName.ListCourses} component={Home} options={{ title: 'Home', headerTitleAlign: 'left', headerRight: renderHeaderRight }}/>
@@ -44,7 +55,6 @@ const HomeScreen = () => (
     <Stack.Screen name={screenName.AuthorProfile} component={AuthorProfile}/>
   </Stack.Navigator>
 );
-const DownloadScreen = () => (<View/>);
 const BrowseScreen = () => (
   <Stack.Navigator initialRouteName={screenName.Browse} screenOptions={{ headerTitleStyle: { fontSize: 20, fontWeight: '500' } }}>
     <Stack.Screen name={screenName.Browse} component={Browse} options={{ title: 'Browse', headerTitleAlign: 'left', headerRight: renderHeaderRight }}/>
@@ -52,21 +62,18 @@ const BrowseScreen = () => (
     <Stack.Screen name={screenName.AllCourses} component={AllCourses} options={{ title: '' }}/>
     <Stack.Screen name={screenName.CategoryDetails} component={CategoryDetails} options={{ headerShown: false }}/>
     <Stack.Screen name={screenName.CategoryListDetails} component={CategoryListDetails} options={{ headerShown: false }}/>
-    <Stack.Screen name={screenName.SkillDetails} component={SkillDetails} />
+    <Stack.Screen name={screenName.SkillDetails} component={SkillDetails} options={{ title: 'Details' }}/>
     <Stack.Screen name={screenName.AuthorProfile} component={AuthorProfile}/>
     <Stack.Screen name={screenName.ListGroupPaths} component={ListGroupPaths} options={{ title: 'Paths' }}/>
     <Stack.Screen name={screenName.ListPaths} component={ListPaths} options={{ title: 'Paths' }}/>
     <Stack.Screen name={screenName.PathDetails} component={PathDetails} options={{ title: 'Details' }}/>
   </Stack.Navigator>
 );
+const DownloadScreen = () => (<View/>);
 const SearchScreen = () => (<Search/>);
 
-function App() {
-  return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor="#000" barStyle="default" />
-        <Tab.Navigator
+const MainScreens = () => (
+    <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -84,7 +91,7 @@ function App() {
             },
           })}
           tabBarOptions={{
-            activeTintColor: '#ff6600',
+            activeTintColor: '#2378ff',
             inactiveTintColor: 'gray',
           }}>
           <Tab.Screen name={screenName.HomeScreen} component={HomeScreen}/>
@@ -92,6 +99,17 @@ function App() {
           <Tab.Screen name={screenName.BrowseScreen} component={BrowseScreen}/>
           <Tab.Screen name={screenName.SearchScreen} component={SearchScreen}/>
         </Tab.Navigator>
+);
+
+function App() {
+  return (
+    <NavigationContainer>
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor="#000" barStyle="default" />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
+          <Stack.Screen name={screenName.Main} component={MainScreens}/>
+        </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>
   );
