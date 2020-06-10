@@ -2,13 +2,14 @@
 /* eslint-disable global-require */
 import React from 'react';
 import {
-  View, ScrollView, TouchableOpacity, Text, StyleSheet, Image, ImageBackground, FlatList,
+  View, ScrollView, TouchableOpacity, Text, StyleSheet, ImageBackground, FlatList,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import colorSource from '../../constants/color';
 import ItemCourse from '../common/ItemCourseRowType';
 import screenName from '../../constants/screen-name';
+import BackIcon from '../../../assets/common/back-icon.svg';
 
 const renderSeparator = () => (
     <View style={{ height: 1, backgroundColor: colorSource.borderColor }}/>
@@ -24,7 +25,7 @@ const CategoryListDetails = ({
         <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode='cover'>
             <LinearGradient colors={['#ffffff00', '#fff']} style={styles.posterContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-                    <Image source={require('../../../assets/common/back-icon.png')} style={styles.icon} />
+                    <BackIcon width={25} height={25} style={{ fill: '#4287f5' }}/>
                 </TouchableOpacity>
                 <Text style={styles.title}>{name}</Text>
             </LinearGradient>
@@ -33,16 +34,21 @@ const CategoryListDetails = ({
             style={styles.listCourses}
             horizontal={false}
             data={courses}
-            renderItem={({ item }) => <ItemCourse
-                                          name={item.name}
-                                          thumbnail={item.thumbnail}
-                                          authors={item.authors}
-                                          level={item.level}
-                                          date={item.date}
-                                          duration={item.duration}
-                                          rating={item.rating}
-                                          numOfJudgement={item.numOfJudgement}
-                                          onItemClick={(id) => navigation.navigate(screenName.CourseDetails)}/>}
+            renderItem={
+              ({ item }) => <ItemCourse
+                              name={item.name}
+                              thumbnail={item.thumbnail}
+                              authors={item.authors}
+                              level={item.level}
+                              date={item.date}
+                              duration={item.duration}
+                              rating={item.rating}
+                              numOfJudgement={item.numOfJudgement}
+                              onItemClick={
+                                (itemId) => navigation.navigate(screenName.CourseDetails)
+                              }
+                            />
+            }
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={renderSeparator}
             ListFooterComponent={renderFooter}/>
@@ -55,10 +61,6 @@ const styles = StyleSheet.create({
     backgroundColor: colorSource.white,
     height: '100%',
     width: '100%',
-  },
-  icon: {
-    height: 25,
-    width: 25,
   },
   iconContainer: {
     alignSelf: 'flex-start',

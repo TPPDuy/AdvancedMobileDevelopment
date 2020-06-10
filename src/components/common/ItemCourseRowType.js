@@ -5,12 +5,14 @@ import {
   View, Text, Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { string } from 'prop-types';
-import { Rating } from 'react-native-ratings';
+import StarRating from 'react-native-star-rating';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../constants/color';
+import MenuIcon from '../../../assets/common/menu-icon.svg';
 
 const ItemCourse = ({
-  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu, onItemClick,
+  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement,
+  onShowMenu, onItemClick,
 }) => (
       <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
           <Image source={{ uri: thumbnail }} style={{
@@ -23,20 +25,21 @@ const ItemCourse = ({
                     {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
                 </Text>
                 <View style={styles.ratingContainer}>
-                    <Rating
-                      style={styles.ratingBar}
-                      type='custom'
-                      imageSize={10}
-                      readonly
-                      startingValue={rating}
-                      ratingColor="#fcba03"
-                      ratingBackgroundColor="#d4d4d4"
-                      ratingCount={5}/>
+                    <StarRating
+                      containerStyle={styles.ratingBar}
+                      disabled
+                      halfStarEnabled
+                      halfStarColor="#fcba03"
+                      maxStars={5}
+                      rating={rating}
+                      fullStarColor="#fcba03"
+                      emptyStarColor="#d4d4d4"
+                      starSize={10}/>
                     <Text style={styles.normalText}>({numOfJudgement})</Text>
                 </View>
             </View>
             <TouchableOpacity onPress={() => onShowMenu}>
-                <Image source={require('../../../assets/common/menu-black-icon.png')} style={{ width: 15, height: 15 }} />
+                <MenuIcon width={15} height={15} style={{ fill: '#000' }}/>
             </TouchableOpacity>
       </TouchableOpacity>
 );

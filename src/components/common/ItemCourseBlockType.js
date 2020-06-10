@@ -4,37 +4,41 @@ import {
   View, Image, StyleSheet, Text, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { string } from 'prop-types';
-import { Rating } from 'react-native-ratings';
+import StarRating from 'react-native-star-rating';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../constants/color';
 
 const ItemCourse = ({
-  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onShowMenu, onClickItem,
+  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement,
+  onShowMenu, onClickItem,
 }) => (
-        <TouchableOpacity style={styles.container} onPress={() => onClickItem(id)}>
-            <View style={styles.thumbnailContainer}>
-                <Image source={{ uri: thumbnail }} style={styles.thumbnail}/>
-            </View>
-            <View style={styles.infoContainer}>
-                <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
-                <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
-                <Text numberOfLines={1} style={styles.normalText}>
-                    {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
-                </Text>
-                <View style={styles.ratingContainer}>
-                    <Rating
-                      style={styles.ratingBar}
-                      type='custom'
-                      imageSize={10}
-                      readonly
-                      startingValue={rating}
-                      ratingColor="#fcba03"
-                      ratingBackgroundColor="#d4d4d4"
-                      ratingCount={5}/>
-                    <Text style={styles.normalText}>({numOfJudgement})</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
+  <TouchableOpacity style={styles.container} onPress={() => onClickItem(id)}>
+    <View style={styles.thumbnailContainer}>
+      <Image source={{ uri: thumbnail }} style={styles.thumbnail}/>
+    </View>
+    <View style={styles.infoContainer}>
+      <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
+      <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
+      <Text numberOfLines={1} style={styles.normalText}>
+        {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
+      </Text>
+      <View style={styles.ratingContainer}>
+        <StarRating
+          containerStyle={styles.ratingBar}
+          disabled
+          halfStarEnabled
+          halfStarColor="#fcba03"
+          maxStars={5}
+          rating={rating}
+          fullStarColor="#fcba03"
+          emptyStarColor="#d4d4d4"
+          starSize={10}/>
+        <Text style={styles.normalText}>
+          ({numOfJudgement})
+        </Text>
+      </View>
+    </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
@@ -73,13 +77,12 @@ const styles = StyleSheet.create({
   ratingBar: {
     backgroundColor: colorSource.transparent,
     marginRight: 5,
-    marginTop: 3,
+    marginTop: 5,
     padding: 0,
   },
   ratingContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    width: '100%',
   },
   thumbnail: {
     borderTopLeftRadius: 7,

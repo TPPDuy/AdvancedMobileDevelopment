@@ -6,6 +6,7 @@ import {
   View, Text, Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import colorSource from '../../constants/color';
+import MenuIcon from '../../../assets/common/menu-icon.svg';
 
 const ItemPath = ({
   id, name, numOfCourses, thumbnail, onChooseItem,
@@ -21,7 +22,7 @@ const ItemPath = ({
                 </Text>
          </View>
             <TouchableOpacity>
-                <Image source={require('../../../assets/common/menu-black-icon.png')} style={{ width: 15, height: 15 }} />
+              <MenuIcon width={15} height={15} style={{ fill: '#000' }}/>
             </TouchableOpacity>
       </TouchableOpacity>
 );

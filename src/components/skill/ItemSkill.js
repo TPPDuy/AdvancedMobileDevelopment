@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import colorSource from '../../constants/color';
+import Tick from '../../../assets/common/tick-icon.svg';
 
 const ItemSkills = ({
   id, name, isInterested, onItemClick,
@@ -14,7 +15,7 @@ const ItemSkills = ({
         <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
             {isInterested
               ? <LinearGradient colors={['#ff6600', '#ff0084']} style={styles.tickInterested}>
-                    <Image source={require('../../../assets/common/tick-white-icon.png')} style={{ width: 12, height: 12 }}/>
+                  <Tick width={10} height={10} style={{ fill: '#fff' }} />
                 </LinearGradient>
               : null
             }

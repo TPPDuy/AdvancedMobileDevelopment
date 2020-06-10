@@ -8,15 +8,18 @@ import {
 } from 'react-native';
 import colorSource from '../../constants/color';
 import ItemPath from './ItemPathBlockType';
+import RightArrow from '../../../assets/common/right-arrow-icon.svg';
 
-const GroupPath = ({ groupName, paths, showSeeAllButton, onShowSeeAll, onClickItem }) => (
+const GroupPath = ({
+  groupName, paths, showSeeAllButton, onShowSeeAll, onClickItem,
+}) => (
     <View style={styles.container}>
       <View style={styles.titleBlock}>
           <Text style={styles.title}>{groupName}</Text>
           {showSeeAllButton
             ? <TouchableOpacity style={styles.seeAllBlock} onPress={onShowSeeAll}>
                 <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
-                <Image style={{ width: 8, height: 8 }} source={require('../../../assets/common/right-arrow-icon.png')}/>
+                <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
               </TouchableOpacity>
             : null}
       </View>

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable global-require */
 import React from 'react';
@@ -8,6 +9,7 @@ import PropTypes, { object } from 'prop-types';
 import colorSource from '../../constants/color';
 import { getPercentage } from '../../utils/MathUtils';
 import { formatHourType2 } from '../../utils/DateTimeUtils';
+import MenuIcon from '../../../assets/common/menu-icon.svg';
 
 const ProgressBar = ({ progress, total }) => {
   const progressColor = progress === total ? colorSource.green : colorSource.white;
@@ -56,7 +58,7 @@ const Module = ({
                 <Text style={styles.moduleDuration}>{formatHourType2(duration)}</Text>
             </View>
             <TouchableWithoutFeedback>
-                <Image source={require('../../../assets/common/menu-icon.png')} style={styles.optionIcon}/>
+                <MenuIcon width={10} height={10} style={{ fill: '#fff' }} />
             </TouchableWithoutFeedback>
         </View>
 
@@ -117,10 +119,6 @@ const styles = StyleSheet.create({
     color: colorSource.white,
     fontSize: 16,
     marginBottom: 5,
-  },
-  optionIcon: {
-    height: '40%',
-    width: 10,
   },
   progress: {
     height: '100%',

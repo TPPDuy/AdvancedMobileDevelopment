@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable global-require */
 import React from 'react';
 import {
@@ -16,7 +17,9 @@ const ForgotPassword = () => {
     <LinearGradient colors={['#5f00a3', 'rgba(157,22,163,1)', 'rgba(35,121,255,0.9808298319327731)']} style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Reset Password</Text>
-        <Text style={styles.descText}>Enter the email associated with your account and we will send you a link to reset your password.</Text>
+        <Text style={styles.descText}>
+          Enter the email associated with your account and we will send you a link to reset your password.
+        </Text>
       </View>
       <View style={styles.formContainer}>
           <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
@@ -35,7 +36,8 @@ const authorSeparator = () => (
 );
 
 const CourseDetails = ({
-  id, name, authors, level, date, duration, description, content, transcript, isBookmarked, navigation,
+  id, name, authors, level, date, duration,
+  description, content, transcript, isBookmarked, navigation,
 }) => {
   const iconBookmarked = isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
   return (
@@ -64,7 +66,7 @@ const CourseDetails = ({
               renderItem={({ item }) => <ItemAuthorHorizontal
                                             name={item.name}
                                             avatar={item.avatar}
-                                            onItemClick={(id) => navigation.navigate(screenName.AuthorProfile)}/>}
+                                            onItemClick={(itemId) => navigation.navigate(screenName.AuthorProfile)}/>}
             />
             <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}</Text>
             <View style={styles.func}>

@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes, { object } from 'prop-types';
 import {
-  View, Image, Text, StyleSheet, ScrollView, ImageBackground, FlatList, TouchableOpacity,
+  View, Text, StyleSheet, ScrollView, ImageBackground, FlatList, TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import ListItemSkill from '../skill/ListItemSkill';
@@ -11,7 +11,7 @@ import GroupPath from '../path/GroupPaths';
 import ListAuthors from '../browse/ListAuthors';
 import colorSource from '../../constants/color';
 import SectionCourse from '../home/SectionCourse';
-
+import BackIcon from '../../../assets/common/back-icon.svg';
 
 const CategoryDetails = ({
   name, thumbnail, skills, paths, groupCourses, topAuthors, navigation,
@@ -20,14 +20,15 @@ const CategoryDetails = ({
         <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode='cover'>
             <LinearGradient colors={['#ffffff00', '#ffffffEA', '#fff']} style={styles.posterContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-                    <Image source={require('../../../assets/common/back-icon.png')} style={styles.icon} />
+                    <BackIcon width={25} height={25} />
                 </TouchableOpacity>
                 <Text style={styles.title}>{name}</Text>
                 {
                     skills && skills.length > 0
                       ? <View style={styles.popularSkills}>
                             <Text style={styles.textPopularSkills}>{name} Skills</Text>
-                            <ListItemSkill onItemClick={(id) => navigation.navigate(screenName.SkillDetails)}/>
+                            <ListItemSkill
+                              onItemClick={(id) => navigation.navigate(screenName.SkillDetails)}/>
                         </View>
                       : null
                 }
@@ -39,24 +40,30 @@ const CategoryDetails = ({
               : null
         }
         {
-            groupCourses && groupCourses.length > 0
-              ? <FlatList
-                    data={groupCourses}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => <SectionCourse
-                                                id={item.id}
-                                                title={item.title}
-                                                courses={item.courses}
-                                                onClickCourse={(id) => navigation.navigate(screenName.CourseDetails)}
-                                                onSeeAll={(id) => navigation.navigate(screenName.AllCourses)}/>}
+          groupCourses && groupCourses.length > 0
+            ? <FlatList
+                data={groupCourses}
+                showsVerticalScrollIndicator={false}
+                renderItem={
+                 ({ item }) => <SectionCourse
+                                  id={item.id}
+                                  title={item.title}
+                                  courses={item.courses}
+                                  onClickCourse={
+                                    (id) => navigation.navigate(screenName.CourseDetails)
+                                  }
+                                  onSeeAll={(id) => navigation.navigate(screenName.AllCourses)}
+                                />
+                    }
                 />
-              : null
+            : null
         }
         {
             topAuthors && topAuthors.length > 0
               ? <View style={styles.authorsContainer}>
-                    <Text style={styles.topAuthorsText}>Top authors</Text>
-                    <ListAuthors onClickItem={(id) => navigation.navigate(screenName.AuthorProfile)}/>
+                  <Text style={styles.topAuthorsText}>Top authors</Text>
+                  <ListAuthors
+                    onClickItem={(id) => navigation.navigate(screenName.AuthorProfile)}/>
                 </View>
               : null
         }
@@ -71,10 +78,6 @@ const styles = StyleSheet.create({
     backgroundColor: colorSource.white,
     height: '100%',
     width: '100%',
-  },
-  icon: {
-    height: 25,
-    width: 25,
   },
   iconContainer: {
     alignSelf: 'flex-start',

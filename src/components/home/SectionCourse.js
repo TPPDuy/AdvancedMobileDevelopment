@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import ItemCourse from '../common/ItemCourseBlockType';
+import RightArrow from '../../../assets/common/right-arrow-icon.svg';
 
 const SectionCourse = ({
   id, title, courses, onSeeAll, onClickCourse,
@@ -20,7 +21,7 @@ const SectionCourse = ({
                 <Text style={styles.title}>{title}</Text>
                 <TouchableOpacity style={styles.seeAllBlock} onPress={() => onSeeAll(id)}>
                     <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
-                    <Image style={{ width: 8, height: 8 }} source={require('../../../assets/common/right-arrow-icon.png')}/>
+                    <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
                 </TouchableOpacity>
             </View>
             <SafeAreaView style={styles.listContainer}>

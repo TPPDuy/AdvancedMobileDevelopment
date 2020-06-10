@@ -28,6 +28,7 @@ import PathDetails from './src/components/path/PathDetails';
 import SignIn from './src/components/authen/sign-in';
 import SignUp from './src/components/authen/sign-up';
 import ForgotPassword from './src/components/authen/forgot-password';
+import MenuIcon from './assets/common/menu-icon.svg';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -35,7 +36,7 @@ const Stack = createStackNavigator();
 const renderHeaderRight = () => (
     <View style={styles.headerRightContainer}>
       <Image source={require('./assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
-      <Image source={require('./assets/common/menu-black-icon.png')} style={styles.menuIcon} />
+      <MenuIcon width={18} height={18} style={{ fill: '#000' }}/>
     </View>
 );
 

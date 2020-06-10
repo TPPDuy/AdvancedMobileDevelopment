@@ -1,5 +1,8 @@
+/* eslint-disable global-require */
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import {
+  View, ScrollView, StyleSheet, Image,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import SectionCourse from './SectionCourse';
 import colorSource from '../../constants/color';
@@ -135,6 +138,7 @@ const Home = ({ navigation }) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
+            <Image source={require('../../../assets/common/welcome-image.gif')} style={styles.homeImage} resizeMode="cover"/>
             <SectionCourse
                 title={data[0].title}
                 courses={data[0].courses}
@@ -163,6 +167,10 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colorSource.white,
+  },
+  homeImage: {
+    height: 180,
+    width: '100%',
   },
 });
 
