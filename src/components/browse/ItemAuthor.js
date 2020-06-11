@@ -5,7 +5,9 @@ import {
 } from 'react-native';
 import colorSource from '../../constants/color';
 
-const ItemAuthor = ({ id, avatar, name, onChooseItem }) => (
+const ItemAuthor = ({
+  id, avatar, name, onChooseItem,
+}) => (
     <TouchableOpacity style={styles.container} onPress={() => onChooseItem(id)}>
         <Image source={{ uri: avatar }} resizeMode="cover" style={styles.avatar}/>
         <Text style={styles.name}>{name}</Text>

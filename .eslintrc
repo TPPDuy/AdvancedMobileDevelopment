@@ -17,9 +17,10 @@
     "airbnb-base"
   ],
   "rules": {
+    "indent": "warn",
     "class-methods-use-this": "off",
     "no-use-before-define": "off",
-    "linebreak-style": "off",
+    "linebreak-style": "warn",
     "no-unused-vars": "warn"
   },
   "env": {

@@ -1,10 +1,10 @@
+/* eslint-disable global-require */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
-  View, StyleSheet, Text, ScrollView, FlatList,
+  View, StyleSheet, Text, ScrollView, FlatList, Image,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemCategory from './ItemCategory';
 import ListItemSkill from '../skill/ListItemSkill';
 import colorSource from '../../constants/color';

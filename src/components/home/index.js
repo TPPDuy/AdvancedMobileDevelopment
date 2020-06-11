@@ -1,12 +1,18 @@
+/* eslint-disable react/display-name */
 /* eslint-disable global-require */
 import React from 'react';
 import {
   View, ScrollView, StyleSheet, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import SectionCourse from './SectionCourse';
 import colorSource from '../../constants/color';
 import screenName from '../../constants/screen-name';
+import MenuIcon from '../../../assets/common/menu-icon.svg';
+import DarkIcon from '../../../assets/common/dark.svg';
+import LightIcon from '../../../assets/common/light.svg';
+import themes, { ThemeContext } from '../../constants/theme';
 
 const data = [
   {
@@ -135,44 +141,90 @@ const Home = ({ navigation }) => {
     console.log('Click Item');
     navigation.navigate(screenName.CourseDetails);
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <ThemeContext.Consumer>
+          {
+            ({ theme, setTheme }) => {
+              console.log(theme);
+              return (
+                <View style={styles.headerRightContainer}>
+                  {
+                    theme.type === 'LIGHT'
+                      ? <TouchableOpacity onPress={() => setTheme(themes.dark)}>
+                          <LightIcon width={28} height={28} />
+                        </TouchableOpacity>
+                      : <TouchableOpacity onPress={() => setTheme(themes.light)}>
+                          <DarkIcon width={28} height={28} />
+                        </TouchableOpacity>
+                  }
+                  <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+                  <MenuIcon width={18} height={18} style={{ fill: theme.textColor }}/>
+                </View>
+              );
+            }
+          }
+        </ThemeContext.Consumer>
+      ),
+    });
+  });
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-            <Image source={require('../../../assets/common/welcome-image.gif')} style={styles.homeImage} resizeMode="cover"/>
-            <SectionCourse
-                title={data[0].title}
-                courses={data[0].courses}
-                onSeeAll={(categoty) => onSeeAll(categoty)}
-                onClickCourse={(id) => onClickCourse(id)}/>
-            <SectionCourse
-                title={data[1].title}
-                courses={data[1].courses}
-                onSeeAll={(categoty) => onSeeAll(categoty)}
-                onClickCourse={(id) => onClickCourse(id)}/>
-            <SectionCourse
-                title={data[0].title}
-                courses={data[0].courses}
-                onSeeAll={(categoty) => onSeeAll(categoty)}
-                onClickCourse={(id) => onClickCourse(id)}/>
-            <SectionCourse
-                title={data[1].title}
-                courses={data[1].courses}
-                onSeeAll={(categoty) => onSeeAll(categoty)}
-                onClickCourse={(id) => onClickCourse(id)}/>
-        </View>
-    </ScrollView>
+    <ThemeContext>
+      {
+        ({ theme }) => {
+          console.log(theme);
+          return (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={{ backgroundColor: theme.background }}>
+                <Image source={require('../../../assets/common/explore-image.gif')} style={styles.homeImage} resizeMode="stretch"/>
+                <SectionCourse
+                  title={data[0].title}
+                  courses={data[0].courses}
+                  onSeeAll={(categoty) => onSeeAll(categoty)}
+                  onClickCourse={(id) => onClickCourse(id)}/>
+                <SectionCourse
+                  title={data[1].title}
+                  courses={data[1].courses}
+                  onSeeAll={(categoty) => onSeeAll(categoty)}
+                  onClickCourse={(id) => onClickCourse(id)}/>
+                <SectionCourse
+                  title={data[0].title}
+                  courses={data[0].courses}
+                  onSeeAll={(categoty) => onSeeAll(categoty)}
+                  onClickCourse={(id) => onClickCourse(id)}/>
+                <SectionCourse
+                  title={data[1].title}
+                  courses={data[1].courses}
+                  onSeeAll={(categoty) => onSeeAll(categoty)}
+                  onClickCourse={(id) => onClickCourse(id)}/>
+              </View>
+            </ScrollView>
+          );
+        }
+      }
+    </ThemeContext>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colorSource.white,
+  avatar: {
+    height: 30,
+    marginHorizontal: 15,
+    width: 30,
+  },
+  headerRightContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginRight: 10,
   },
   homeImage: {
-    height: 180,
+    height: 200,
     width: '100%',
   },
 });
+
 
 Home.propTypes = {
   navigation: PropTypes.object,
