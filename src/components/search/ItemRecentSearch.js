@@ -1,18 +1,26 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, TouchableWithoutFeedback, Image, StyleSheet, Text,
+  View, TouchableWithoutFeedback, StyleSheet, Text,
 } from 'react-native';
-import colorSource from '../../constants/color';
+import { ThemeContext } from '../../constants/theme';
+import RecentIcon from '../../../assets/search/recent-icon.svg';
 
 const ItemRecentSearch = ({ searchKey }) => (
-    <TouchableWithoutFeedback>
-        <View style={styles.container}>
-            <Image source={require('../../../assets/search/recent-icon.png')} style={styles.icon}/>
-            <Text styles={styles.text}>{searchKey}</Text>
-        </View>
-    </TouchableWithoutFeedback>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <TouchableWithoutFeedback>
+          <View style={styles.container}>
+            <RecentIcon width={20} height={20} style={{ fill: theme.textColor, marginRight: 10 }}/>
+            <Text style={{ color: theme.textColor, fontSize: 14 }}>{searchKey}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
@@ -21,15 +29,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     width: '100%',
-  },
-  icon: {
-    height: 20,
-    marginRight: 10,
-    width: 20,
-  },
-  text: {
-    color: colorSource.white,
-    fontSize: 14,
   },
 });
 

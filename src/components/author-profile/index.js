@@ -8,6 +8,7 @@ import colorSource from '../../constants/color';
 import CollapsableDescription from '../common/CollapsableDescription';
 import ListCourses from '../home/ListCourses';
 import screenName from '../../constants/screen-name';
+import { ThemeContext } from '../../constants/theme';
 
 const AuthorProfile = ({
   name, avatar, isFollowing, desc, personalLink, courses, navigation,
@@ -16,30 +17,36 @@ const AuthorProfile = ({
   const buttonTextColor = isFollowing ? colorSource.blue : colorSource.white;
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-            <View style={styles.infoBlock}>
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{ ...styles.container, backgroundColor: theme.background }}>
+              <View style={styles.infoBlock}>
                 <Image source={{ uri: avatar }} style={styles.avatar} resizeMode='cover'/>
                 <Text style={styles.name}>{name}</Text>
                 <TouchableWithoutFeedback>
-                    <Text style={{ ...styles.btnFollow, backgroundColor: buttonBackground, color: buttonTextColor }}>{isFollowing ? 'FOLLOWING' : 'FOLLOW'}</Text>
+                  <Text style={{ ...styles.btnFollow, backgroundColor: buttonBackground, color: buttonTextColor }}>{isFollowing ? 'FOLLOWING' : 'FOLLOW'}</Text>
                 </TouchableWithoutFeedback>
                 <Text style={styles.followDesc}>You'll be notified when new courses are published</Text>
                 <CollapsableDescription minHeight={100} description={desc}/>
                 <View style={styles.socialContainer}>
-                    <Image source={require('../../../assets/author/link-icon.png')} style={styles.icon}/>
-                    <Text style={styles.link}>{personalLink}</Text>
+                  <Image source={require('../../../assets/author/link-icon.png')} style={styles.icon}/>
+                  <Text style={styles.link}>{personalLink}</Text>
                 </View>
                 <View style={styles.socialContainer}>
-                     <Image source={require('../../../assets/author/facebook-icon.png')} style={styles.socialIcon}/>
-                    <Image source={require('../../../assets/author/linkedin-icon.png')} style={styles.socialIcon}/>
+                  <Image source={require('../../../assets/author/facebook-icon.png')} style={styles.socialIcon}/>
+                  <Image source={require('../../../assets/author/linkedin-icon.png')} style={styles.socialIcon}/>
                 </View>
+              </View>
+              <View style={styles.listCourses}>
+                <ListCourses title='Courses' onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
+              </View>
             </View>
-            <View style={styles.listCourses}>
-              <ListCourses title='Courses' onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
-            </View>
-         </View>
-    </ScrollView>
+          </ScrollView>
+        )
+      }
+    </ThemeContext.Consumer>
   );
 };
 
@@ -60,8 +67,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   container: {
-    backgroundColor: colorSource.white,
-    borderRadius: 20,
     flexDirection: 'column',
     height: '100%',
     paddingTop: 20,

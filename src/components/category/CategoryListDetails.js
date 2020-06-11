@@ -10,9 +10,10 @@ import colorSource from '../../constants/color';
 import ItemCourse from '../common/ItemCourseRowType';
 import screenName from '../../constants/screen-name';
 import BackIcon from '../../../assets/common/back-icon.svg';
+import { ThemeContext } from '../../constants/theme';
 
-const renderSeparator = () => (
-    <View style={{ height: 1, backgroundColor: colorSource.borderColor }}/>
+const renderSeparator = (dividerColor) => (
+    <View style={{ height: 1, backgroundColor: dividerColor }}/>
 );
 const renderFooter = () => (
   <View style={{ height: 20 }}/>
@@ -21,44 +22,52 @@ const renderFooter = () => (
 const CategoryListDetails = ({
   id, name, thumbnail, courses, navigation,
 }) => (
-    <ScrollView style={styles.container}>
-        <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode='cover'>
-            <LinearGradient colors={['#ffffff00', '#fff']} style={styles.posterContainer}>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => {
+        const titleColor = theme.type === 'LIGHT' ? colorSource.darkGray : colorSource.lightGray;
+        return (
+          <ScrollView style={{ ...styles.container, backgroundColor: theme.background }}>
+            <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode='cover'>
+              <LinearGradient colors={[theme.overlayLayer1, theme.overlayLayer3]} style={styles.posterContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-                    <BackIcon width={25} height={25} style={{ fill: '#4287f5' }}/>
+                  <BackIcon width={25} height={25} style={{ fill: theme.textColor }}/>
                 </TouchableOpacity>
-                <Text style={styles.title}>{name}</Text>
-            </LinearGradient>
-        </ImageBackground>
-        <FlatList
-            style={styles.listCourses}
-            horizontal={false}
-            data={courses}
-            renderItem={
-              ({ item }) => <ItemCourse
-                              name={item.name}
-                              thumbnail={item.thumbnail}
-                              authors={item.authors}
-                              level={item.level}
-                              date={item.date}
-                              duration={item.duration}
-                              rating={item.rating}
-                              numOfJudgement={item.numOfJudgement}
-                              onItemClick={
-                                (itemId) => navigation.navigate(screenName.CourseDetails)
-                              }
-                            />
-            }
-            showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={renderSeparator}
-            ListFooterComponent={renderFooter}/>
-    </ScrollView>
+                <Text style={{ ...styles.title, color: titleColor }}>{name}</Text>
+              </LinearGradient>
+            </ImageBackground>
+            <FlatList
+              style={styles.listCourses}
+              horizontal={false}
+              data={courses}
+              renderItem={
+                ({ item }) => <ItemCourse
+                                name={item.name}
+                                thumbnail={item.thumbnail}
+                                authors={item.authors}
+                                level={item.level}
+                                date={item.date}
+                                duration={item.duration}
+                                rating={item.rating}
+                                numOfJudgement={item.numOfJudgement}
+                                onItemClick={
+                                  (itemId) => navigation.navigate(screenName.CourseDetails)
+                                }
+                              />
+                }
+              showsVerticalScrollIndicator={false}
+              ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
+              ListFooterComponent={renderFooter}/>
+          </ScrollView>
+        );
+      }
+    }
+  </ThemeContext.Consumer>
 );
 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colorSource.white,
     height: '100%',
     width: '100%',
   },

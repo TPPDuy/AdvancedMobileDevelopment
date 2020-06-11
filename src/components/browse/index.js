@@ -1,8 +1,10 @@
+/* eslint-disable react/display-name */
+/* eslint-disable max-len */
 /* eslint-disable global-require */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
-  View, StyleSheet, Text, ScrollView, FlatList, Image,
+  View, StyleSheet, Text, ScrollView, FlatList, Image, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import ItemCategory from './ItemCategory';
@@ -11,6 +13,10 @@ import colorSource from '../../constants/color';
 import GroupPath from '../path/GroupPaths';
 import ListAuthors from './ListAuthors';
 import screenName from '../../constants/screen-name';
+import themes, { ThemeContext } from '../../constants/theme';
+import MenuIcon from '../../../assets/common/menu-icon.svg';
+import DarkIcon from '../../../assets/common/dark.svg';
+import LightIcon from '../../../assets/common/light.svg';
 
 const renderSeparator = () => (
     <View style={{ width: 5 }}/>
@@ -21,24 +27,56 @@ const renderSpaceHeader = () => (
 
 const Browse = ({
   categories, popularSkills, paths, navigation,
-}) => (
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-            <View style={styles.bigCategoryBlock}>
+}) => {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <ThemeContext.Consumer>
+          {
+            ({ theme, setTheme }) => {
+              console.log(theme);
+              return (
+                <View style={styles.headerRightContainer}>
+                  {
+                    theme.type === 'LIGHT'
+                      ? <TouchableOpacity onPress={() => setTheme(themes.dark)}>
+                          <LightIcon width={28} height={28} />
+                        </TouchableOpacity>
+                      : <TouchableOpacity onPress={() => setTheme(themes.light)}>
+                          <DarkIcon width={28} height={28} />
+                        </TouchableOpacity>
+                  }
+                  <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+                  <MenuIcon width={18} height={18} style={{ fill: theme.textColor }}/>
+                </View>
+              );
+            }
+          }
+        </ThemeContext.Consumer>
+      ),
+    });
+  });
+  return (
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{ ...styles.container, backgroundColor: theme.background }}>
+              <View style={styles.bigCategoryBlock}>
                 <View style={styles.bigCategory}>
-                    <ItemCategory
-                        title="NEW RELEASES"
-                        thumbnail="https://pluralsight.imgix.net/course-images/whats-new-vsphere-6-5-v1.jpg"
-                        onItemClick={(id) => navigation.navigate(screenName.CategoryListDetails)}/>
+                  <ItemCategory
+                    title="NEW RELEASES"
+                    thumbnail="https://pluralsight.imgix.net/course-images/whats-new-vsphere-6-5-v1.jpg"
+                    onItemClick={(id) => navigation.navigate(screenName.CategoryListDetails)}/>
                 </View>
                 <View style={styles.bigCategory}>
-                    <ItemCategory
-                        title=" RECOMMENDED FOR YOU"
-                        thumbnail="https://cdn.dribbble.com/users/13774/screenshots/11120020/freeapril_4x.jpg"
-                        onItemClick={(id) => navigation.navigate(screenName.CategoryListDetails)}/>
+                  <ItemCategory
+                    title=" RECOMMENDED FOR YOU"
+                    thumbnail="https://cdn.dribbble.com/users/13774/screenshots/11120020/freeapril_4x.jpg"
+                    onItemClick={(id) => navigation.navigate(screenName.CategoryListDetails)}/>
                 </View>
-            </View>
-            <FlatList
+              </View>
+              <FlatList
                 style={{ height: 80 }}
                 data={categories}
                 horizontal={true}
@@ -47,31 +85,43 @@ const Browse = ({
                 ListHeaderComponent={renderSpaceHeader}
                 ListFooterComponent={renderSpaceHeader}
                 renderItem={({ item }) => <View style={{ width: 150 }}>
-                                              <ItemCategory
-                                                  title={item.title}
-                                                  thumbnail={item.thumbnail}
-                                                  fontSize={15}
-                                                  onItemClick={(id) => navigation.navigate(screenName.CategoryDetails)}/>
-                                          </View>}/>
-            <View style={styles.popularSkills}>
-                <Text style={styles.textPopularSkills}>Popular Skills</Text>
+                                            <ItemCategory
+                                              title={item.title}
+                                              thumbnail={item.thumbnail}
+                                              fontSize={15}
+                                              onItemClick={(id) => navigation.navigate(screenName.CategoryDetails)}/>
+                                          </View>
+                            }
+              />
+              <View style={styles.popularSkills}>
+                <Text style={{ ...styles.textPopularSkills, color: theme.textColor }}>Popular Skills</Text>
                 <ListItemSkill onItemClick={(id) => navigation.navigate(screenName.SkillDetails)}/>
-            </View>
+              </View>
 
-            <GroupPath onShowSeeAll={() => navigation.navigate(screenName.ListGroupPaths)}
-                      onClickItem={() => navigation.navigate(screenName.PathDetails)}/>
+              <GroupPath
+                onShowSeeAll={() => navigation.navigate(screenName.ListGroupPaths)}
+                onClickItem={() => navigation.navigate(screenName.PathDetails)}/>
 
-            <View style={styles.authorsContainer}>
-                <Text style={styles.topAuthorsText}>Top authors</Text>
+              <View style={styles.authorsContainer}>
+                <Text style={{ ...styles.topAuthorsText, color: theme.textColor }}>Top authors</Text>
                 <ListAuthors onClickItem={(id) => navigation.navigate(screenName.AuthorProfile)}/>
+              </View>
             </View>
-        </View>
-    </ScrollView>
-);
+          </ScrollView>
+        )
+      }
+    </ThemeContext.Consumer>
+  );
+};
 
 const styles = StyleSheet.create({
   authorsContainer: {
     marginVertical: 15,
+  },
+  avatar: {
+    height: 30,
+    marginHorizontal: 15,
+    width: 30,
   },
   bigCategory: {
     height: 120,
@@ -82,9 +132,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   container: {
-    backgroundColor: colorSource.white,
     height: '100%',
     width: '100%',
+  },
+  headerRightContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginRight: 10,
   },
   popularSkills: {
     flexDirection: 'column',
@@ -92,14 +146,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   textPopularSkills: {
-    color: colorSource.black,
     fontSize: 18,
     fontWeight: '600',
     marginLeft: 10,
     marginVertical: 10,
   },
   topAuthorsText: {
-    color: colorSource.black,
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 10,

@@ -7,7 +7,6 @@ import {
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SectionCourse from './SectionCourse';
-import colorSource from '../../constants/color';
 import screenName from '../../constants/screen-name';
 import MenuIcon from '../../../assets/common/menu-icon.svg';
 import DarkIcon from '../../../assets/common/dark.svg';

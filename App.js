@@ -60,7 +60,7 @@ const AuthenScreens = () => (
 const HomeScreen = () => (
   <ThemeContext.Consumer>
     {
-      ({ theme, setTheme }) => {
+      ({ theme }) => {
         console.log(theme);
         return (
           <Stack.Navigator
@@ -75,6 +75,7 @@ const HomeScreen = () => (
               headerStyle: {
                 backgroundColor: theme.headerBackground,
               },
+              headerTintColor: theme.textColor,
             }
           }>
           <Stack.Screen
@@ -104,59 +105,77 @@ const HomeScreen = () => (
 
 );
 const BrowseScreen = () => (
-  <Stack.Navigator
-    initialRouteName={screenName.Browse}
-    screenOptions={{ headerTitleStyle: { fontSize: 20, fontWeight: '500' } }}>
-    <Stack.Screen
-      name={screenName.Browse}
-      component={Browse}
-      options={{ title: 'Browse', headerTitleAlign: 'left', headerRight: renderHeaderRight }}
-    />
-    <Stack.Screen
-      name={screenName.CourseDetails}
-      component={CourseDetails}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name={screenName.AllCourses}
-      component={AllCourses}
-      options={{ title: '' }}
-    />
-    <Stack.Screen
-      name={screenName.CategoryDetails}
-      component={CategoryDetails}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name={screenName.CategoryListDetails}
-      component={CategoryListDetails}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name={screenName.SkillDetails}
-      component={SkillDetails}
-      options={{ title: 'Details' }}
-    />
-    <Stack.Screen
-      name={screenName.AuthorProfile}
-      component={AuthorProfile}
-    />
-    <Stack.Screen
-      name={screenName.ListGroupPaths}
-      component={ListGroupPaths}
-      options={{ title: 'Paths' }}
-    />
-    <Stack.Screen
-      name={screenName.ListPaths}
-      component={ListPaths}
-      options={{ title: 'Paths' }}
-    />
-    <Stack.Screen
-      name={screenName.PathDetails}
-      component={PathDetails}
-      options={{ title: 'Details' }}
-    />
-  </Stack.Navigator>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <Stack.Navigator
+          initialRouteName={screenName.Browse}
+          screenOptions={
+            {
+              headerTitleStyle: {
+                fontSize: 20,
+                fontWeight: '500',
+                color: theme.textColor,
+              },
+              headerStyle: {
+                backgroundColor: theme.headerBackground,
+              },
+              headerTintColor: theme.textColor,
+            }
+          }>
+          <Stack.Screen
+            name={screenName.Browse}
+            component={Browse}
+            options={{ title: 'Browse', headerTitleAlign: 'left' }}
+          />
+          <Stack.Screen
+            name={screenName.CourseDetails}
+            component={CourseDetails}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={screenName.AllCourses}
+            component={AllCourses}
+            options={{ title: '' }}
+          />
+          <Stack.Screen
+            name={screenName.CategoryDetails}
+            component={CategoryDetails}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={screenName.CategoryListDetails}
+            component={CategoryListDetails}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={screenName.SkillDetails}
+            component={SkillDetails}
+            options={{ title: 'Details' }}
+          />
+          <Stack.Screen
+            name={screenName.AuthorProfile}
+            component={AuthorProfile}
+          />
+          <Stack.Screen
+            name={screenName.ListGroupPaths}
+            component={ListGroupPaths}
+            options={{ title: 'Paths' }}
+          />
+          <Stack.Screen
+            name={screenName.ListPaths}
+            component={ListPaths}
+            options={{ title: 'Paths' }}
+          />
+          <Stack.Screen
+            name={screenName.PathDetails}
+            component={PathDetails}
+            options={{ title: 'Details' }}
+          />
+        </Stack.Navigator>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 const DownloadScreen = () => (<View/>);
 const SearchScreen = () => (<Search/>);
@@ -226,7 +245,7 @@ function App() {
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <NavigationContainer>
-        <SafeAreaView style={{ ...styles.container, backgroundColor: theme.background }}>
+        <SafeAreaView style={{ ...styles.container, backgroundColor: theme.background, color: theme.textColor }}>
           <StatusBar backgroundColor='#000' barStyle="default" />
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>

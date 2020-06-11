@@ -8,25 +8,34 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import colorSource from '../../constants/color';
 import Tick from '../../../assets/common/tick-icon.svg';
+import { ThemeContext } from '../../constants/theme';
 
 const ItemSkills = ({
   id, name, isInterested, onItemClick,
 }) => (
-        <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
-            {isInterested
-              ? <LinearGradient colors={['#ff6600', '#ff0084']} style={styles.tickInterested}>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => {
+        const background = theme.type === 'LIGHT' ? colorSource.lightGray : colorSource.darkGray;
+        return (
+        <TouchableOpacity style={{ ...styles.container, backgroundColor: background }} onPress={() => onItemClick(id)}>
+          {isInterested
+            ? <LinearGradient colors={['#ff6600', '#ff0084']} style={styles.tickInterested}>
                   <Tick width={10} height={10} style={{ fill: '#fff' }} />
                 </LinearGradient>
-              : null
-            }
-            <Text style={styles.name}>{name}</Text>
+            : null
+          }
+          <Text style={styles.name}>{name}</Text>
         </TouchableOpacity>
+        );
+      }
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: colorSource.lightGray,
     borderRadius: 100,
     flexDirection: 'row',
     height: 32,

@@ -4,14 +4,21 @@ import {
   View, Text, Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import colorSource from '../../constants/color';
+import { ThemeContext } from '../../constants/theme';
 
 const ItemAuthor = ({
   id, avatar, name, onChooseItem,
 }) => (
-    <TouchableOpacity style={styles.container} onPress={() => onChooseItem(id)}>
-        <Image source={{ uri: avatar }} resizeMode="cover" style={styles.avatar}/>
-        <Text style={styles.name}>{name}</Text>
-    </TouchableOpacity>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <TouchableOpacity style={styles.container} onPress={() => onChooseItem(id)}>
+          <Image source={{ uri: avatar }} resizeMode="cover" style={styles.avatar}/>
+          <Text style={{ ...styles.name, color: theme.textColor }}>{name}</Text>
+        </TouchableOpacity>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
@@ -28,7 +35,6 @@ const styles = StyleSheet.create({
     width: 80,
   },
   name: {
-    color: colorSource.black,
     fontSize: 15,
     textAlign: 'center',
   },

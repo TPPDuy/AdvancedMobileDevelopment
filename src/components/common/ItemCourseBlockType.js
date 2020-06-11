@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-unused-styles */
 /* eslint-disable global-require */
 import React from 'react';
 import {
@@ -7,62 +8,65 @@ import PropTypes, { string } from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../constants/color';
+import { ThemeContext } from '../../constants/theme';
 
 const ItemCourse = ({
   id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement,
   onShowMenu, onClickItem,
 }) => (
-  <TouchableOpacity style={styles.container} onPress={() => onClickItem(id)}>
-    <View style={styles.thumbnailContainer}>
-      <Image source={{ uri: thumbnail }} style={styles.thumbnail}/>
-    </View>
-    <View style={styles.infoContainer}>
-      <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
-      <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
-      <Text numberOfLines={1} style={styles.normalText}>
-        {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
-      </Text>
-      <View style={styles.ratingContainer}>
-        <StarRating
-          containerStyle={styles.ratingBar}
-          disabled
-          halfStarEnabled
-          halfStarColor="#fcba03"
-          maxStars={5}
-          rating={rating}
-          fullStarColor="#fcba03"
-          emptyStarColor="#d4d4d4"
-          starSize={10}/>
-        <Text style={styles.normalText}>
-          ({numOfJudgement})
-        </Text>
-      </View>
-    </View>
-  </TouchableOpacity>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <TouchableOpacity style={styles(theme).container} onPress={() => onClickItem(id)}>
+          <View style={styles(theme).thumbnailContainer}>
+            <Image source={{ uri: thumbnail }} style={styles(theme).thumbnail}/>
+          </View>
+          <View style={styles(theme).infoContainer}>
+            <Text numberOfLines={2} style={styles(theme).courseName}>{name}</Text>
+            <Text numberOfLines={1} style={styles(theme).normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
+            <Text numberOfLines={1} style={styles(theme).normalText}>
+              {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
+            </Text>
+            <View style={styles(theme).ratingContainer}>
+              <StarRating
+                containerStyle={styles(theme).ratingBar}
+                disabled
+                halfStarEnabled
+                halfStarColor="#fcba03"
+                maxStars={5}
+                rating={rating}
+                fullStarColor="#fcba03"
+                emptyStarColor="#d4d4d4"
+                starSize={10}/>
+              <Text style={styles(theme).normalText}>
+                ({numOfJudgement})
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
   container: {
     alignItems: 'flex-start',
-    borderColor: colorSource.borderColor,
     borderRadius: 7,
-    borderWidth: 1,
     flexDirection: 'column',
     height: 230,
     marginHorizontal: 10,
     width: 240,
   },
   courseName: {
-    color: colorSource.black,
+    color: theme.textColor,
     fontSize: 16,
     fontWeight: '600',
   },
   infoContainer: {
-    backgroundColor: colorSource.courseBackground,
+    backgroundColor: theme.itemBackground,
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
-    borderTopColor: colorSource.borderColor,
-    borderTopWidth: 1,
     height: '50%',
     justifyContent: 'center',
     padding: 8,

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-unused-styles */
 /* eslint-disable no-return-assign */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
@@ -9,6 +10,7 @@ import {
 import PropTypes, { object } from 'prop-types';
 import ItemCourse from '../common/ItemCourseBlockType';
 import RightArrow from '../../../assets/common/right-arrow-icon.svg';
+import { ThemeContext } from '../../constants/theme';
 
 const SectionCourse = ({
   id, title, courses, onSeeAll, onClickCourse,
@@ -16,15 +18,18 @@ const SectionCourse = ({
   const showActionSheet = () => {
   };
   return (
-        <View style={styles.container}>
-            <View style={styles.titleBlock}>
-                <Text style={styles.title}>{title}</Text>
-                <TouchableOpacity style={styles.seeAllBlock} onPress={() => onSeeAll(id)}>
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+          <View style={styles(theme).container}>
+            <View style={styles(theme).titleBlock}>
+                <Text style={styles(theme).title}>{title}</Text>
+                <TouchableOpacity style={styles(theme).seeAllBlock} onPress={() => onSeeAll(id)}>
                     <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
                     <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
                 </TouchableOpacity>
             </View>
-            <SafeAreaView style={styles.listContainer}>
+            <SafeAreaView style={styles(theme).listContainer}>
                 <FlatList
                     showsHorizontalScrollIndicator={false}
                     data={courses}
@@ -42,16 +47,15 @@ const SectionCourse = ({
                     keyExtractor={(item) => item.id}
                     horizontal={true}/>
             </SafeAreaView>
-        </View>
+         </View>
+        )
+      }
+    </ThemeContext.Consumer>
   );
 };
 
-const colorSource = {
-  white: '#fff',
-  black: '#000',
-};
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
   container: {
     flexDirection: 'column',
     height: 270,
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   title: {
-    color: colorSource.black,
+    color: theme.textColor,
     fontSize: 18,
     fontWeight: '600',
   },

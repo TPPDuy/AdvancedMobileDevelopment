@@ -4,37 +4,43 @@
 import React from 'react';
 import PropTypes, { object } from 'prop-types';
 import {
-  View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, FlatList,
+  View, Text, StyleSheet, TouchableOpacity, SafeAreaView, FlatList,
 } from 'react-native';
-import colorSource from '../../constants/color';
 import ItemPath from './ItemPathBlockType';
 import RightArrow from '../../../assets/common/right-arrow-icon.svg';
+import { ThemeContext } from '../../constants/theme';
 
 const GroupPath = ({
   groupName, paths, showSeeAllButton, onShowSeeAll, onClickItem,
 }) => (
-    <View style={styles.container}>
-      <View style={styles.titleBlock}>
-          <Text style={styles.title}>{groupName}</Text>
-          {showSeeAllButton
-            ? <TouchableOpacity style={styles.seeAllBlock} onPress={onShowSeeAll}>
-                <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
-                <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
-              </TouchableOpacity>
-            : null}
-      </View>
-      <SafeAreaView style={styles.listContainer}>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            data={paths}
-            renderItem={({ item }) => <ItemPath
-                                          name={item.name}
-                                          numOfCourses={item.numOfCourses}
-                                          thumbnail={item.thumbnail}
-                                          onChooseItem={onClickItem}/>}
-            horizontal={true}/>
-      </SafeAreaView>
-    </View>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <View style={styles.container}>
+          <View style={styles.titleBlock}>
+              <Text style={{ ...styles.title, color: theme.textColor }}>{groupName}</Text>
+              {showSeeAllButton
+                ? <TouchableOpacity style={styles.seeAllBlock} onPress={onShowSeeAll}>
+                    <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
+                    <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
+                  </TouchableOpacity>
+                : null}
+          </View>
+          <SafeAreaView style={styles.listContainer}>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                data={paths}
+                renderItem={({ item }) => <ItemPath
+                                              name={item.name}
+                                              numOfCourses={item.numOfCourses}
+                                              thumbnail={item.thumbnail}
+                                              onChooseItem={onClickItem}/>}
+                horizontal={true}/>
+          </SafeAreaView>
+        </View>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
@@ -47,7 +53,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   title: {
-    color: colorSource.black,
     fontSize: 18,
     fontWeight: '600',
   },

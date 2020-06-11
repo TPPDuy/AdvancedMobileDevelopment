@@ -1,21 +1,25 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   View, Text, StyleSheet, SafeAreaView, FlatList,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
-import colorSource from '../../constants/color';
 import ItemCourse from '../common/ItemCourseRowType';
+import { ThemeContext } from '../../constants/theme';
 
-const renderSeparator = () => (
-    <View style={{ height: 1, backgroundColor: colorSource.borderColor }}/>
+const renderSeparator = (dividerColor) => (
+    <View style={{ height: 1, backgroundColor: dividerColor }}/>
 );
 const renderFooter = () => (
   <View style={{ height: 20 }}/>
 );
 const ListCourses = ({ title, courses, onItemClick }) => (
-        <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+          <View style={styles.container}>
+            <Text style={{ ...styles.title, color: theme.textColor }}>{title}</Text>
             <FlatList
                 horizontal={false}
                 data={courses}
@@ -30,18 +34,21 @@ const ListCourses = ({ title, courses, onItemClick }) => (
                                               numOfJudgement={item.numOfJudgement}
                                               onItemClick={onItemClick}/>}
                 showsVerticalScrollIndicator={false}
-                ItemSeparatorComponent={renderSeparator}
+                ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
                 ListFooterComponent={renderFooter}/>
-        </View>
+          </View>
+        )
+      }
+    </ThemeContext.Consumer>
 );
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     flex: 1,
     height: '100%',
+    width: '100%',
   },
   title: {
-    color: colorSource.black,
     fontSize: 23,
     fontWeight: '600',
     marginBottom: 20,

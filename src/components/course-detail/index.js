@@ -14,6 +14,7 @@ import ItemAuthorHorizontal from './ItemAuthor';
 import Content from './Content';
 import CollapsableDescription from '../common/CollapsableDescription';
 import screenName from '../../constants/screen-name';
+import { ThemeContext } from '../../constants/theme';
 
 const ItemFunction = ({ name, icon }) => (
   <View style={styles.itemFunctionContainer}>
@@ -41,53 +42,59 @@ const CourseDetails = ({
 }) => {
   const iconBookmarked = isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
   return (
-    <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
-           <Image source={require('../../../assets/course-detail/down-arrow-icon.png')} style={styles.backIcon}/>
-        </TouchableOpacity>
-        <Video source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
-        shouldPlay
-        resizeMode={Video.RESIZE_MODE_CONTAIN}
-        useNativeControls={true}
-        usePoster={true}
-        volume={1.0}
-        rate={1.0}
-        style={styles.video}
-        />
-
-        <ScrollView>
-          <View style={styles.infoCourseBlock}>
-            <Text style={styles.title}>{name}</Text>
-            <FlatList
-              data={authors}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              ItemSeparatorComponent={authorSeparator}
-              renderItem={({ item }) => <ItemAuthorHorizontal
-                                            name={item.name}
-                                            avatar={item.avatar}
-                                            onItemClick={(itemId) => navigation.navigate(screenName.AuthorProfile)}/>}
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+          <View style={{ ...styles.container, backgroundColor: theme.background }}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
+              <Image source={require('../../../assets/course-detail/down-arrow-icon.png')} style={styles.backIcon}/>
+            </TouchableOpacity>
+            <Video source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+            shouldPlay
+            resizeMode={Video.RESIZE_MODE_CONTAIN}
+            useNativeControls={true}
+            usePoster={true}
+            volume={1.0}
+            rate={1.0}
+            style={styles.video}
             />
-            <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}</Text>
-            <View style={styles.func}>
-              <View style={styles.functionContainer}>
-                <ItemFunction name='Bookmark' icon={iconBookmarked}/>
-                <ItemFunction name='Add to Channel' icon={require('../../../assets/course-detail/channel-icon.png')}/>
-                <ItemFunction name='Download' icon={require('../../../assets/course-detail/download-icon.png')}/>
-              </View>
-            </View>
-            <View style={styles.description}>
-              <CollapsableDescription minHeight={70} description={description}/>
-            </View>
 
-            <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
-            <ButtonFunction name='View related paths & courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
+            <ScrollView>
+              <View style={styles.infoCourseBlock}>
+                <Text style={styles.title}>{name}</Text>
+                <FlatList
+                  data={authors}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  ItemSeparatorComponent={authorSeparator}
+                  renderItem={({ item }) => <ItemAuthorHorizontal
+                                                name={item.name}
+                                                avatar={item.avatar}
+                                                onItemClick={(itemId) => navigation.navigate(screenName.AuthorProfile)}/>}
+                />
+                <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}</Text>
+                <View style={styles.func}>
+                  <View style={styles.functionContainer}>
+                    <ItemFunction name='Bookmark' icon={iconBookmarked}/>
+                    <ItemFunction name='Add to Channel' icon={require('../../../assets/course-detail/channel-icon.png')}/>
+                    <ItemFunction name='Download' icon={require('../../../assets/course-detail/download-icon.png')}/>
+                  </View>
+                </View>
+                <View style={styles.description}>
+                  <CollapsableDescription minHeight={70} description={description}/>
+                </View>
+
+                <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
+                <ButtonFunction name='View related paths & courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
+              </View>
+              <View style={{ paddingHorizontal: 15 }}>
+                <Content />
+              </View>
+            </ScrollView>
           </View>
-          <View style={{ paddingHorizontal: 15 }}>
-            <Content />
-          </View>
-        </ScrollView>
-    </View>
+        )
+      }
+    </ThemeContext.Consumer>
   );
 };
 
@@ -115,7 +122,6 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   container: {
-    backgroundColor: colorSource.black,
     height: '100%',
     width: '100%',
   },

@@ -9,39 +9,48 @@ import StarRating from 'react-native-star-rating';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../constants/color';
 import MenuIcon from '../../../assets/common/menu-icon.svg';
+import { ThemeContext } from '../../constants/theme';
 
 const ItemCourse = ({
   id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement,
   onShowMenu, onItemClick,
 }) => (
-      <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
           <Image source={{ uri: thumbnail }} style={{
             width: '22%', height: 60, borderRadius: 2, marginRight: 10,
           }}/>
           <View style={styles.infoContainer}>
-                <Text numberOfLines={2} style={styles.courseName}>{name}</Text>
-                <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
-                <Text numberOfLines={1} style={styles.normalText}>
-                    {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
-                </Text>
-                <View style={styles.ratingContainer}>
-                    <StarRating
-                      containerStyle={styles.ratingBar}
-                      disabled
-                      halfStarEnabled
-                      halfStarColor="#fcba03"
-                      maxStars={5}
-                      rating={rating}
-                      fullStarColor="#fcba03"
-                      emptyStarColor="#d4d4d4"
-                      starSize={10}/>
-                    <Text style={styles.normalText}>({numOfJudgement})</Text>
-                </View>
+            <Text
+              numberOfLines={2}
+              style={{ ...styles.courseName, color: theme.textColor }}>{name}</Text>
+            <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
+            <Text numberOfLines={1} style={styles.normalText}>
+              {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
+            </Text>
+            <View style={styles.ratingContainer}>
+              <StarRating
+                containerStyle={styles.ratingBar}
+                disabled
+                halfStarEnabled
+                halfStarColor="#fcba03"
+                maxStars={5}
+                rating={rating}
+                fullStarColor="#fcba03"
+                emptyStarColor="#d4d4d4"
+                starSize={10}/>
+              <Text style={styles.normalText}>({numOfJudgement})</Text>
             </View>
-            <TouchableOpacity onPress={() => onShowMenu}>
-                <MenuIcon width={15} height={15} style={{ fill: '#000' }}/>
-            </TouchableOpacity>
-      </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={() => onShowMenu}>
+            <MenuIcon width={15} height={15} style={{ fill: '#000' }}/>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
@@ -53,7 +62,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   courseName: {
-    color: colorSource.black,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -10,6 +10,7 @@ import colorSource from '../../constants/color';
 import { getPercentage } from '../../utils/MathUtils';
 import { formatHourType2 } from '../../utils/DateTimeUtils';
 import MenuIcon from '../../../assets/common/menu-icon.svg';
+import { ThemeContext } from '../../constants/theme';
 
 const ProgressBar = ({ progress, total }) => {
   const progressColor = progress === total ? colorSource.green : colorSource.white;
@@ -24,16 +25,22 @@ const ProgressBar = ({ progress, total }) => {
 const ItemLesson = ({
   name, duration, isCompleted, isPlaying,
 }) => (
-      <TouchableOpacity style={styles.lessonContainer}>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <TouchableOpacity style={styles.lessonContainer}>
           {isPlaying
-            ? <Image source={require('../../../assets/course-detail/play-icon.png')} style={{ ...styles.lessonStatus, backgroundColor: colorSource.black }}/>
+            ? <Image source={require('../../../assets/course-detail/play-icon.png')} style={{ ...styles.lessonStatus, backgroundColor: theme.background }}/>
             : isCompleted
-              ? <Image source={require('../../../assets/course-detail/completed-tick-icon.png')} style={{ ...styles.lessonStatus, backgroundColor: colorSource.black }}/>
+              ? <Image source={require('../../../assets/course-detail/completed-tick-icon.png')} style={{ ...styles.lessonStatus, backgroundColor: theme.background }}/>
               : <View style={{ ...styles.lessonStatus, backgroundColor: colorSource.gray }}/>
           }
-          <Text style={styles.lessonName}>{name}</Text>
+          <Text style={{ ...styles.lessonName, color: theme.textColor }}>{name}</Text>
           <Text style={styles.lessonDuration}>{formatHourType2(duration)}</Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const ItemSeparator = () => (
@@ -43,26 +50,28 @@ const ItemSeparator = () => (
 const Module = ({
   moduleName, index, duration, progress, content,
 }) => (
-    <View style={styles.moduleContainer}>
-        <View style={styles.titleContainer}>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <View style={{ ...styles.moduleContainer, backgroundColor: theme.background }}>
+          <View style={styles.titleContainer}>
             <View style={styles.thumbnail}>
-                <View style={styles.textThumbnailContainer}>
-                    <Text style={styles.textThumbnail}>{index}</Text>
-                </View>
-                <View style={styles.progressBar}>
-                 <ProgressBar progress={progress} total={duration}/>
-                </View>
+              <View style={styles.textThumbnailContainer}>
+                <Text style={styles.textThumbnail}>{index}</Text>
+              </View>
+              <View style={styles.progressBar}>
+                <ProgressBar progress={progress} total={duration}/>
+              </View>
             </View>
             <View style={styles.moduleInfo}>
-                <Text style={styles.moduleName}>{moduleName}</Text>
-                <Text style={styles.moduleDuration}>{formatHourType2(duration)}</Text>
+              <Text style={{ ...styles.moduleName, color: theme.textColor }}>{moduleName}</Text>
+              <Text style={styles.moduleDuration}>{formatHourType2(duration)}</Text>
             </View>
             <TouchableWithoutFeedback>
-                <MenuIcon width={10} height={10} style={{ fill: '#fff' }} />
+              <MenuIcon width={10} height={10} style={{ fill: '#fff' }} />
             </TouchableWithoutFeedback>
-        </View>
-
-        <FlatList
+          </View>
+          <FlatList
             data={content}
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={ItemSeparator}
@@ -71,8 +80,11 @@ const Module = ({
                                         duration={item.duration}
                                         isCompleted={item.isCompleted}
                                         isPlaying={item.isPlaying}/>}
-            />
-    </View>
+          />
+        </View>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
@@ -89,7 +101,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   lessonName: {
-    color: colorSource.white,
     flex: 1,
     fontSize: 14,
     marginHorizontal: 5,
@@ -100,7 +111,6 @@ const styles = StyleSheet.create({
     width: 10,
   },
   moduleContainer: {
-    backgroundColor: colorSource.black,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     paddingVertical: 20,
@@ -116,7 +126,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   moduleName: {
-    color: colorSource.white,
     fontSize: 16,
     marginBottom: 5,
   },

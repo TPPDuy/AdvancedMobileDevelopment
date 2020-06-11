@@ -9,33 +9,41 @@ import CollapsableDescription from '../common/CollapsableDescription';
 import colorSource from '../../constants/color';
 import ListCourses from '../home/ListCourses';
 import screenName from '../../constants/screen-name';
+import { ThemeContext } from '../../constants/theme';
 
 const PathDetails = ({
   id, name, thumbnail, numOfCourses, duration, description, courses, navigation,
 }) => (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        <View style={styles.info}>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ ...styles.container, backgroundColor: theme.background }}>
+          <View style={styles.info}>
             <View style={styles.titleBlock}>
-                <Image source={{ uri: thumbnail }} style={styles.thumbnail}/>
-                <View style={styles.infoBlock}>
-                    <Text style={styles.name}>{name}</Text>
-                    <Text style={styles.extraInfo}>{numOfCourses} courses ∙ {formatHourType2(duration)}</Text>
-                </View>
+              <Image source={{ uri: thumbnail }} style={styles.thumbnail}/>
+              <View style={styles.infoBlock}>
+                <Text style={styles.name}>{name}</Text>
+                <Text style={styles.extraInfo}>{numOfCourses} courses ∙ {formatHourType2(duration)}</Text>
+              </View>
             </View>
-            <CollapsableDescription description={description} minHeight={100}/>
-        </View>
+          <CollapsableDescription description={description} minHeight={100}/>
+          </View>
 
-        <View style={styles.listCourses}>
-            <ListCourses
-                title={`${name} Courses`}
-                onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
-        </View>
-    </ScrollView>
+          <View style={styles.listCourses}>
+              <ListCourses
+                  title={`${name} Courses`}
+                  onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
+          </View>
+        </ScrollView>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colorSource.white,
     height: '100%',
     width: '100%',
   },

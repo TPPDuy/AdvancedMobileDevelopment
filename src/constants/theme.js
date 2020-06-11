@@ -6,7 +6,11 @@ const themes = {
     headerBackground: '#fff',
     textColor: '#000',
     background: '#f5f5f5',
-    itemBackground: 'fff',
+    itemBackground: '#fff',
+    dividerLine: '#e2e2e2',
+    overlayLayer1: '#ffffff00',
+    overlayLayer2: '#f5f5f5ea',
+    overlayLayer3: '#f5f5f5',
   },
   dark: {
     type: 'DARK',
@@ -14,6 +18,10 @@ const themes = {
     textColor: '#fff',
     background: '#000',
     itemBackground: '#2f2f2f',
+    dividerLine: '#2b2b2b',
+    overlayLayer1: '#ffffff00',
+    overlayLayer2: '#000000EA',
+    overlayLayer3: '#000',
   },
 };
 export const ThemeContext = React.createContext(themes.light);

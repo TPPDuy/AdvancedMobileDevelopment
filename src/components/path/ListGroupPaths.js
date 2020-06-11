@@ -5,24 +5,35 @@ import PropTypes, { object } from 'prop-types';
 import GroupPath from './GroupPaths';
 import colorSource from '../../constants/color';
 import screenName from '../../constants/screen-name';
+import { ThemeContext } from '../../constants/theme';
 
 const renderSeparator = () => (
     <View style={{ height: 15 }}/>
 );
 
 const ListGroupPaths = ({ groupPaths, navigation }) => (
-    <FlatList
-        style={{ backgroundColor: colorSource.white }}
-        data={groupPaths}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={renderSeparator}
-        ListHeaderComponent={renderSeparator}
-        ListFooterComponent={renderSeparator}
-        renderItem={({ item }) => <GroupPath
-                                      groupName={item.groupName}
-                                      paths={item.paths}
-                                      onShowSeeAll={() => navigation.navigate(screenName.ListPaths)}
-                                      onClickItem={() => navigation.navigate(screenName.PathDetails)}/>}/>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <FlatList
+          style={{ backgroundColor: theme.background }}
+          data={groupPaths}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={renderSeparator}
+          ListHeaderComponent={renderSeparator}
+          ListFooterComponent={renderSeparator}
+          renderItem={
+            ({ item }) => <GroupPath
+                            groupName={item.groupName}
+                            paths={item.paths}
+                            onShowSeeAll={() => navigation.navigate(screenName.ListPaths)}
+                            onClickItem={() => navigation.navigate(screenName.PathDetails)}
+                          />
+          }
+        />
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 ListGroupPaths.propTypes = {

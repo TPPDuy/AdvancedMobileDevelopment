@@ -5,22 +5,30 @@ import PropTypes, { object } from 'prop-types';
 import ItemPath from './ItemPathRowType';
 import colorSource from '../../constants/color';
 import screenName from '../../constants/screen-name';
+import { ThemeContext } from '../../constants/theme';
 
-const renderSeparator = () => (
-    <View style={{ height: 1, backgroundColor: colorSource.borderColor }}/>
+const renderSeparator = (dividerColor) => (
+    <View style={{ height: 1, backgroundColor: dividerColor }}/>
 );
 
 const ListPaths = ({ paths, navigation }) => (
-    <FlatList
-        style={{ backgroundColor: colorSource.white, paddingHorizontal: 15 }}
-        data={paths}
-        ItemSeparatorComponent={renderSeparator}
-        renderItem={({ item }) => <ItemPath
-                                    name={item.name}
-                                    thumbnail={item.thumbnail}
-                                    numOfCourses={item.numOfCourses}
-                                    onChooseItem={() => navigation.navigate(screenName.PathDetails)}/>}
-    />
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <FlatList
+          style={{ backgroundColor: theme.background, paddingHorizontal: 15 }}
+          data={paths}
+          ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
+          renderItem={
+            ({ item }) => <ItemPath
+                            name={item.name}
+                            thumbnail={item.thumbnail}
+                            numOfCourses={item.numOfCourses}
+                            onChooseItem={() => navigation.navigate(screenName.PathDetails)}/>}
+        />
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 ListPaths.propTypes = {

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes, { object } from 'prop-types';
 import {
@@ -7,41 +8,51 @@ import GroupPath from '../path/GroupPaths';
 import SectionCourse from '../home/SectionCourse';
 import ListAuthors from '../browse/ListAuthors';
 import screenName from '../../constants/screen-name';
-import colorSource from '../../constants/color';
+import { ThemeContext } from '../../constants/theme';
 
 
 const SkillDetails = ({
   id, name, paths, groupCourses, topAuthors, navigation,
 }) => (
-    <ScrollView style={styles.container}>
-        {
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <ScrollView style={{ ...styles.container, backgroundColor: theme.background }}>
+          {
             paths && paths.length > 0
-              ? <GroupPath groupName={`Paths in ${name}`} showSeeAll={false}/>
+              ? <GroupPath
+                  groupName={`Paths in ${name}`}
+                  showSeeAllButton={false}
+                  onClickItem={() => navigation.navigate(screenName.ListPaths)}/>
               : null
-        }
-        {
-            groupCourses && groupCourses.length > 0
-              ? <FlatList
+          }
+          {
+              groupCourses && groupCourses.length > 0
+                ? <FlatList
                     data={groupCourses}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => <SectionCourse
-                                                id={item.id}
-                                                title={item.title}
-                                                courses={item.courses}
-                                                onClickCourse={(id) => navigation.navigate(screenName.CourseDetails)}
-                                                onSeeAll={(id) => navigation.navigate(screenName.AllCourses)}/>}
-                />
-              : null
-        }
-        {
+                    renderItem={
+                      ({ item }) => <SectionCourse
+                                      id={item.id}
+                                      title={item.title}
+                                      courses={item.courses}
+                                      onClickCourse={(itemId) => navigation.navigate(screenName.CourseDetails)}
+                                      onSeeAll={(itemId) => navigation.navigate(screenName.AllCourses)}/>}
+                  />
+                : null
+          }
+          {
             topAuthors && topAuthors.length > 0
               ? <View style={styles.authorsContainer}>
-                    <Text style={styles.topAuthorsText}>Top authors</Text>
-                    <ListAuthors onClickItem={(id) => navigation.navigate(screenName.AuthorProfile)}/>
+                  <Text style={{ ...styles.topAuthorsText, color: theme.textColor }}>Top authors</Text>
+                  <ListAuthors onClickItem={(itemId) => navigation.navigate(screenName.AuthorProfile)}/>
                 </View>
               : null
-        }
-    </ScrollView>
+          }
+        </ScrollView>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 
 const styles = StyleSheet.create({
@@ -49,11 +60,9 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   container: {
-    backgroundColor: colorSource.white,
     flexDirection: 'column',
   },
   topAuthorsText: {
-    color: colorSource.black,
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 10,
