@@ -11,8 +11,7 @@ import colorSource from '../../constants/color';
 import { ThemeContext } from '../../constants/theme';
 
 const ItemCourse = ({
-  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement,
-  onShowMenu, onClickItem,
+  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onClickItem,
 }) => (
   <ThemeContext.Consumer>
     {
@@ -23,7 +22,7 @@ const ItemCourse = ({
           </View>
           <View style={styles(theme).infoContainer}>
             <Text numberOfLines={2} style={styles(theme).courseName}>{name}</Text>
-            <Text numberOfLines={1} style={styles(theme).normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
+            <Text numberOfLines={1} style={styles(theme).normalText}>{authors[0].name}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
             <Text numberOfLines={1} style={styles(theme).normalText}>
               {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
             </Text>
@@ -112,7 +111,6 @@ ItemCourse.propTypes = {
   duration: PropTypes.number,
   rating: PropTypes.number,
   numOfJudgement: PropTypes.number,
-  onShowMenu: PropTypes.func,
   onClickItem: PropTypes.func,
 };
 

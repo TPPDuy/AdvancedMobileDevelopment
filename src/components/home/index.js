@@ -1,8 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/display-name */
 /* eslint-disable global-require */
 import React from 'react';
 import {
-  View, ScrollView, StyleSheet, Image,
+  View, ScrollView, StyleSheet, Image, FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -13,75 +14,343 @@ import DarkIcon from '../../../assets/common/dark.svg';
 import LightIcon from '../../../assets/common/light.svg';
 import themes, { ThemeContext } from '../../constants/theme';
 
-const data = [
+const dumbData = [
   {
     title: 'Software development',
     courses: [
       {
         id: 1,
         name: 'Java Programming - Build your first project',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/java-fundamentals-language-v1.jpg',
         authors: [
-          'Ben Piper',
-          'Scott Allen',
+          {
+            name: 'Joe Eames',
+            avatar: 'https://pluralsight.imgix.net/author/lg/joe-eames-v1.jpg?w=200',
+          },
+          {
+            name: 'Jim Cooper',
+            avatar: 'https://pluralsight.imgix.net/author/lg/jim-cooper-v1.jpg?w=200',
+          },
         ],
         level: 'Beginner',
         date: 1589250813000,
-        duration: 600,
+        duration: 10800000,
         rating: 4.5,
         numOfJudgement: 326,
+        isBookmarked: false,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 120000,
+              lessons: [
+                {
+                  name: 'Introduction to Java',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+              ],
+            },
+            {
+              name: 'Basic Java\'s syntax',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'Syntax about String',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Number',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Operation',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 2,
         name: 'Agular Fundamentals',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/angular-fundamentals-v1.jpg',
         authors: [
-          'Joe Eames',
+          {
+            name: 'Samer Buna',
+            avatar: 'https://pluralsight.imgix.net/author/lg/e5c9da13-6fe1-4662-8ee1-5a78800537a3.jpg',
+          },
         ],
         level: 'Intermediate',
         date: 1589250913000,
         duration: 800,
         rating: 4,
         numOfJudgement: 819,
+        isBookmarked: true,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 300000,
+              lessons: [
+                {
+                  name: 'Introduction to Agular',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+              ],
+            },
+            {
+              name: 'Basic Agular\'s syntax',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'Syntax about String',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+                {
+                  name: 'Syntax about Number',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Operation',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 3,
         name: 'Managing AWS Operations',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/aws-operations-managing-v5.png',
         authors: [
-          'Andru Estes',
+          {
+            name: 'Mark Zamoyta',
+            avatar: 'https://pluralsight.imgix.net/author/lg/mark-zamoyta-v1.jpg?w=200',
+          },
         ],
         level: 'Intermediate',
         date: 1589250813000,
         duration: 600,
         rating: 4.5,
         numOfJudgement: 13,
+        isBookmarked: false,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 120000,
+              lessons: [
+                {
+                  name: 'Introduction to AWS',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+              ],
+            },
+            {
+              name: 'Basic AWS\'s syntax',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'Syntax about String',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Number',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Operation',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 4,
         name: 'C# Fundamentals',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/csharp-fundamentals-dev-v1.png',
         authors: [
-          'Scott Allen',
+          {
+            name: 'Jim Wilson',
+            avatar: 'https://pluralsight.imgix.net/author/lg/jim-wilson-v5.jpg?w=200',
+          },
         ],
         level: 'Beginner',
         date: 1589250813000,
         duration: 600,
         rating: 3.5,
         numOfJudgement: 445,
+        isBookmarked: false,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 120000,
+              lessons: [
+                {
+                  name: 'Introduction to C#',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+              ],
+            },
+            {
+              name: 'Basic C#\'s syntax',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'Syntax about String',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Number',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Operation',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 5,
         name: 'How Git Works',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/how-git-works-v1.jpg',
         authors: [
-          'Paolo Perrotta',
+          {
+            name: 'Shawn Wildermuth',
+            avatar: 'https://pluralsight.imgix.net/author/lg/shawn-wildermuth-v3.jpg?w=200',
+          },
         ],
         level: 'Beginner',
         date: 1589250813000,
         duration: 600,
         rating: 5,
         numOfJudgement: 6988,
+        isBookmarked: true,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 120000,
+              lessons: [
+                {
+                  name: 'Introduction to Git',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+              ],
+            },
+            {
+              name: 'Basic Git',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'What is repository',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What is branch',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What is commit',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
     ],
   },
@@ -91,54 +360,211 @@ const data = [
       {
         id: 1,
         name: 'Architecting for Reliability on AWS',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/aws-architecting-reliability-v1.png',
         authors: [
-          'Mike Pfeiffer',
+          {
+            name: 'Deborah Kurata',
+            avatar: 'https://pluralsight.imgix.net/author/lg/deborah-kurata-v1.jpg?w=200',
+          },
         ],
         level: 'Intermediate',
         date: 1589250813000,
         duration: 600,
         rating: 4.5,
         numOfJudgement: 326,
+        isBookmarked: false,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 120000,
+              lessons: [
+                {
+                  name: 'Introduction to Java',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+              ],
+            },
+            {
+              name: 'Basic Java\'s syntax',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'Syntax about String',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Number',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Operation',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 2,
         name: 'Architecting for Security on AWS',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/architecting-security-aws-v1.png',
         authors: [
-          'Ben Piper',
+          {
+            name: 'Jim Wilson',
+            avatar: 'https://pluralsight.imgix.net/author/lg/jim-wilson-v5.jpg?w=200',
+          },
         ],
         level: 'Intermediate',
         date: 1589250913000,
         duration: 800,
         rating: 4,
         numOfJudgement: 819,
+        isBookmarked: false,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 120000,
+              lessons: [
+                {
+                  name: 'Introduction to Java',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+              ],
+            },
+            {
+              name: 'Basic Java\'s syntax',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'Syntax about String',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Number',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Operation',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 3,
         name: 'Designing Infrastructure Deployment on AWS',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/aws-operations-designing-infrastructure-deployment-v1.png',
         authors: [
-          'Brian Harrison',
+          {
+            name: 'Cory House',
+            avatar: 'https://pluralsight.imgix.net/author/lg/cory-house-v3.jpg?w=200',
+          },
         ],
         level: 'Intermediate',
         date: 1589250813000,
         duration: 600,
         rating: 4.5,
         numOfJudgement: 13,
+        isBookmarked: true,
+        content: {
+          modules: [
+            {
+              name: 'Intro',
+              duration: 300000,
+              progress: 120000,
+              lessons: [
+                {
+                  name: 'Introduction to Java',
+                  duration: 120000,
+                  isCompleted: true,
+                  isPlaying: false,
+                },
+                {
+                  name: 'What you will get in this course',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: true,
+                },
+              ],
+            },
+            {
+              name: 'Basic Java\'s syntax',
+              duration: 2400000,
+              progress: 0,
+              lessons: [
+                {
+                  name: 'Syntax about String',
+                  duration: 300000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Number',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+                {
+                  name: 'Syntax about Operation',
+                  duration: 180000,
+                  isCompleted: false,
+                  isPlaying: false,
+                },
+              ],
+            },
+          ],
+        },
       },
     ],
   },
 ];
 
 const Home = ({ navigation }) => {
-  const onSeeAll = (categoryId) => {
-    console.log('See all');
-    navigation.navigate(screenName.AllCourses);
+  const onSeeAll = (data) => {
+    navigation.navigate(screenName.AllCourses, { data });
   };
-  const onClickCourse = (id) => {
-    console.log('Click Item');
-    navigation.navigate(screenName.CourseDetails);
+  const onClickCourse = (course) => {
+    navigation.navigate(screenName.CourseDetails, { course });
   };
 
   React.useLayoutEffect(() => {
@@ -146,24 +572,21 @@ const Home = ({ navigation }) => {
       headerRight: () => (
         <ThemeContext.Consumer>
           {
-            ({ theme, setTheme }) => {
-              console.log(theme);
-              return (
-                <View style={styles.headerRightContainer}>
-                  {
-                    theme.type === 'LIGHT'
-                      ? <TouchableOpacity onPress={() => setTheme(themes.dark)}>
-                          <LightIcon width={28} height={28} />
+            ({ theme, setTheme }) => (
+              <View style={styles.headerRightContainer}>
+                {
+                  theme.type === 'LIGHT'
+                    ? <TouchableOpacity onPress={() => setTheme(themes.dark)}>
+                        <LightIcon width={28} height={28} />
+                      </TouchableOpacity>
+                    : <TouchableOpacity onPress={() => setTheme(themes.light)}>
+                        <DarkIcon width={28} height={28} />
                         </TouchableOpacity>
-                      : <TouchableOpacity onPress={() => setTheme(themes.light)}>
-                          <DarkIcon width={28} height={28} />
-                        </TouchableOpacity>
-                  }
-                  <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
-                  <MenuIcon width={18} height={18} style={{ fill: theme.textColor }}/>
-                </View>
-              );
-            }
+                }
+                <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+                <MenuIcon width={18} height={18} style={{ fill: theme.textColor }}/>
+              </View>
+            )
           }
         </ThemeContext.Consumer>
       ),
@@ -172,36 +595,24 @@ const Home = ({ navigation }) => {
   return (
     <ThemeContext>
       {
-        ({ theme }) => {
-          console.log(theme);
-          return (
+        ({ theme }) => (
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ backgroundColor: theme.background }}>
                 <Image source={require('../../../assets/common/explore-image.gif')} style={styles.homeImage} resizeMode="stretch"/>
-                <SectionCourse
-                  title={data[0].title}
-                  courses={data[0].courses}
-                  onSeeAll={(categoty) => onSeeAll(categoty)}
-                  onClickCourse={(id) => onClickCourse(id)}/>
-                <SectionCourse
-                  title={data[1].title}
-                  courses={data[1].courses}
-                  onSeeAll={(categoty) => onSeeAll(categoty)}
-                  onClickCourse={(id) => onClickCourse(id)}/>
-                <SectionCourse
-                  title={data[0].title}
-                  courses={data[0].courses}
-                  onSeeAll={(categoty) => onSeeAll(categoty)}
-                  onClickCourse={(id) => onClickCourse(id)}/>
-                <SectionCourse
-                  title={data[1].title}
-                  courses={data[1].courses}
-                  onSeeAll={(categoty) => onSeeAll(categoty)}
-                  onClickCourse={(id) => onClickCourse(id)}/>
+                <FlatList
+                  data={dumbData}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({ item }) => <SectionCourse
+                                            title={item.title}
+                                            courses={item.courses}
+                                            onSeeAll={() => onSeeAll(item)}
+                                            onClickCourse={(course) => onClickCourse(course)}/>
+                  }
+                  ListFooterComponent={() => <View style={{ height: 20 }}/>}
+                />
               </View>
             </ScrollView>
-          );
-        }
+        )
       }
     </ThemeContext>
   );

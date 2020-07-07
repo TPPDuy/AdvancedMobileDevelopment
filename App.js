@@ -8,9 +8,9 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, StatusBar, SafeAreaView, Image,
+  StyleSheet, View, StatusBar, SafeAreaView,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Home from './src/components/home';
@@ -30,39 +30,25 @@ import SignIn from './src/components/authen/sign-in';
 import SignUp from './src/components/authen/sign-up';
 import ForgotPassword from './src/components/authen/forgot-password';
 import themes, { ThemeContext } from './src/constants/theme';
-import MenuIcon from './assets/common/menu-icon.svg';
-import DarkIcon from './assets/common/dark.svg';
-import LightIcon from './assets/common/light.svg';
+import { AuthenProvider } from './src/components/providers/Authen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const renderHeaderRight = ({ theme }) => (
-    <View style={styles.headerRightContainer}>
-      {
-        theme === 'LIGHT'
-          ? <LightIcon width={25} height={25} />
-          : <DarkIcon width={25} height={25} />
-      }
-      <Image source={require('./assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
-      <MenuIcon width={18} height={18} style={{ fill: '#000' }}/>
-    </View>
-);
-
 
 const AuthenScreens = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name={screenName.SignIn} component={SignIn}/>
-    <Stack.Screen name={screenName.SignUp} component={SignUp}/>
-    <Stack.Screen name={screenName.ForgotPass} component={ForgotPassword}/>
-  </Stack.Navigator>
+  <AuthenProvider>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name={screenName.SignIn} component={SignIn}/>
+      <Stack.Screen name={screenName.SignUp} component={SignUp}/>
+      <Stack.Screen name={screenName.ForgotPass} component={ForgotPassword}/>
+    </Stack.Navigator>
+  </AuthenProvider>
 );
 const HomeScreen = () => (
   <ThemeContext.Consumer>
     {
-      ({ theme }) => {
-        console.log(theme);
-        return (
+      ({ theme }) => (
           <Stack.Navigator
           initialRouteName={screenName.ListCourses}
           screenOptions={
@@ -98,8 +84,7 @@ const HomeScreen = () => (
             component={AuthorProfile}
           />
         </Stack.Navigator>
-        );
-      }
+      )
     }
   </ThemeContext.Consumer>
 
@@ -223,20 +208,10 @@ const MainScreens = () => (
 );
 
 const styles = StyleSheet.create({
-  avatar: {
-    height: 30,
-    marginHorizontal: 15,
-    width: 30,
-  },
   container: {
     flexDirection: 'column',
     flex: 1,
     height: '100%',
-  },
-  headerRightContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginRight: 10,
   },
 });
 
@@ -245,8 +220,14 @@ function App() {
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <NavigationContainer>
-        <SafeAreaView style={{ ...styles.container, backgroundColor: theme.background, color: theme.textColor }}>
-          <StatusBar backgroundColor='#000' barStyle="default" />
+        <SafeAreaView
+          style={
+            {
+              ...styles.container,
+              backgroundColor: theme.background,
+              color: theme.textColor,
+            }
+          }>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
             <Stack.Screen name={screenName.Main} component={MainScreens}/>

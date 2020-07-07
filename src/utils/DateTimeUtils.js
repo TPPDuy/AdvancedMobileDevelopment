@@ -6,7 +6,7 @@ export const formatHourType1 = (millisDuration) => {
   const dateObj = new Date(millisDuration);
   const hours = dateObj.getUTCHours();
   const minutes = dateObj.getUTCMinutes();
-  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  return `${hours.toString().padStart(2, '0')}h${minutes.toString().padStart(2, '0')}m`;
 };
 
 export const formatHourType2 = (millisDuration) => {

@@ -24,28 +24,29 @@ const SectionCourse = ({
           <View style={styles(theme).container}>
             <View style={styles(theme).titleBlock}>
                 <Text style={styles(theme).title}>{title}</Text>
-                <TouchableOpacity style={styles(theme).seeAllBlock} onPress={() => onSeeAll(id)}>
-                    <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
-                    <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
+                <TouchableOpacity style={styles(theme).seeAllBlock} onPress={() => onSeeAll()}>
+                  <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
+                  <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
                 </TouchableOpacity>
             </View>
             <SafeAreaView style={styles(theme).listContainer}>
-                <FlatList
-                    showsHorizontalScrollIndicator={false}
-                    data={courses}
-                    renderItem={({ item }) => <ItemCourse
-                            name={item.name}
-                            thumbnail={item.thumbnail}
-                            authors={item.authors}
-                            level={item.level}
-                            date={item.date}
-                            duration={item.duration}
-                            rating={item.rating}
-                            numOfJudgement={item.numOfJudgement}
-                            onShowMenu={showActionSheet()}
-                            onClickItem={onClickCourse}/>}
-                    keyExtractor={(item) => item.id}
-                    horizontal={true}/>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                data={courses}
+                renderItem={({ item }) => <ItemCourse
+                                            name={item.name}
+                                            thumbnail={item.thumbnail}
+                                            authors={item.authors}
+                                            level={item.level}
+                                            date={item.date}
+                                            duration={item.duration}
+                                            rating={item.rating}
+                                            numOfJudgement={item.numOfJudgement}
+                                            onShowMenu={showActionSheet()}
+                                            onClickItem={() => onClickCourse(item)}/>}
+                keyExtractor={(item) => item.id}
+                horizontal={true}
+              />
             </SafeAreaView>
          </View>
         )

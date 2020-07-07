@@ -13,7 +13,7 @@ import MenuIcon from '../../../assets/common/menu-icon.svg';
 import { ThemeContext } from '../../constants/theme';
 
 const ProgressBar = ({ progress, total }) => {
-  const progressColor = progress === total ? colorSource.green : colorSource.white;
+  const progressColor = progress === total ? colorSource.green : colorSource.yellow;
   const progressWidth = `${getPercentage(progress, total)}%`;
   return (
     <View style={styles.progressContainer}>
@@ -48,7 +48,7 @@ const ItemSeparator = () => (
 );
 
 const Module = ({
-  moduleName, index, duration, progress, content,
+  moduleName, index, duration, progress, lessons,
 }) => (
   <ThemeContext.Consumer>
     {
@@ -72,7 +72,7 @@ const Module = ({
             </TouchableWithoutFeedback>
           </View>
           <FlatList
-            data={content}
+            data={lessons}
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={({ item }) => <ItemLesson
@@ -185,34 +185,10 @@ Module.propTypes = {
   index: PropTypes.number,
   duration: PropTypes.number,
   progress: PropTypes.number,
-  content: PropTypes.arrayOf(object),
+  lessons: PropTypes.arrayOf(object),
 };
 
 Module.defaultProps = {
-  moduleName: 'Getting Started with Agular',
-  index: 1,
-  duration: 2400000,
-  progress: 600000,
-  content: [
-    {
-      name: 'Introduction',
-      duration: 180000,
-      isCompleted: false,
-      isPlaying: false,
-    },
-    {
-      name: 'Practice Exercises',
-      duration: 180000,
-      isCompleted: false,
-      isPlaying: true,
-    },
-    {
-      name: 'Introduction to TypeScript',
-      duration: 180000,
-      isCompleted: true,
-      isPlaying: false,
-    },
-  ],
 };
 
 export default Module;

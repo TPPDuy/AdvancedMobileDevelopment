@@ -1,5 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View, StyleSheet, TextInput, Image,
 } from 'react-native';
@@ -11,20 +12,22 @@ const CustomInput = ({
 }) => {
   const [inputText, setInputText] = useState('');
 
-  const updateValue = (value) => {
-    setInputText(value);
-    onTextChange(value);
+  const updateValue = (text) => {
+    onTextChange(text);
+    setInputText(text);
   };
+
   return (
     <View style={styles.inputContainer}>
         <Image source={icon} style={styles.inputIcon}/>
         <TextInput
             style={styles.input}
+            value={inputText}
             underlineColorAndroid='transparent'
             placeholder={placeHolder}
             secureTextEntry={isHideContent}
-            value={inputText}
-            onChange={(e) => updateValue(e.nativeEvent.text)}/>
+            onChangeText={(text) => updateValue(text)}
+          />
     </View>
   );
 };

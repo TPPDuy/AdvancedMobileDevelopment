@@ -9,7 +9,6 @@ import {
 import PropTypes, { object } from 'prop-types';
 import ItemCategory from './ItemCategory';
 import ListItemSkill from '../skill/ListItemSkill';
-import colorSource from '../../constants/color';
 import GroupPath from '../path/GroupPaths';
 import ListAuthors from './ListAuthors';
 import screenName from '../../constants/screen-name';
@@ -17,6 +16,7 @@ import themes, { ThemeContext } from '../../constants/theme';
 import MenuIcon from '../../../assets/common/menu-icon.svg';
 import DarkIcon from '../../../assets/common/dark.svg';
 import LightIcon from '../../../assets/common/light.svg';
+
 
 const renderSeparator = () => (
     <View style={{ width: 5 }}/>
@@ -33,9 +33,7 @@ const Browse = ({
       headerRight: () => (
         <ThemeContext.Consumer>
           {
-            ({ theme, setTheme }) => {
-              console.log(theme);
-              return (
+            ({ theme, setTheme }) => (
                 <View style={styles.headerRightContainer}>
                   {
                     theme.type === 'LIGHT'
@@ -49,8 +47,7 @@ const Browse = ({
                   <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
                   <MenuIcon width={18} height={18} style={{ fill: theme.textColor }}/>
                 </View>
-              );
-            }
+            )
           }
         </ThemeContext.Consumer>
       ),

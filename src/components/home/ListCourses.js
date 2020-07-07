@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
-  View, Text, StyleSheet, SafeAreaView, FlatList,
+  View, Text, StyleSheet, FlatList,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import ItemCourse from '../common/ItemCourseRowType';
@@ -32,7 +32,7 @@ const ListCourses = ({ title, courses, onItemClick }) => (
                                               duration={item.duration}
                                               rating={item.rating}
                                               numOfJudgement={item.numOfJudgement}
-                                              onItemClick={onItemClick}/>}
+                                              onItemClick={() => onItemClick(item)}/>}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
                 ListFooterComponent={renderFooter}/>

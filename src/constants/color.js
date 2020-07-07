@@ -12,6 +12,8 @@ const colorSource = {
   darkGray: '#404040',
   green: '#00cc1f',
   darkBackground: '#2f2f2f',
+  red: '#fc0303',
+  yellow: '#fce00a',
 };
 
 export default colorSource;

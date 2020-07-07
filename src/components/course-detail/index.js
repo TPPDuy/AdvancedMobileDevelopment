@@ -2,12 +2,12 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-import React, { useState } from 'react';
+import React from 'react';
 import { Video } from 'expo-av';
 import {
-  View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView,
+  View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView,
 } from 'react-native';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
 import colorSource from '../../constants/color';
 import ItemAuthorHorizontal from './ItemAuthor';
@@ -37,10 +37,10 @@ const authorSeparator = () => (
 );
 
 const CourseDetails = ({
-  id, name, authors, level, date, duration,
-  description, content, transcript, isBookmarked, navigation,
+  route, navigation,
 }) => {
-  const iconBookmarked = isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
+  const { course } = route.params;
+  const iconBookmarked = course.isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
   return (
     <ThemeContext.Consumer>
       {
@@ -61,18 +61,18 @@ const CourseDetails = ({
 
             <ScrollView>
               <View style={styles.infoCourseBlock}>
-                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.title}>{course.name}</Text>
                 <FlatList
-                  data={authors}
+                  data={course.authors}
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   ItemSeparatorComponent={authorSeparator}
                   renderItem={({ item }) => <ItemAuthorHorizontal
-                                                name={item.name}
-                                                avatar={item.avatar}
-                                                onItemClick={(itemId) => navigation.navigate(screenName.AuthorProfile)}/>}
+                                              name={item.name}
+                                              avatar={item.avatar}
+                                              onItemClick={(itemId) => navigation.navigate(screenName.AuthorProfile)}/>}
                 />
-                <Text style={styles.info}>{level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}</Text>
+                <Text style={styles.info}>{course.level} ∙ {formatMonthYearType(course.date)} ∙ {formatHourType1(course.duration)}</Text>
                 <View style={styles.func}>
                   <View style={styles.functionContainer}>
                     <ItemFunction name='Bookmark' icon={iconBookmarked}/>
@@ -81,14 +81,14 @@ const CourseDetails = ({
                   </View>
                 </View>
                 <View style={styles.description}>
-                  <CollapsableDescription minHeight={70} description={description}/>
+                  <CollapsableDescription minHeight={70} description={course.description}/>
                 </View>
 
                 <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
                 <ButtonFunction name='View related paths & courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
               </View>
               <View style={{ paddingHorizontal: 15 }}>
-                <Content />
+                <Content modules={course.content.modules}/>
               </View>
             </ScrollView>
           </View>
@@ -187,38 +187,11 @@ ButtonFunction.propTypes = {
 };
 
 CourseDetails.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  authors: PropTypes.arrayOf(object),
-  level: PropTypes.string,
-  date: PropTypes.number,
-  duration: PropTypes.number,
-  description: PropTypes.string,
-  content: PropTypes.arrayOf(object),
-  transcript: PropTypes.string,
-  isBookmarked: PropTypes.bool,
+  route: PropTypes.object,
   navigation: PropTypes.object,
 };
 
 CourseDetails.defaultProps = {
-  name: 'Agular Fundamentals',
-  authors: [
-    {
-      name: 'Joe Eames',
-      avatar: 'https://pluralsight.imgix.net/author/lg/joe-eames-v1.jpg?w=200',
-    },
-    {
-      name: 'Jim Cooper',
-      avatar: 'https://pluralsight.imgix.net/author/lg/jim-cooper-v1.jpg?w=200',
-    },
-  ],
-  level: 'Intermediate',
-  date: 1589782861000,
-  duration: 2449000,
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
-  content: [],
-  transcript: '',
-  isBookmarked: true,
 };
 
 export default CourseDetails;

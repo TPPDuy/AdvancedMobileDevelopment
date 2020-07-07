@@ -26,7 +26,7 @@ const ItemCourse = ({
             <Text
               numberOfLines={2}
               style={{ ...styles.courseName, color: theme.textColor }}>{name}</Text>
-            <Text numberOfLines={1} style={styles.normalText}>{authors[0]}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
+            <Text numberOfLines={1} style={styles.normalText}>{authors[0].name}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
             <Text numberOfLines={1} style={styles.normalText}>
               {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
             </Text>

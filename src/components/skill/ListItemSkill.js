@@ -13,17 +13,17 @@ const renderSpaceHeader = () => (
 );
 const ListItemSkill = ({ listSkills, onItemClick }) => (
     <SafeAreaView>
-        <FlatList
-            data={listSkills}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={renderSeparator}
-            renderItem={({ item }) => <ItemSkills 
-                                            name={item.name}
-                                            isInterested={item.isInterested}
-                                            onItemClick={onItemClick}/>}
-            ListHeaderComponent={renderSpaceHeader}
-        />
+      <FlatList
+        data={listSkills}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        ItemSeparatorComponent={renderSeparator}
+        renderItem={({ item }) => <ItemSkills
+                                    name={item.name}
+                                    isInterested={item.isInterested}
+                                    onItemClick={onItemClick}/>}
+        ListHeaderComponent={renderSpaceHeader}
+      />
     </SafeAreaView>
 );
 
