@@ -1,18 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/display-name */
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
-  View, ScrollView, StyleSheet, Image, FlatList,
+  View, ScrollView, StyleSheet, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AnimatedLoader from 'react-native-animated-loader';
 import SectionCourse from './SectionCourse';
 import screenName from '../../constants/screen-name';
 import MenuIcon from '../../../assets/common/menu-icon.svg';
 import DarkIcon from '../../../assets/common/dark.svg';
 import LightIcon from '../../../assets/common/light.svg';
 import themes, { ThemeContext } from '../../constants/theme';
+import { HomeContext } from '../providers/Home';
 
 const dumbData = [
   {
@@ -23,21 +25,11 @@ const dumbData = [
         name: 'Java Programming - Build your first project',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/java-fundamentals-language-v1.jpg',
-        authors: [
-          {
-            name: 'Joe Eames',
-            avatar: 'https://pluralsight.imgix.net/author/lg/joe-eames-v1.jpg?w=200',
-          },
-          {
-            name: 'Jim Cooper',
-            avatar: 'https://pluralsight.imgix.net/author/lg/jim-cooper-v1.jpg?w=200',
-          },
-        ],
-        level: 'Beginner',
-        date: 1589250813000,
-        duration: 10800000,
+        author: 'Jim Cooper',
+        date: '2020-07-07T12:57:36.035Z',
+        duration: 0.36,
         rating: 4.5,
-        numOfJudgement: 326,
+        price: 0,
         isBookmarked: false,
         content: {
           modules: [
@@ -93,16 +85,11 @@ const dumbData = [
         name: 'Agular Fundamentals',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/angular-fundamentals-v1.jpg',
-        authors: [
-          {
-            name: 'Samer Buna',
-            avatar: 'https://pluralsight.imgix.net/author/lg/e5c9da13-6fe1-4662-8ee1-5a78800537a3.jpg',
-          },
-        ],
-        level: 'Intermediate',
-        date: 1589250913000,
-        duration: 800,
-        rating: 4,
+        author: 'Jim Cooper',
+        date: '2020-07-07T12:57:36.035Z',
+        duration: 0.36,
+        rating: 4.5,
+        price: 0,
         numOfJudgement: 819,
         isBookmarked: true,
         content: {
@@ -159,16 +146,11 @@ const dumbData = [
         name: 'Managing AWS Operations',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/aws-operations-managing-v5.png',
-        authors: [
-          {
-            name: 'Mark Zamoyta',
-            avatar: 'https://pluralsight.imgix.net/author/lg/mark-zamoyta-v1.jpg?w=200',
-          },
-        ],
-        level: 'Intermediate',
-        date: 1589250813000,
-        duration: 600,
+        author: 'Jim Cooper',
+        date: '2020-07-07T12:57:36.035Z',
+        duration: 0.36,
         rating: 4.5,
+        price: 0,
         numOfJudgement: 13,
         isBookmarked: false,
         content: {
@@ -225,16 +207,11 @@ const dumbData = [
         name: 'C# Fundamentals',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/csharp-fundamentals-dev-v1.png',
-        authors: [
-          {
-            name: 'Jim Wilson',
-            avatar: 'https://pluralsight.imgix.net/author/lg/jim-wilson-v5.jpg?w=200',
-          },
-        ],
-        level: 'Beginner',
-        date: 1589250813000,
-        duration: 600,
-        rating: 3.5,
+        author: 'Jim Cooper',
+        date: '2020-07-07T12:57:36.035Z',
+        duration: 0.36,
+        rating: 4.5,
+        price: 0,
         numOfJudgement: 445,
         isBookmarked: false,
         content: {
@@ -291,16 +268,11 @@ const dumbData = [
         name: 'How Git Works',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
         thumbnail: 'https://pluralsight.imgix.net/course-images/how-git-works-v1.jpg',
-        authors: [
-          {
-            name: 'Shawn Wildermuth',
-            avatar: 'https://pluralsight.imgix.net/author/lg/shawn-wildermuth-v3.jpg?w=200',
-          },
-        ],
-        level: 'Beginner',
-        date: 1589250813000,
-        duration: 600,
-        rating: 5,
+        author: 'Jim Cooper',
+        date: '2020-07-07T12:57:36.035Z',
+        duration: 0.36,
+        rating: 4.5,
+        price: 0,
         numOfJudgement: 6988,
         isBookmarked: true,
         content: {
@@ -567,6 +539,12 @@ const Home = ({ navigation }) => {
     navigation.navigate(screenName.CourseDetails, { course });
   };
 
+  const homeContext = useContext(HomeContext);
+
+  useEffect(() => {
+    homeContext.getData();
+  }, []);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -599,7 +577,22 @@ const Home = ({ navigation }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ backgroundColor: theme.background }}>
                 <Image source={require('../../../assets/common/explore-image.gif')} style={styles.homeImage} resizeMode="stretch"/>
-                <FlatList
+                <SectionCourse
+                  title='Có thể bạn quan tâm'
+                  courses={homeContext.state.topNew}
+                  onSeeAll={() => onSeeAll()}
+                  onClickCourse={(course) => onClickCourse(course)}/>
+                <SectionCourse
+                  title='Bán chạy nhất'
+                  courses={homeContext.state.topSell}
+                  onSeeAll={() => onSeeAll()}
+                  onClickCourse={(course) => onClickCourse(course)}/>
+                <SectionCourse
+                  title='Đánh giá cao nhất'
+                  courses={homeContext.state.topRate}
+                  onSeeAll={() => onSeeAll()}
+                  onClickCourse={(course) => onClickCourse(course)}/>
+                {/* <FlatList
                   data={dumbData}
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item }) => <SectionCourse
@@ -609,8 +602,17 @@ const Home = ({ navigation }) => {
                                             onClickCourse={(course) => onClickCourse(course)}/>
                   }
                   ListFooterComponent={() => <View style={{ height: 20 }}/>}
-                />
+                /> */}
               </View>
+              <View>
+              <AnimatedLoader
+                visible={homeContext.state.isLoading}
+                overlayColor="rgba(0,0,0,0.65)"
+                source={require('../../../assets/common/loader.json')}
+                animationStyle={styles.loading}
+                speed={2}
+              />
+      </View>
             </ScrollView>
         )
       }
@@ -632,6 +634,10 @@ const styles = StyleSheet.create({
   homeImage: {
     height: 200,
     width: '100%',
+  },
+  loading: {
+    height: 100,
+    width: 100,
   },
 });
 

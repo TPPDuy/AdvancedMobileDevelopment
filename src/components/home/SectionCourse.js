@@ -5,7 +5,7 @@
 /* eslint-disable global-require */
 import React from 'react';
 import {
-  View, Text, StyleSheet, FlatList, SafeAreaView, Image, TouchableOpacity,
+  View, Text, StyleSheet, FlatList, SafeAreaView, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import ItemCourse from '../common/ItemCourseBlockType';
@@ -34,14 +34,14 @@ const SectionCourse = ({
                 showsHorizontalScrollIndicator={false}
                 data={courses}
                 renderItem={({ item }) => <ItemCourse
-                                            name={item.name}
-                                            thumbnail={item.thumbnail}
-                                            authors={item.authors}
-                                            level={item.level}
+                                            name={item.title}
+                                            thumbnail={item.imageUrl}
+                                            author={item['instructor.user.name']}
+                                            numOfVideos={item.videoNumber}
                                             date={item.date}
-                                            duration={item.duration}
-                                            rating={item.rating}
-                                            numOfJudgement={item.numOfJudgement}
+                                            duration={item.totalHours}
+                                            rating={item.ratedNumber}
+                                            price={item.price}
                                             onShowMenu={showActionSheet()}
                                             onClickItem={() => onClickCourse(item)}/>}
                 keyExtractor={(item) => item.id}

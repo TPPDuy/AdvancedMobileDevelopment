@@ -31,6 +31,7 @@ const SignIn = ({ navigation }) => {
       navigation.replace(screenName.Main);
     }
   }, [authenContext.state.loginStatus]);
+
   const handleInputEmail = (value) => {
     setLoginInfo({
       ...loginInfo,

@@ -31,6 +31,8 @@ import SignUp from './src/components/authen/sign-up';
 import ForgotPassword from './src/components/authen/forgot-password';
 import themes, { ThemeContext } from './src/constants/theme';
 import { AuthenProvider } from './src/components/providers/Authen';
+import { HomeContext, HomeProvider } from './src/components/providers/Home';
+import { getUserInfo } from './src/storage/Storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -46,47 +48,49 @@ const AuthenScreens = () => (
   </AuthenProvider>
 );
 const HomeScreen = () => (
-  <ThemeContext.Consumer>
-    {
-      ({ theme }) => (
-          <Stack.Navigator
-          initialRouteName={screenName.ListCourses}
-          screenOptions={
-            {
-              headerTitleStyle: {
-                fontSize: 20,
-                fontWeight: '500',
-                color: theme.textColor,
-              },
-              headerStyle: {
-                backgroundColor: theme.headerBackground,
-              },
-              headerTintColor: theme.textColor,
-            }
-          }>
-          <Stack.Screen
-            name={screenName.ListCourses}
-            component={Home}
-            options={{ title: 'Home', headerTitleAlign: 'left' }}
-          />
-          <Stack.Screen
-            name={screenName.AllCourses}
-            component={AllCourses}
-            options={{ title: '' }}
-          />
-          <Stack.Screen
-            name={screenName.CourseDetails}
-            component={CourseDetails}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={screenName.AuthorProfile}
-            component={AuthorProfile}
-          />
-        </Stack.Navigator>
-      )
-    }
-  </ThemeContext.Consumer>
+  <HomeProvider>
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+            <Stack.Navigator
+            initialRouteName={screenName.ListCourses}
+            screenOptions={
+              {
+                headerTitleStyle: {
+                  fontSize: 20,
+                  fontWeight: '500',
+                  color: theme.textColor,
+                },
+                headerStyle: {
+                  backgroundColor: theme.headerBackground,
+                },
+                headerTintColor: theme.textColor,
+              }
+            }>
+            <Stack.Screen
+              name={screenName.ListCourses}
+              component={Home}
+              options={{ title: 'Home', headerTitleAlign: 'left' }}
+            />
+            <Stack.Screen
+              name={screenName.AllCourses}
+              component={AllCourses}
+              options={{ title: '' }}
+            />
+            <Stack.Screen
+              name={screenName.CourseDetails}
+              component={CourseDetails}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={screenName.AuthorProfile}
+              component={AuthorProfile}
+            />
+          </Stack.Navigator>
+        )
+      }
+    </ThemeContext.Consumer>
+  </HomeProvider>
 
 );
 const BrowseScreen = () => (
@@ -217,6 +221,16 @@ const styles = StyleSheet.create({
 
 function App() {
   const [theme, setTheme] = useState(themes.dark);
+  useEffect(() => {
+    StatusBar.setHidden(true, 'none');
+  });
+
+  const isLogined = () => {
+    const user = getUserInfo();
+    if (user !== null) return true;
+    return false;
+  };
+
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <NavigationContainer>
@@ -229,7 +243,11 @@ function App() {
             }
           }>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
+            {
+              !isLogined()
+                ? <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
+                : null
+            }
             <Stack.Screen name={screenName.Main} component={MainScreens}/>
           </Stack.Navigator>
         </SafeAreaView>

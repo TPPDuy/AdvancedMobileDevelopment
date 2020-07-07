@@ -4,14 +4,14 @@ import React from 'react';
 import {
   View, Image, StyleSheet, Text, TouchableOpacity,
 } from 'react-native';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
-import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
+import { formatMonthYearType } from '../../utils/DateTimeUtils';
 import colorSource from '../../constants/color';
 import { ThemeContext } from '../../constants/theme';
 
 const ItemCourse = ({
-  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement, onClickItem,
+  id, name, thumbnail, author, numOfVideos, date, duration, rating, price, onClickItem,
 }) => (
   <ThemeContext.Consumer>
     {
@@ -22,9 +22,9 @@ const ItemCourse = ({
           </View>
           <View style={styles(theme).infoContainer}>
             <Text numberOfLines={2} style={styles(theme).courseName}>{name}</Text>
-            <Text numberOfLines={1} style={styles(theme).normalText}>{authors[0].name}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
+            <Text numberOfLines={1} style={styles(theme).normalText}>{author}</Text>
             <Text numberOfLines={1} style={styles(theme).normalText}>
-              {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
+              {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙ {duration}h
             </Text>
             <View style={styles(theme).ratingContainer}>
               <StarRating
@@ -38,7 +38,11 @@ const ItemCourse = ({
                 emptyStarColor="#d4d4d4"
                 starSize={10}/>
               <Text style={styles(theme).normalText}>
-                ({numOfJudgement})
+                {
+                  price === 0
+                    ? '(Miễn phí)'
+                    : `(${price} VNĐ)`
+                }
               </Text>
             </View>
           </View>
@@ -88,6 +92,7 @@ const styles = (theme) => StyleSheet.create({
     flexDirection: 'row',
   },
   thumbnail: {
+    backgroundColor: colorSource.white,
     borderTopLeftRadius: 7,
     borderTopRightRadius: 7,
     height: '100%',
@@ -105,12 +110,12 @@ ItemCourse.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   thumbnail: PropTypes.number,
-  authors: PropTypes.arrayOf(string),
-  level: PropTypes.string,
+  author: PropTypes.string,
+  numOfVideos: PropTypes.number,
   date: PropTypes.number,
   duration: PropTypes.number,
   rating: PropTypes.number,
-  numOfJudgement: PropTypes.number,
+  price: PropTypes.number,
   onClickItem: PropTypes.func,
 };
 

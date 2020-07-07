@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import api from '../api/api';
-import {storeUserInfo, getUserInfo} from '../storage/Storage';
+import { storeUserInfo } from '../storage/Storage';
 import {
   REQUEST_LOGIN,
   LOGIN_SUCCESS,
