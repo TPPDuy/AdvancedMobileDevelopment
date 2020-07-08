@@ -2,14 +2,17 @@
 /* eslint-disable react/prop-types */
 import React, { useReducer } from 'react';
 import HomeReducer from '../../reducers/Home';
-import { REQUEST_DATA } from '../../constants/actions/Home';
-import requestData from '../../actions/Home';
+import { requestDataHomeScreen, requestAllCourse } from '../../actions/Home';
 
 const HomeContext = React.createContext();
 const initialState = {
-  topSell: [],
-  topNew: [],
-  topRate: [],
+  homeScreen: {
+    topSell: [],
+    topNew: [],
+    topRate: [],
+    recommended: [],
+  },
+  allCourse: [],
   isLoading: false,
 };
 const HomeProvider = (props) => {
@@ -19,7 +22,8 @@ const HomeProvider = (props) => {
       value={
           {
             state,
-            getData: requestData(dispatch),
+            getDataHomeScreen: requestDataHomeScreen(dispatch),
+            getAllCourse: requestAllCourse(dispatch),
           }
         }>
         {props.children}

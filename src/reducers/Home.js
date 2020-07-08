@@ -1,5 +1,10 @@
 const {
-  REQUEST_DATA, RECEIVE_TOP_SELL, RECEIVE_TOP_NEW, RECEIVE_TOP_RATE,
+  REQUEST_DATA,
+  RECEIVE_TOP_SELL_HOME,
+  RECEIVE_TOP_NEW_HOME,
+  RECEIVE_TOP_RATE_HOME,
+  RECEIVE_RECOMMENDED_HOME,
+  RECEIVE_ALL_COURSE,
 } = require('../constants/actions/Home');
 
 const HomeReducer = (state, action) => {
@@ -9,23 +14,46 @@ const HomeReducer = (state, action) => {
         ...state,
         isLoading: true,
       });
-    case RECEIVE_TOP_SELL:
+    case RECEIVE_TOP_SELL_HOME:
       return ({
         ...state,
-        topSell: action.data,
+        homeScreen: {
+          ...state.homeScreen,
+          topSell: action.data,
+        },
         isLoading: false,
       });
-    case RECEIVE_TOP_NEW:
+    case RECEIVE_TOP_NEW_HOME:
       return ({
         ...state,
-        topNew: action.data,
+        homeScreen: {
+          ...state.homeScreen,
+          topNew: action.data,
+        },
         isLoading: false,
       });
-    case RECEIVE_TOP_RATE:
+    case RECEIVE_TOP_RATE_HOME:
       return ({
         ...state,
-        topRate: action.data,
+        homeScreen: {
+          ...state.homeScreen,
+          topRate: action.data,
+        },
         isLoading: false,
+      });
+    case RECEIVE_RECOMMENDED_HOME:
+      return ({
+        ...state,
+        homeScreen: {
+          ...state.homeScreen,
+          recommended: action.data,
+        },
+        isLoading: false,
+      });
+    case RECEIVE_ALL_COURSE:
+      return ({
+        ...state,
+        allCourse: action.data,
       });
     default:
       return state;

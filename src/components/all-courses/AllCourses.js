@@ -1,26 +1,34 @@
 /* eslint-disable react/display-name */
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import ListCourses from '../home/ListCourses';
 import screenName from '../../constants/screen-name';
 import { ThemeContext } from '../../constants/theme';
+import { HomeContext } from '../providers/Home';
 
 const AllCourses = ({ route, navigation }) => {
-  const { data } = route.params;
+  const selectedCategory = route.params.category;
+  const selectedTitle = route.params.title;
+
+  const homeContext = useContext(HomeContext);
 
   const onItemClick = (course) => {
     navigation.navigate(screenName.CourseDetails, { course });
   };
+  useEffect(() => {
+    homeContext.getAllCourse(selectedCategory);
+  }, []);
   return (
     <ThemeContext.Consumer>
       {
         ({ theme }) => (
           <View style={{ ...styles.container, backgroundColor: theme.background }}>
             <ListCourses
-              title={data.title}
-              courses={data.courses}
-              onItemClick={(item) => onItemClick(item)}/>
+               title={selectedTitle}
+               courses={homeContext.state.allCourse}
+              // onItemClick={(item) => onItemClick(item)}
+            />
           </View>
         )
       }

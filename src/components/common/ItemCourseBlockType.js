@@ -22,7 +22,13 @@ const ItemCourse = ({
           </View>
           <View style={styles(theme).infoContainer}>
             <Text numberOfLines={2} style={styles(theme).courseName}>{name}</Text>
-            <Text numberOfLines={1} style={styles(theme).normalText}>{author}</Text>
+            <Text numberOfLines={1} style={styles(theme).normalText}>
+              {
+                author
+                  ? `${author}`
+                  : 'Không có thông tin giảng viên'
+              }
+            </Text>
             <Text numberOfLines={1} style={styles(theme).normalText}>
               {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙ {duration}h
             </Text>

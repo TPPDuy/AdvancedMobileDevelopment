@@ -12,23 +12,29 @@ import MenuIcon from '../../../assets/common/menu-icon.svg';
 import { ThemeContext } from '../../constants/theme';
 
 const ItemCourse = ({
-  id, name, thumbnail, authors, level, date, duration, rating, numOfJudgement,
+  id, name, thumbnail, author, numOfVideos, date, duration, rating, price,
   onShowMenu, onItemClick,
 }) => (
   <ThemeContext.Consumer>
     {
       ({ theme }) => (
         <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
-          <Image source={{ uri: thumbnail }} style={{
-            width: '22%', height: 60, borderRadius: 2, marginRight: 10,
+          <Image resizeMode="cover" source={{ uri: thumbnail }} style={{
+            width: '22%', height: 60, borderRadius: 2, marginRight: 10, backgroundColor: colorSource.white,
           }}/>
           <View style={styles.infoContainer}>
             <Text
               numberOfLines={2}
               style={{ ...styles.courseName, color: theme.textColor }}>{name}</Text>
-            <Text numberOfLines={1} style={styles.normalText}>{authors[0].name}{ authors.length > 1 ? `, +${authors.length - 1}` : ''}</Text>
             <Text numberOfLines={1} style={styles.normalText}>
-              {level} ∙ {formatMonthYearType(date)} ∙ {formatHourType1(duration)}
+              {
+                author
+                  ? `${author}`
+                  : 'Không có thông tin giảng viên'
+              }
+            </Text>
+            <Text numberOfLines={1} style={styles.normalText}>
+              {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙  {duration}h
             </Text>
             <View style={styles.ratingContainer}>
               <StarRating
@@ -41,7 +47,13 @@ const ItemCourse = ({
                 fullStarColor="#fcba03"
                 emptyStarColor="#d4d4d4"
                 starSize={10}/>
-              <Text style={styles.normalText}>({numOfJudgement})</Text>
+              <Text style={styles.normalText}>
+                {
+                  price === 0
+                    ? '(Miễn phí)'
+                    : `(${price} VNĐ)`
+                }
+              </Text>
             </View>
           </View>
           <TouchableOpacity onPress={() => onShowMenu}>
@@ -95,12 +107,12 @@ ItemCourse.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   thumbnail: PropTypes.number,
-  authors: PropTypes.arrayOf(string),
-  level: PropTypes.string,
+  author: PropTypes.string,
   date: PropTypes.number,
+  numOfVideos: PropTypes.number,
   duration: PropTypes.number,
   rating: PropTypes.number,
-  numOfJudgement: PropTypes.number,
+  price: PropTypes.number,
   onShowMenu: PropTypes.func,
   onItemClick: PropTypes.func,
 };
@@ -108,15 +120,12 @@ ItemCourse.propTypes = {
 ItemCourse.defaultProps = {
   name: 'Java Programming',
   thumbnail: 'https://pluralsight.imgix.net/course-images/java-fundamentals-language-v1.jpg',
-  authors: [
-    'Ben Piper',
-    'Scott Allen',
-  ],
-  level: 'Beginner',
-  date: 1589250813000,
-  duration: 600000,
+  author: 'Ben Piper',
+  date: '2020-07-07T17:41:45.592Z',
+  duration: 20,
   rating: 4.5,
-  numOfJudgement: 326,
+  price: 0,
+  numOfVideos: 10,
 };
 
 export default ItemCourse;

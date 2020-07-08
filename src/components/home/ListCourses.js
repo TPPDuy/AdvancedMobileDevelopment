@@ -24,14 +24,14 @@ const ListCourses = ({ title, courses, onItemClick }) => (
                 horizontal={false}
                 data={courses}
                 renderItem={({ item }) => <ItemCourse
-                                              name={item.name}
-                                              thumbnail={item.thumbnail}
-                                              authors={item.authors}
-                                              level={item.level}
+                                              name={item.title}
+                                              thumbnail={item.imageUrl}
+                                              author={item['instructor.user.name']}
+                                              numOfVideos={item.videoNumber}
                                               date={item.date}
-                                              duration={item.duration}
-                                              rating={item.rating}
-                                              numOfJudgement={item.numOfJudgement}
+                                              duration={item.totalHours}
+                                              rating={item.ratedNumber}
+                                              price={item.price}
                                               onItemClick={() => onItemClick(item)}/>}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
@@ -68,10 +68,6 @@ ListCourses.defaultProps = {
       id: 1,
       name: 'Java Programming - Build your first project',
       thumbnail: 'https://pluralsight.imgix.net/course-images/java-fundamentals-language-v1.jpg',
-      authors: [
-        'Ben Piper',
-        'Scott Allen',
-      ],
       level: 'Beginner',
       date: 1589250813000,
       duration: 600,

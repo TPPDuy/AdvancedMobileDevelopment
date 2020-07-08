@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable global-require */
@@ -32,7 +33,7 @@ import ForgotPassword from './src/components/authen/forgot-password';
 import themes, { ThemeContext } from './src/constants/theme';
 import { AuthenProvider } from './src/components/providers/Authen';
 import { HomeContext, HomeProvider } from './src/components/providers/Home';
-import { getUserInfo } from './src/storage/Storage';
+import { getUserInfo, getTheme, storeTheme } from './src/storage/Storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -221,18 +222,31 @@ const styles = StyleSheet.create({
 
 function App() {
   const [theme, setTheme] = useState(themes.dark);
+  const changeTheme = (value) => {
+    setTheme(value);
+    storeTheme(value);
+  };
+  const themeInfo = getTheme();
   useEffect(() => {
+    console.disableYellowBox = true;
     StatusBar.setHidden(true, 'none');
-  });
+    themeInfo.then(
+      (res) => {
+        if (res !== null) setTheme(res);
+      },
+    );
+  }, []);
 
-  const isLogined = () => {
-    const user = getUserInfo();
-    if (user !== null) return true;
-    return false;
+  const isLogined = async () => {
+    const user = await getUserInfo();
+    user.then((response) => {
+      if (response.token !== null) return true;
+      return false;
+    });
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, changeTheme }}>
       <NavigationContainer>
         <SafeAreaView
           style={

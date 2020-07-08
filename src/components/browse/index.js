@@ -33,14 +33,14 @@ const Browse = ({
       headerRight: () => (
         <ThemeContext.Consumer>
           {
-            ({ theme, setTheme }) => (
+            ({ theme, changeTheme }) => (
                 <View style={styles.headerRightContainer}>
                   {
                     theme.type === 'LIGHT'
-                      ? <TouchableOpacity onPress={() => setTheme(themes.dark)}>
+                      ? <TouchableOpacity onPress={() => changeTheme(themes.dark)}>
                           <LightIcon width={28} height={28} />
                         </TouchableOpacity>
-                      : <TouchableOpacity onPress={() => setTheme(themes.light)}>
+                      : <TouchableOpacity onPress={() => changeTheme(themes.light)}>
                           <DarkIcon width={28} height={28} />
                         </TouchableOpacity>
                   }
