@@ -34,6 +34,7 @@ import themes, { ThemeContext } from './src/constants/theme';
 import { AuthenProvider } from './src/components/providers/Authen';
 import { HomeContext, HomeProvider } from './src/components/providers/Home';
 import { getUserInfo, getTheme, storeTheme } from './src/storage/Storage';
+import { BrowseProvider } from './src/components/providers/Browse';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -95,77 +96,54 @@ const HomeScreen = () => (
 
 );
 const BrowseScreen = () => (
-  <ThemeContext.Consumer>
-    {
-      ({ theme }) => (
-        <Stack.Navigator
-          initialRouteName={screenName.Browse}
-          screenOptions={
-            {
-              headerTitleStyle: {
-                fontSize: 20,
-                fontWeight: '500',
-                color: theme.textColor,
-              },
-              headerStyle: {
-                backgroundColor: theme.headerBackground,
-              },
-              headerTintColor: theme.textColor,
-            }
-          }>
-          <Stack.Screen
-            name={screenName.Browse}
-            component={Browse}
-            options={{ title: 'Browse', headerTitleAlign: 'left' }}
-          />
-          <Stack.Screen
-            name={screenName.CourseDetails}
-            component={CourseDetails}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={screenName.AllCourses}
-            component={AllCourses}
-            options={{ title: '' }}
-          />
-          <Stack.Screen
-            name={screenName.CategoryDetails}
-            component={CategoryDetails}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={screenName.CategoryListDetails}
-            component={CategoryListDetails}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={screenName.SkillDetails}
-            component={SkillDetails}
-            options={{ title: 'Details' }}
-          />
-          <Stack.Screen
-            name={screenName.AuthorProfile}
-            component={AuthorProfile}
-          />
-          <Stack.Screen
-            name={screenName.ListGroupPaths}
-            component={ListGroupPaths}
-            options={{ title: 'Paths' }}
-          />
-          <Stack.Screen
-            name={screenName.ListPaths}
-            component={ListPaths}
-            options={{ title: 'Paths' }}
-          />
-          <Stack.Screen
-            name={screenName.PathDetails}
-            component={PathDetails}
-            options={{ title: 'Details' }}
-          />
-        </Stack.Navigator>
-      )
-    }
-  </ThemeContext.Consumer>
+  <BrowseProvider>
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+          <Stack.Navigator
+            initialRouteName={screenName.Browse}
+            screenOptions={
+              {
+                headerTitleStyle: {
+                  fontSize: 20,
+                  fontWeight: '500',
+                  color: theme.textColor,
+                },
+                headerStyle: {
+                  backgroundColor: theme.headerBackground,
+                },
+                headerTintColor: theme.textColor,
+              }
+            }>
+            <Stack.Screen
+              name={screenName.Browse}
+              component={Browse}
+              options={{ title: 'Browse', headerTitleAlign: 'left' }}
+            />
+            <Stack.Screen
+              name={screenName.CategoryListDetails}
+              component={CategoryListDetails}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={screenName.CourseDetails}
+              component={CourseDetails}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={screenName.AllCourses}
+              component={AllCourses}
+              options={{ title: '' }}
+            />
+            <Stack.Screen
+              name={screenName.AuthorProfile}
+              component={AuthorProfile}
+            />
+          </Stack.Navigator>
+        )
+      }
+    </ThemeContext.Consumer>
+  </BrowseProvider>
 );
 const DownloadScreen = () => (<View/>);
 const SearchScreen = () => (<Search/>);

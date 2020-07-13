@@ -12,7 +12,7 @@ const ItemAuthor = ({
   <ThemeContext.Consumer>
     {
       ({ theme }) => (
-        <TouchableOpacity style={styles.container} onPress={() => onChooseItem(id)}>
+        <TouchableOpacity style={styles.container} onPress={() => onChooseItem()}>
           <Image source={{ uri: avatar }} resizeMode="cover" style={styles.avatar}/>
           <Text style={{ ...styles.name, color: theme.textColor }}>{name}</Text>
         </TouchableOpacity>

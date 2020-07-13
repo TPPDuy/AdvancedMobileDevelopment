@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const instance = axios.create({
   baseURL: 'https://api.itedu.me',
-  timeout: 3000,
+  timeout: 5000,
 
 });
 

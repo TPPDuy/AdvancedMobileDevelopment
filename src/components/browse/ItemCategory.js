@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ImageBackground, Text, TouchableOpacity, StyleSheet, View,
+  ImageBackground, Text, TouchableOpacity, StyleSheet, View, Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import colorSource from '../../constants/color';
@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    height: '100%',
+    flex: 1,
+    height: 80,
     justifyContent: 'center',
-    width: '100%',
   },
   overlay: {
     alignItems: 'center',
