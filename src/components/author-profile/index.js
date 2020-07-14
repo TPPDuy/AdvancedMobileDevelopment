@@ -1,48 +1,102 @@
+/* eslint-disable max-len */
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
-  View, Text, TouchableWithoutFeedback, Image, ScrollView, StyleSheet,
+  View, Text, Image, ScrollView, StyleSheet,
 } from 'react-native';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import colorSource from '../../constants/color';
 import CollapsableDescription from '../common/CollapsableDescription';
 import ListCourses from '../home/ListCourses';
 import screenName from '../../constants/screen-name';
 import { ThemeContext } from '../../constants/theme';
+import { AuthorContext } from '../providers/Author';
+import ListItemSkill from '../skill/ListItemSkill';
 
 const AuthorProfile = ({
-  name, avatar, isFollowing, desc, personalLink, courses, navigation,
+  route, navigation,
 }) => {
-  const buttonBackground = isFollowing ? colorSource.transparent : colorSource.blue;
-  const buttonTextColor = isFollowing ? colorSource.blue : colorSource.white;
+  const buttonBackground = colorSource.blue;
+  const buttonTextColor = colorSource.white;
+  const authorId = route.params.id;
+  const authorContext = useContext(AuthorContext);
 
+  useEffect(() => {
+    authorContext.getAuthorDetails(authorId);
+  }, []);
   return (
     <ThemeContext.Consumer>
       {
         ({ theme }) => (
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{ ...styles.container, backgroundColor: theme.background }}>
+          <ScrollView showsVerticalScrollIndicator={false} style={{ ...styles.container, backgroundColor: theme.background }}>
               <View style={styles.infoBlock}>
-                <Image source={{ uri: avatar }} style={styles.avatar} resizeMode='cover'/>
-                <Text style={styles.name}>{name}</Text>
-                <TouchableWithoutFeedback>
-                  <Text style={{ ...styles.btnFollow, backgroundColor: buttonBackground, color: buttonTextColor }}>{isFollowing ? 'FOLLOWING' : 'FOLLOW'}</Text>
-                </TouchableWithoutFeedback>
-                <Text style={styles.followDesc}>You'll be notified when new courses are published</Text>
-                <CollapsableDescription minHeight={100} description={desc}/>
-                <View style={styles.socialContainer}>
-                  <Image source={require('../../../assets/author/link-icon.png')} style={styles.icon}/>
-                  <Text style={styles.link}>{personalLink}</Text>
-                </View>
+                <Image source={{ uri: authorContext.state.authorDetails.avatar }} style={styles.avatar} resizeMode='cover'/>
+                <Text style={styles.name}>
+                  {authorContext.state.authorDetails.name}
+                </Text>
+
+                <Text style={{ ...styles.btnFollow, backgroundColor: buttonBackground, color: buttonTextColor }}>
+                  {authorContext.state.authorDetails.soldNumber} học viên
+                </Text>
+
+                <Text style={styles.followDesc}>
+                  {authorContext.state.authorDetails.major}
+                </Text>
+                {
+                  authorContext.state.authorDetails.intro && authorContext.state.authorDetails.intro.length !== 0
+                    ? <CollapsableDescription minHeight={40} description={authorContext.state.authorDetails.intro}/>
+                    : <Text style={{ color: colorSource.white }}>(Chưa cập nhật giới thiệu)</Text>
+
+                }
+                {
+                  (authorContext.state.authorDetails.phone && authorContext.state.authorDetails.phone.length !== 0)
+                    ? (
+                      <View style={styles.socialContainer}>
+                        <Image source={require('../../../assets/author/phone-icon.png')} style={styles.icon}/>
+                        <Text style={styles.link}>{authorContext.state.authorDetails.phone}</Text>
+                      </View>
+                    )
+                    : null
+                }
+                {
+                  (authorContext.state.authorDetails.email && authorContext.state.authorDetails.email.length !== 0)
+                    ? (
+                      <View style={styles.socialContainer}>
+                        <Image source={require('../../../assets/author/mail-icon.png')} style={styles.icon}/>
+                        <Text style={styles.link}>{authorContext.state.authorDetails.email}</Text>
+                      </View>
+                    )
+                    : null
+                }
                 <View style={styles.socialContainer}>
                   <Image source={require('../../../assets/author/facebook-icon.png')} style={styles.socialIcon}/>
                   <Image source={require('../../../assets/author/linkedin-icon.png')} style={styles.socialIcon}/>
                 </View>
               </View>
-              <View style={styles.listCourses}>
-                <ListCourses title='Courses' onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
-              </View>
-            </View>
+              {
+                (authorContext.state.authorDetails.skills && authorContext.state.authorDetails.skills.length !== 0)
+                  ? (
+                    <View style={styles.listCourses}>
+                      <Text style={{ ...styles.title, color: theme.textColor }}>Kỹ năng</Text>
+                      <ListItemSkill
+                        listSkills={authorContext.state.authorDetails.skills}
+                      />
+                    </View>
+                  )
+                  : null
+              }
+              {
+                (authorContext.state.authorDetails.courses && authorContext.state.authorDetails.courses.length !== 0)
+                  ? (
+                    <View style={styles.listCourses}>
+                      <ListCourses
+                        courses={authorContext.state.authorDetails.courses}
+                        title='Các khóa học'
+                        onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
+                    </View>
+                  )
+                  : null
+              }
           </ScrollView>
         )
       }
@@ -58,8 +112,6 @@ const styles = StyleSheet.create({
   },
   btnFollow: {
     borderColor: colorSource.blue,
-    borderRadius: 3,
-    borderWidth: 2,
     fontSize: 13,
     fontWeight: '500',
     paddingHorizontal: 20,
@@ -97,7 +149,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   listCourses: {
-    height: '100%',
     marginTop: 20,
     paddingHorizontal: 15,
   },
@@ -115,29 +166,22 @@ const styles = StyleSheet.create({
   },
   socialIcon: {
     height: 20,
-    marginRight: 20,
+    marginRight: 10,
     width: 20,
   },
-
+  title: {
+    fontSize: 23,
+    fontWeight: '600',
+    marginBottom: 20,
+  },
 });
 
 AuthorProfile.propTypes = {
-  name: PropTypes.string,
-  avatar: PropTypes.string,
-  isFollowing: PropTypes.bool,
-  desc: PropTypes.string,
-  personalLink: PropTypes.string,
-  courses: PropTypes.arrayOf(object),
+  route: PropTypes.object,
   navigation: PropTypes.object,
 };
 
 AuthorProfile.defaultProps = {
-  name: 'Scott Allen',
-  avatar: 'https://pluralsight.imgix.net/author/lg/44cb43b3-83e4-4458-9b39-a7ded3411616.jpg',
-  isFollowing: false,
-  desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer est tellus, malesuada at erat a, volutpat consequat dolor. Etiam commodo nisl sit amet arcu congue varius. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut est justo, sodales eu metus vel, auctor varius lorem. Proin nec feugiat nisi. Donec bibendum scelerisque sapien. Pellentesque consequat hendrerit augue ac tincidunt. Pellentesque non est eget ipsum sagittis malesuada at vitae tellus.',
-  personalLink: 'http://odetocode.com/blogs/all',
-  courses: [],
 };
 
 export default AuthorProfile;

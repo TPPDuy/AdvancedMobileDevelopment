@@ -4,19 +4,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useContext, useEffect } from 'react';
 import {
-  View, StyleSheet, Text, ScrollView, FlatList, Image, TouchableOpacity, Dimensions,
+  View, StyleSheet, Text, ScrollView, FlatList, Image, TouchableOpacity,
 } from 'react-native';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
+import AnimatedLoader from 'react-native-animated-loader';
 import ItemCategory from './ItemCategory';
-import ListItemSkill from '../skill/ListItemSkill';
-import GroupPath from '../path/GroupPaths';
 import ListAuthors from './ListAuthors';
 import screenName from '../../constants/screen-name';
 import themes, { ThemeContext } from '../../constants/theme';
-import MenuIcon from '../../../assets/common/menu-icon.svg';
 import DarkIcon from '../../../assets/common/dark.svg';
 import LightIcon from '../../../assets/common/light.svg';
 import { BrowseContext } from '../providers/Browse';
+import { getRandomColor } from '../../utils/ColorUtils';
+import SectionCourse from '../home/SectionCourse';
 
 
 const renderSeparator = () => (
@@ -58,17 +58,23 @@ const Browse = ({
 
   useEffect(() => {
     browseContext.getCategory();
+    browseContext.getTopNew();
     browseContext.getAuthor();
   }, []);
+  const onSeeAll = (category, title) => {
+    navigation.navigate(screenName.AllCourses, { category, title });
+  };
+  const onClickCourse = (course) => {
+    navigation.navigate(screenName.CourseDetails, { course });
+  };
   return (
     <ThemeContext.Consumer>
       {
         ({ theme }) => (
           <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: theme.background }}>
             <View style={{ ...styles.container }}>
-              <Text style={{ ...styles.topAuthorsText, color: theme.textColor, marginTop: 10 }}>Danh mục khóa học</Text>
               <FlatList
-                style={{ width: '100%' }}
+                style={{ width: '100%', marginTop: 5 }}
                 data={browseContext.state.categories}
                 numColumns={2}
                 showsHorizontalScrollIndicator={false}
@@ -80,16 +86,31 @@ const Browse = ({
                                               id={item.id}
                                               title={item.name}
                                               fontSize={15}
-                                              onItemClick={(id) => navigation.navigate(screenName.CategoryDetails, { id })}/>
+                                              color={getRandomColor()}
+                                              onItemClick={() => navigation.navigate(screenName.CategoryListDetails, { data: item })}/>
                                           </View>
                 }
               />
-
+              <SectionCourse
+                  title='Các khóa học mới'
+                  courses={browseContext.state.topNew}
+                  onSeeAll={() => onSeeAll('TOP_NEW', 'Các khóa học mới')}
+                  onClickCourse={(course) => onClickCourse(course)}
+              />
               <View style={styles.authorsContainer}>
                 <Text style={{ ...styles.topAuthorsText, color: theme.textColor }}>Giảng viên hàng đầu</Text>
                 <ListAuthors
                   authors={browseContext.state.authors}
-                  onClickItem={(item) => navigation.navigate(screenName.AuthorProfile, { item })}/>
+                  onClickItem={(item) => navigation.navigate(screenName.AuthorProfile, { id: item.id })}/>
+              </View>
+              <View>
+                <AnimatedLoader
+                  visible={browseContext.state.isLoading}
+                  overlayColor="rgba(0,0,0,0.65)"
+                  source={require('../../../assets/common/loader.json')}
+                  animationStyle={styles.loading}
+                  speed={2}
+                />
               </View>
             </View>
           </ScrollView>
@@ -117,10 +138,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 10,
   },
+  loading: {
+    height: 100,
+    width: 100,
+  },
   topAuthorsText: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 10,
+    marginBottom: 20,
     marginLeft: 10,
   },
 });

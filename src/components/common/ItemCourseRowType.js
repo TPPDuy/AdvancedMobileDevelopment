@@ -25,14 +25,19 @@ const ItemCourse = ({
           <View style={styles.infoContainer}>
             <Text
               numberOfLines={2}
-              style={{ ...styles.courseName, color: theme.textColor }}>{name}</Text>
-            <Text numberOfLines={1} style={styles.normalText}>
-              {
-                author
-                  ? `${author}`
-                  : 'Không có thông tin giảng viên'
-              }
+              style={{ ...styles.courseName, color: theme.textColor }}
+            >
+              {name}
             </Text>
+            {
+              (author && author.length !== 0)
+                ? (
+                  <Text numberOfLines={1} style={styles.normalText}>
+                    {author}
+                  </Text>
+                )
+                : null
+            }
             <Text numberOfLines={1} style={styles.normalText}>
               {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙  {duration}h
             </Text>
@@ -118,14 +123,14 @@ ItemCourse.propTypes = {
 };
 
 ItemCourse.defaultProps = {
-  name: 'Java Programming',
-  thumbnail: 'https://pluralsight.imgix.net/course-images/java-fundamentals-language-v1.jpg',
-  author: 'Ben Piper',
-  date: '2020-07-07T17:41:45.592Z',
-  duration: 20,
-  rating: 4.5,
+  name: '',
+  thumbnail: '',
+  author: '',
+  date: '',
+  duration: 0,
+  rating: 0,
   price: 0,
-  numOfVideos: 10,
+  numOfVideos: 0,
 };
 
 export default ItemCourse;

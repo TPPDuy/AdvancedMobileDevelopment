@@ -11,7 +11,7 @@ import Tick from '../../../assets/common/tick-icon.svg';
 import { ThemeContext } from '../../constants/theme';
 
 const ItemSkills = ({
-  id, name, isInterested, onItemClick,
+  id, name, onItemClick,
 }) => (
   <ThemeContext.Consumer>
     {
@@ -19,12 +19,9 @@ const ItemSkills = ({
         const background = theme.type === 'LIGHT' ? colorSource.lightGray : colorSource.darkGray;
         return (
         <TouchableOpacity style={{ ...styles.container, backgroundColor: background }} onPress={() => onItemClick(id)}>
-          {isInterested
-            ? <LinearGradient colors={['#ff6600', '#ff0084']} style={styles.tickInterested}>
-                  <Tick width={10} height={10} style={{ fill: '#fff' }} />
-                </LinearGradient>
-            : null
-          }
+          <LinearGradient colors={['#ff6600', '#ff0084']} style={styles.tickInterested}>
+            <Tick width={10} height={10} style={{ fill: '#fff' }} />
+          </LinearGradient>
           <Text style={styles.name}>{name}</Text>
         </TouchableOpacity>
         );
@@ -61,12 +58,10 @@ const styles = StyleSheet.create({
 ItemSkills.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  isInterested: PropTypes.bool,
   onItemClick: PropTypes.func,
 };
 ItemSkills.defaultProps = {
   name: 'Android',
-  isInterested: false,
   onItemClick: (f) => f,
 };
 

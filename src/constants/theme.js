@@ -19,7 +19,7 @@ const themes = {
     background: '#000',
     itemBackground: '#2f2f2f',
     dividerLine: '#2b2b2b',
-    overlayLayer1: '#ffffff00',
+    overlayLayer1: '#00000000',
     overlayLayer2: '#000000EA',
     overlayLayer3: '#000',
   },

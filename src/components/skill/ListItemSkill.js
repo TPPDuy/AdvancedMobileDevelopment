@@ -8,9 +8,6 @@ import ItemSkills from './ItemSkill';
 const renderSeparator = () => (
     <View style={{ width: 5 }}/>
 );
-const renderSpaceHeader = () => (
-  <View style={{ width: 10 }}/>
-);
 const ListItemSkill = ({ listSkills, onItemClick }) => (
     <SafeAreaView>
       <FlatList
@@ -19,10 +16,8 @@ const ListItemSkill = ({ listSkills, onItemClick }) => (
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={renderSeparator}
         renderItem={({ item }) => <ItemSkills
-                                    name={item.name}
-                                    isInterested={item.isInterested}
+                                    name={item}
                                     onItemClick={onItemClick}/>}
-        ListHeaderComponent={renderSpaceHeader}
       />
     </SafeAreaView>
 );
@@ -33,60 +28,7 @@ ListItemSkill.propTypes = {
 };
 
 ListItemSkill.defaultProps = {
-  listSkills: [
-    {
-      name: 'Java',
-      isInterested: true,
-    },
-    {
-      name: 'Android',
-      isInterested: true,
-    },
-    {
-      name: 'NodeJs',
-      isInterested: true,
-    },
-    {
-      name: 'React',
-      isInterested: true,
-    },
-    {
-      name: 'C/C++',
-      isInterested: true,
-    },
-    {
-      name: 'VueJs',
-      isInterested: false,
-    },
-    {
-      name: 'Agular',
-      isInterested: false,
-    },
-    {
-      name: 'Python',
-      isInterested: false,
-    },
-    {
-      name: '.NET',
-      isInterested: false,
-    },
-    {
-      name: 'Information Security',
-      isInterested: false,
-    },
-    {
-      name: 'Part Modeling',
-      isInterested: false,
-    },
-    {
-      name: 'Machine Learning',
-      isInterested: false,
-    },
-    {
-      name: 'Database Administration',
-      isInterested: false,
-    },
-  ],
+  listSkills: [],
 };
 
 export default ListItemSkill;

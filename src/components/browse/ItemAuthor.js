@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   View, Text, Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
-import colorSource from '../../constants/color';
 import { ThemeContext } from '../../constants/theme';
 
 const ItemAuthor = ({

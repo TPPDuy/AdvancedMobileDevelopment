@@ -7,15 +7,15 @@ import {
 import colorSource from '../../constants/color';
 
 const CollapsableDescription = ({ minHeight, description, textColor }) => {
-  const [isExpand, setExpand] = useState(false);
-  const expandIcon = isExpand ? require('../../../assets/course-detail/up-arrow-icon.png') : require('../../../assets/course-detail/down-arrow-icon.png');
-  const descHeight = isExpand ? null : minHeight;
+  const [isCollapse, setCollapse] = useState(true);
+  const expandIcon = isCollapse ? require('../../../assets/course-detail/down-arrow-icon.png') : require('../../../assets/course-detail/up-arrow-icon.png');
+  const descHeight = isCollapse ? minHeight : null;
   return (
     <View style={styles.descContainer}>
       <Text style={{ ...styles.textDesc, height: descHeight, color: textColor }}>
         {description}
       </Text>
-      <TouchableWithoutFeedback onPress={() => setExpand(!isExpand)}>
+      <TouchableWithoutFeedback onPress={() => setCollapse(!isCollapse)}>
         <View style={styles.expandContainer}>
           <Image style={styles.expandIcon} source={expandIcon} resizeMode='contain'/>
         </View>

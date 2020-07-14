@@ -5,7 +5,7 @@ const screenName = {
   SignIn: 'Sign In',
   ForgotPass: 'Forgot Password',
   HomeScreen: 'Home',
-  DownloadScreen: 'Downloads',
+  DownloadScreen: 'Favorites',
   BrowseScreen: 'Browse',
   SearchScreen: 'Search',
   ListCourses: 'Courses',

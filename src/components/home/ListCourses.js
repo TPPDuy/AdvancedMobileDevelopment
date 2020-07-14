@@ -28,7 +28,7 @@ const ListCourses = ({ title, courses, onItemClick }) => (
                                               thumbnail={item.imageUrl}
                                               author={item['instructor.user.name']}
                                               numOfVideos={item.videoNumber}
-                                              date={item.date}
+                                              date={item.updatedAt}
                                               duration={item.totalHours}
                                               rating={item.ratedNumber}
                                               price={item.price}

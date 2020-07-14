@@ -21,8 +21,6 @@ import Search from './src/components/search';
 import screenName from './src/constants/screen-name';
 import AllCourses from './src/components/all-courses/AllCourses';
 import AuthorProfile from './src/components/author-profile/index';
-import SkillDetails from './src/components/skill';
-import CategoryDetails from './src/components/category/CategoryDetails';
 import CategoryListDetails from './src/components/category/CategoryListDetails';
 import ListGroupPaths from './src/components/path/ListGroupPaths';
 import ListPaths from './src/components/path/ListPaths';
@@ -35,6 +33,7 @@ import { AuthenProvider } from './src/components/providers/Authen';
 import { HomeContext, HomeProvider } from './src/components/providers/Home';
 import { getUserInfo, getTheme, storeTheme } from './src/storage/Storage';
 import { BrowseProvider } from './src/components/providers/Browse';
+import { AuthorProvider } from './src/components/providers/Author';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -50,100 +49,96 @@ const AuthenScreens = () => (
   </AuthenProvider>
 );
 const HomeScreen = () => (
-  <HomeProvider>
-    <ThemeContext.Consumer>
-      {
-        ({ theme }) => (
-            <Stack.Navigator
-            initialRouteName={screenName.ListCourses}
-            screenOptions={
-              {
-                headerTitleStyle: {
-                  fontSize: 20,
-                  fontWeight: '500',
-                  color: theme.textColor,
-                },
-                headerStyle: {
-                  backgroundColor: theme.headerBackground,
-                },
-                headerTintColor: theme.textColor,
-              }
-            }>
-            <Stack.Screen
-              name={screenName.ListCourses}
-              component={Home}
-              options={{ title: 'Home', headerTitleAlign: 'left' }}
-            />
-            <Stack.Screen
-              name={screenName.AllCourses}
-              component={AllCourses}
-              options={{ title: '' }}
-            />
-            <Stack.Screen
-              name={screenName.CourseDetails}
-              component={CourseDetails}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name={screenName.AuthorProfile}
-              component={AuthorProfile}
-            />
-          </Stack.Navigator>
-        )
-      }
-    </ThemeContext.Consumer>
-  </HomeProvider>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+          <Stack.Navigator
+          initialRouteName={screenName.ListCourses}
+          screenOptions={
+            {
+              headerTitleStyle: {
+                fontSize: 20,
+                fontWeight: '500',
+                color: theme.textColor,
+              },
+              headerStyle: {
+                backgroundColor: theme.headerBackground,
+              },
+              headerTintColor: theme.textColor,
+            }
+          }>
+          <Stack.Screen
+            name={screenName.ListCourses}
+            component={Home}
+            options={{ title: 'Home', headerTitleAlign: 'left' }}
+          />
+          <Stack.Screen
+            name={screenName.AllCourses}
+            component={AllCourses}
+            options={{ title: '' }}
+          />
+          <Stack.Screen
+            name={screenName.CourseDetails}
+            component={CourseDetails}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={screenName.AuthorProfile}
+            component={AuthorProfile}
+          />
+        </Stack.Navigator>
+      )
+    }
+  </ThemeContext.Consumer>
 
 );
 const BrowseScreen = () => (
-  <BrowseProvider>
-    <ThemeContext.Consumer>
-      {
-        ({ theme }) => (
-          <Stack.Navigator
-            initialRouteName={screenName.Browse}
-            screenOptions={
-              {
-                headerTitleStyle: {
-                  fontSize: 20,
-                  fontWeight: '500',
-                  color: theme.textColor,
-                },
-                headerStyle: {
-                  backgroundColor: theme.headerBackground,
-                },
-                headerTintColor: theme.textColor,
-              }
-            }>
-            <Stack.Screen
-              name={screenName.Browse}
-              component={Browse}
-              options={{ title: 'Browse', headerTitleAlign: 'left' }}
-            />
-            <Stack.Screen
-              name={screenName.CategoryListDetails}
-              component={CategoryListDetails}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name={screenName.CourseDetails}
-              component={CourseDetails}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name={screenName.AllCourses}
-              component={AllCourses}
-              options={{ title: '' }}
-            />
-            <Stack.Screen
-              name={screenName.AuthorProfile}
-              component={AuthorProfile}
-            />
-          </Stack.Navigator>
-        )
-      }
-    </ThemeContext.Consumer>
-  </BrowseProvider>
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <Stack.Navigator
+          initialRouteName={screenName.Browse}
+          screenOptions={
+            {
+              headerTitleStyle: {
+                fontSize: 20,
+                fontWeight: '500',
+                color: theme.textColor,
+              },
+              headerStyle: {
+                backgroundColor: theme.headerBackground,
+              },
+              headerTintColor: theme.textColor,
+            }
+          }>
+          <Stack.Screen
+            name={screenName.Browse}
+            component={Browse}
+            options={{ title: 'Browse', headerTitleAlign: 'left' }}
+          />
+          <Stack.Screen
+            name={screenName.CategoryListDetails}
+            component={CategoryListDetails}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={screenName.CourseDetails}
+            component={CourseDetails}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={screenName.AllCourses}
+            component={AllCourses}
+            options={{ title: '' }}
+          />
+          <Stack.Screen
+            name={screenName.AuthorProfile}
+            component={AuthorProfile}
+          />
+        </Stack.Navigator>
+      )
+    }
+  </ThemeContext.Consumer>
 );
 const DownloadScreen = () => (<View/>);
 const SearchScreen = () => (<Search/>);
@@ -161,7 +156,7 @@ const MainScreens = () => (
                   if (route.name === screenName.HomeScreen) {
                     iconName = 'home';
                   } else if (route.name === screenName.DownloadScreen) {
-                    iconName = 'clouddownloado';
+                    iconName = 'staro';
                   } else if (route.name === screenName.BrowseScreen) {
                     iconName = 'find';
                   } else {
@@ -215,36 +210,41 @@ function App() {
     );
   }, []);
 
-  const isLogined = async () => {
-    const user = await getUserInfo();
-    user.then((response) => {
-      if (response.token !== null) return true;
-      return false;
-    });
+  const isLogined = () => {
+    const user = getUserInfo();
+    console.log('user', user);
+    if (user) return true;
+    return false;
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, changeTheme }}>
-      <NavigationContainer>
-        <SafeAreaView
-          style={
-            {
-              ...styles.container,
-              backgroundColor: theme.background,
-              color: theme.textColor,
-            }
-          }>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {
-              !isLogined()
-                ? <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
-                : null
-            }
-            <Stack.Screen name={screenName.Main} component={MainScreens}/>
-          </Stack.Navigator>
-        </SafeAreaView>
-      </NavigationContainer>
-    </ThemeContext.Provider>
+    <HomeProvider>
+      <BrowseProvider>
+        <AuthorProvider>
+          <ThemeContext.Provider value={{ theme, changeTheme }}>
+            <NavigationContainer>
+              <SafeAreaView
+                style={
+                  {
+                    ...styles.container,
+                    backgroundColor: theme.background,
+                    color: theme.textColor,
+                  }
+                }>
+                <Stack.Navigator screenOptions={{ headerShown: false }}>
+                  {
+                    !isLogined()
+                      ? <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
+                      : null
+                  }
+                  <Stack.Screen name={screenName.Main} component={MainScreens}/>
+                </Stack.Navigator>
+              </SafeAreaView>
+            </NavigationContainer>
+          </ThemeContext.Provider>
+        </AuthorProvider>
+      </BrowseProvider>
+    </HomeProvider>
   );
 }
 

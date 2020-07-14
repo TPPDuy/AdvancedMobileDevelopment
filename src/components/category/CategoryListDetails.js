@@ -1,16 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   View, ScrollView, TouchableOpacity, Text, StyleSheet, ImageBackground, FlatList,
 } from 'react-native';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import colorSource from '../../constants/color';
 import ItemCourse from '../common/ItemCourseRowType';
 import screenName from '../../constants/screen-name';
 import BackIcon from '../../../assets/common/back-icon.svg';
 import { ThemeContext } from '../../constants/theme';
+import { BrowseContext } from '../providers/Browse';
+import NoDataIcon from '../../../assets/common/no-data-icon.svg';
 
 const renderSeparator = (dividerColor) => (
     <View style={{ height: 1, backgroundColor: dividerColor }}/>
@@ -20,50 +22,73 @@ const renderFooter = () => (
 );
 
 const CategoryListDetails = ({
-  id, name, thumbnail, courses, navigation,
-}) => (
-  <ThemeContext.Consumer>
-    {
-      ({ theme }) => {
-        const titleColor = theme.type === 'LIGHT' ? colorSource.darkGray : colorSource.lightGray;
-        return (
-          <ScrollView style={{ ...styles.container, backgroundColor: theme.background }}>
-            <ImageBackground source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode='cover'>
-              <LinearGradient colors={[theme.overlayLayer1, theme.overlayLayer3]} style={styles.posterContainer}>
-                <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-                  <BackIcon width={25} height={25} style={{ fill: theme.textColor }}/>
-                </TouchableOpacity>
-                <Text style={{ ...styles.title, color: titleColor }}>{name}</Text>
-              </LinearGradient>
-            </ImageBackground>
-            <FlatList
-              style={styles.listCourses}
-              horizontal={false}
-              data={courses}
-              renderItem={
-                ({ item }) => <ItemCourse
-                                name={item.name}
-                                thumbnail={item.thumbnail}
-                                authors={item.authors}
-                                level={item.level}
-                                date={item.date}
-                                duration={item.duration}
-                                rating={item.rating}
-                                numOfJudgement={item.numOfJudgement}
-                                onItemClick={
-                                  (itemId) => navigation.navigate(screenName.CourseDetails)
-                                }
-                              />
-                }
-              showsVerticalScrollIndicator={false}
-              ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
-              ListFooterComponent={renderFooter}/>
-          </ScrollView>
-        );
+  route, navigation,
+}) => {
+  const category = route.params.data;
+  const browseContext = useContext(BrowseContext);
+
+  useEffect(() => {
+    browseContext.getCategoryDetails(category.id);
+  }, []);
+  return (
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => {
+          const titleColor = theme.type === 'LIGHT' ? colorSource.darkGray : colorSource.white;
+          return (
+            <ScrollView style={{ ...styles.container, backgroundColor: theme.background }}>
+              <ImageBackground
+                source={{ uri: 'https://images.unsplash.com/photo-1544256718-3bcf237f3974?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2251&q=80' }}
+                style={styles.thumbnail}
+                resizeMode='cover'
+              >
+                <LinearGradient
+                  colors={[theme.overlayLayer1, theme.overlayLayer3]}
+                  style={styles.posterContainer}>
+                  <TouchableOpacity
+                    style={styles.iconContainer}
+                    onPress={() => navigation.goBack()}
+                  >
+                    <BackIcon width={25} height={25} style={{ fill: theme.textColor }}/>
+                  </TouchableOpacity>
+                  <Text style={{ ...styles.title, color: titleColor }}>{category.name}</Text>
+                </LinearGradient>
+              </ImageBackground>
+              <FlatList
+                style={styles.listCourses}
+                horizontal={false}
+                data={browseContext.state.categoryDetails}
+                renderItem={
+                  ({ item }) => <ItemCourse
+                                  name={item.title}
+                                  thumbnail={item.imageUrl}
+                                  author={item['instructor.user.name']}
+                                  numOfVideos={item.videoNumber}
+                                  date={item.date}
+                                  duration={item.totalHours}
+                                  rating={item.ratedNumber}
+                                  price={item.price}
+                                  onItemClick={
+                                    (itemId) => navigation.navigate(screenName.CourseDetails)
+                                  }
+                                />
+                  }
+                showsVerticalScrollIndicator={false}
+                ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
+                ListEmptyComponent={() => (
+                  <View style={styles.emptyComponent}>
+                    <NoDataIcon width={50} height={50} />
+                    <Text style={{ fontSize: 14, color: theme.textColor, marginTop: 15 }}>Không tìm thấy khóa học nào</Text>
+                  </View>)}
+                ListFooterComponent={renderFooter}
+              />
+            </ScrollView>
+          );
+        }
       }
-    }
-  </ThemeContext.Consumer>
-);
+    </ThemeContext.Consumer>
+  );
+};
 
 
 const styles = StyleSheet.create({
@@ -71,21 +96,34 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  emptyComponent: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
+    position: 'relative',
+    height: '100%',
+    marginBottom: '5%',
+    marginTop: '50%',
+  },
   iconContainer: {
     alignSelf: 'flex-start',
     margin: 15,
   },
   listCourses: {
+    flex: 1,
+    height: '100%',
     paddingHorizontal: 10,
   },
   posterContainer: {
     alignItems: 'center',
-    height: '100%',
+    height: '110%',
     marginBottom: 20,
   },
   thumbnail: {
     flex: 1,
-    height: '100%',
+    height: '110%',
     width: '100%',
   },
   title: {
@@ -100,85 +138,11 @@ const styles = StyleSheet.create({
 });
 
 CategoryListDetails.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  thumbnail: PropTypes.string,
-  courses: PropTypes.arrayOf(object),
-  onItemClick: PropTypes.func,
+  route: PropTypes.object,
   navigation: PropTypes.object,
 };
 
 CategoryListDetails.defaultProps = {
-  name: 'New Releases',
-  thumbnail: 'https://pluralsight.imgix.net/course-images/whats-new-vsphere-6-5-v1.jpg',
-  courses: [
-    {
-      id: 1,
-      name: 'Java Programming - Build your first project',
-      thumbnail: 'https://pluralsight.imgix.net/course-images/java-fundamentals-language-v1.jpg',
-      authors: [
-        'Ben Piper',
-        'Scott Allen',
-      ],
-      level: 'Beginner',
-      date: 1589250813000,
-      duration: 600,
-      rating: 4.5,
-      numOfJudgement: 326,
-    },
-    {
-      id: 2,
-      name: 'Agular Fundamentals',
-      thumbnail: 'https://pluralsight.imgix.net/course-images/angular-fundamentals-v1.jpg',
-      authors: [
-        'Joe Eames',
-      ],
-      level: 'Intermediate',
-      date: 1589250913000,
-      duration: 800,
-      rating: 4,
-      numOfJudgement: 819,
-    },
-    {
-      id: 3,
-      name: 'Managing AWS Operations',
-      thumbnail: 'https://pluralsight.imgix.net/course-images/aws-operations-managing-v5.png',
-      authors: [
-        'Andru Estes',
-      ],
-      level: 'Intermediate',
-      date: 1589250813000,
-      duration: 600,
-      rating: 4.5,
-      numOfJudgement: 13,
-    },
-    {
-      id: 4,
-      name: 'C# Fundamentals',
-      thumbnail: 'https://pluralsight.imgix.net/course-images/csharp-fundamentals-dev-v1.png',
-      authors: [
-        'Scott Allen',
-      ],
-      level: 'Beginner',
-      date: 1589250813000,
-      duration: 600,
-      rating: 3.5,
-      numOfJudgement: 445,
-    },
-    {
-      id: 5,
-      name: 'How Git Works',
-      thumbnail: 'https://pluralsight.imgix.net/course-images/how-git-works-v1.jpg',
-      authors: [
-        'Paolo Perrotta',
-      ],
-      level: 'Beginner',
-      date: 1589250813000,
-      duration: 600,
-      rating: 5,
-      numOfJudgement: 6988,
-    },
-  ],
 };
 
 export default CategoryListDetails;

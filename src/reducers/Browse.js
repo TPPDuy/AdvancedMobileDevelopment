@@ -1,11 +1,15 @@
 import {
-  REQUEST_CATEGORY, REQUEST_AUTHOR, RECEIVE_CATEGORY, RECEIVE_AUTHOR, REQUEST_FAIL,
+  RECEIVE_CATEGORY,
+  RECEIVE_AUTHOR,
+  REQUEST_FAIL,
+  RECEIVE_CATEGORY_DETAILS,
+  REQUEST_DATA,
+  RECEIVE_TOP_NEW,
 } from '../constants/actions/Browse';
 
 const BroweReducer = (state, action) => {
   switch (action.type) {
-    case REQUEST_CATEGORY:
-    case REQUEST_AUTHOR:
+    case REQUEST_DATA:
       return {
         ...state,
         isLoading: true,
@@ -21,6 +25,17 @@ const BroweReducer = (state, action) => {
         ...state,
         isLoading: false,
         authors: action.data,
+      };
+    case RECEIVE_CATEGORY_DETAILS:
+      return {
+        ...state,
+        categoryDetails: action.data,
+        isLoading: false,
+      };
+    case RECEIVE_TOP_NEW:
+      return {
+        ...state,
+        topNew: action.data,
       };
     case REQUEST_FAIL:
       return {

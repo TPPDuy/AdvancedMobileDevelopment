@@ -82,14 +82,14 @@ const Home = ({ navigation }) => {
                   onClickCourse={(course) => onClickCourse(course)}/>
               </View>
               <View>
-              <AnimatedLoader
-                visible={homeContext.state.isLoading}
-                overlayColor="rgba(0,0,0,0.65)"
-                source={require('../../../assets/common/loader.json')}
-                animationStyle={styles.loading}
-                speed={2}
-              />
-      </View>
+                <AnimatedLoader
+                  visible={homeContext.state.isLoading}
+                  overlayColor="rgba(0,0,0,0.65)"
+                  source={require('../../../assets/common/loader.json')}
+                  animationStyle={styles.loading}
+                  speed={2}
+                />
+              </View>
             </ScrollView>
         )
       }
