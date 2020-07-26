@@ -54,7 +54,7 @@ const Home = ({ navigation }) => {
     });
   });
   return (
-    <ThemeContext>
+    <ThemeContext.Consumer>
       {
         ({ theme }) => (
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -93,7 +93,7 @@ const Home = ({ navigation }) => {
             </ScrollView>
         )
       }
-    </ThemeContext>
+    </ThemeContext.Consumer>
   );
 };
 

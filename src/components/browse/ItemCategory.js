@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-  Text, TouchableOpacity, StyleSheet, View,
+  Text, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { LinearGradient } from 'expo-linear-gradient';
 import colorSource from '../../constants/color';
-import { getRandomColor } from '../../utils/ColorUtils';
 
 const ItemCategory = ({
-  title, fontSize, color, onItemClick,
+  title, fontSize, onItemClick,
 }) => (
   <TouchableOpacity style={styles.container} onPress={() => onItemClick()}>
-    <View style={{ ...styles.item, backgroundColor: color }}>
+    <LinearGradient colors={['#A156F6', '#00E7F0']} style={styles.item}>
       <Text style={{ ...styles.title, fontSize }}>{title}</Text>
-    </View>
+    </LinearGradient>
   </TouchableOpacity>
 );
 
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
 
 ItemCategory.propTypes = {
   title: PropTypes.string,
-  color: PropTypes.string,
   fontSize: PropTypes.number,
   onItemClick: PropTypes.func,
 };

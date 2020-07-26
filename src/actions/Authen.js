@@ -19,7 +19,7 @@ const loginFailed = (error) => ({
   type: LOGIN_FAILED,
 });
 
-export const requestLogin = (dispatch) => (email, password) => {
+export const requestLogin = (dispatch) => async (email, password) => {
   dispatch(waitLogin());
 
   const data = {
@@ -27,17 +27,16 @@ export const requestLogin = (dispatch) => (email, password) => {
     password,
   };
 
-  api.post('/user/login', data)
-    .then((response) => {
-      storeUserInfo({ id: response.data.userInfo.id, token: response.data.token });
-      setInterval(() => {
-        dispatch(loginSuccess(response.data));
-      }, 1500);
-    })
-    .catch((error) => {
-      setInterval(() => {
-        dispatch(loginFailed());
-      }, 1500);
-    });
+  const response = await api.post('/user/login', data);
+  if (response) {
+    console.log('login: ', response);
+    storeUserInfo({ id: response.userInfo.id, token: response.token });
+    setInterval(() => {
+      dispatch(loginSuccess(response));
+    }, 1500);
+  } else {
+    console.log('login failed');
+    dispatch(loginFailed());
+  }
 };
 export const requestRegister = () => {};

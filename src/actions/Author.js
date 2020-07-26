@@ -16,10 +16,8 @@ export const getAuthorDetails = (dispatch) => async (id) => {
   dispatch(requestAuthor());
   try {
     const response = await api.get(`/instructor/detail/${id}`);
-    const result = response.data;
-    if (result.message === 'OK') {
-      console.log('author: ', result.payload);
-      dispatch(receiveAuthor(result.payload));
+    if (response) {
+      dispatch(receiveAuthor(response.payload));
     } else dispatch(requestFail());
   } catch (err) {
     dispatch(requestFail());

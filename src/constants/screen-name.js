@@ -1,11 +1,12 @@
 const screenName = {
+  Splash: 'Splash',
   Authen: 'Authentication',
   Main: 'Main',
   SignUp: 'Sign Up',
   SignIn: 'Sign In',
   ForgotPass: 'Forgot Password',
   HomeScreen: 'Home',
-  DownloadScreen: 'Favorites',
+  FavoriteScreen: 'Favorites',
   BrowseScreen: 'Browse',
   SearchScreen: 'Search',
   ListCourses: 'Courses',

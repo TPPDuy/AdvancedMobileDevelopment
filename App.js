@@ -11,7 +11,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, StatusBar, SafeAreaView,
+  StyleSheet, StatusBar, SafeAreaView,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Home from './src/components/home';
@@ -22,18 +22,18 @@ import screenName from './src/constants/screen-name';
 import AllCourses from './src/components/all-courses/AllCourses';
 import AuthorProfile from './src/components/author-profile/index';
 import CategoryListDetails from './src/components/category/CategoryListDetails';
-import ListGroupPaths from './src/components/path/ListGroupPaths';
-import ListPaths from './src/components/path/ListPaths';
-import PathDetails from './src/components/path/PathDetails';
 import SignIn from './src/components/authen/sign-in';
 import SignUp from './src/components/authen/sign-up';
 import ForgotPassword from './src/components/authen/forgot-password';
 import themes, { ThemeContext } from './src/constants/theme';
 import { AuthenProvider } from './src/components/providers/Authen';
-import { HomeContext, HomeProvider } from './src/components/providers/Home';
-import { getUserInfo, getTheme, storeTheme } from './src/storage/Storage';
+import { HomeProvider } from './src/components/providers/Home';
+import { getTheme, storeTheme } from './src/storage/Storage';
 import { BrowseProvider } from './src/components/providers/Browse';
 import { AuthorProvider } from './src/components/providers/Author';
+import Splash from './src/components/splash/Splash';
+import { FavoriteProvider } from './src/components/providers/Favorite';
+import Favorite from './src/components/favorites/Favorite';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -70,7 +70,7 @@ const HomeScreen = () => (
           <Stack.Screen
             name={screenName.ListCourses}
             component={Home}
-            options={{ title: 'Home', headerTitleAlign: 'left' }}
+            options={{ title: 'Trang chủ', headerTitleAlign: 'left' }}
           />
           <Stack.Screen
             name={screenName.AllCourses}
@@ -114,7 +114,7 @@ const BrowseScreen = () => (
           <Stack.Screen
             name={screenName.Browse}
             component={Browse}
-            options={{ title: 'Browse', headerTitleAlign: 'left' }}
+            options={{ title: 'Khám phá', headerTitleAlign: 'left' }}
           />
           <Stack.Screen
             name={screenName.CategoryListDetails}
@@ -140,7 +140,42 @@ const BrowseScreen = () => (
     }
   </ThemeContext.Consumer>
 );
-const DownloadScreen = () => (<View/>);
+const FavoriteScreen = () => (
+  <ThemeContext.Consumer>
+  {
+    ({ theme }) => (
+      <FavoriteProvider>
+        <Stack.Navigator
+          initialRouteName={screenName.FavoriteScreen}
+          screenOptions={
+            {
+              headerTitleStyle: {
+                fontSize: 20,
+                fontWeight: '500',
+                color: theme.textColor,
+              },
+              headerStyle: {
+                backgroundColor: theme.headerBackground,
+              },
+              headerTintColor: theme.textColor,
+            }
+          }>
+          <Stack.Screen
+            name={screenName.FavoriteScreen}
+            component={Favorite}
+            options={{ title: 'Yêu thích', headerTitleAlign: 'left' }}
+          />
+          <Stack.Screen
+            name={screenName.CourseDetails}
+            component={CourseDetails}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </FavoriteProvider>
+    )
+  }
+  </ThemeContext.Consumer>
+);
 const SearchScreen = () => (<Search/>);
 
 const MainScreens = () => (
@@ -155,7 +190,7 @@ const MainScreens = () => (
                   let iconName;
                   if (route.name === screenName.HomeScreen) {
                     iconName = 'home';
-                  } else if (route.name === screenName.DownloadScreen) {
+                  } else if (route.name === screenName.FavoriteScreen) {
                     iconName = 'staro';
                   } else if (route.name === screenName.BrowseScreen) {
                     iconName = 'find';
@@ -176,7 +211,7 @@ const MainScreens = () => (
             },
           }}>
           <Tab.Screen name={screenName.HomeScreen} component={HomeScreen}/>
-          <Tab.Screen name={screenName.DownloadScreen} component={DownloadScreen}/>
+          <Tab.Screen name={screenName.FavoriteScreen} component={FavoriteScreen}/>
           <Tab.Screen name={screenName.BrowseScreen} component={BrowseScreen}/>
           <Tab.Screen name={screenName.SearchScreen} component={SearchScreen}/>
         </Tab.Navigator>
@@ -210,13 +245,6 @@ function App() {
     );
   }, []);
 
-  const isLogined = () => {
-    const user = getUserInfo();
-    console.log('user', user);
-    if (user) return true;
-    return false;
-  };
-
   return (
     <HomeProvider>
       <BrowseProvider>
@@ -232,11 +260,8 @@ function App() {
                   }
                 }>
                 <Stack.Navigator screenOptions={{ headerShown: false }}>
-                  {
-                    !isLogined()
-                      ? <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
-                      : null
-                  }
+                  <Stack.Screen name={screenName.Splash} component={Splash}/>
+                  <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
                   <Stack.Screen name={screenName.Main} component={MainScreens}/>
                 </Stack.Navigator>
               </SafeAreaView>

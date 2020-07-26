@@ -13,10 +13,8 @@ export const getUserInfo = async () => {
   try {
     const value = await AsyncStorage.getItem('user');
     const jsonValue = value !== null ? JSON.parse(value) : null;
-    console.log(jsonValue);
     return jsonValue;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };

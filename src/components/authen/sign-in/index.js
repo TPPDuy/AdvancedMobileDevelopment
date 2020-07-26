@@ -51,7 +51,7 @@ const SignIn = ({ navigation }) => {
   };
   // () => navigation.replace(screenName.Main)
   return (
-    <LinearGradient colors={['#5f00a3', 'rgba(157,22,163,1)', 'rgba(35,121,255,0.9808298319327731)']} style={styles.container}>
+    <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
       <View style={styles.formContainer}>
         <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email" onTextChange={(email) => handleInputEmail(email)}/>

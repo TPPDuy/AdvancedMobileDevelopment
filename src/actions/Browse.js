@@ -32,29 +32,17 @@ const receiveTopNew = (data) => ({
 });
 export const getCategory = (dispatch) => async () => {
   dispatch(requestData());
-  try {
-    const response = await api.get('/category/all');
-    const result = response.data;
-    if (result.message === 'OK') {
-      dispatch(receiveCategory(result.payload));
-    } else dispatch(requestFail());
-  } catch (error) {
-    console.log(error);
-    dispatch(requestFail());
-  }
+  const response = await api.get('/category/all');
+  if (response) {
+    dispatch(receiveCategory(response.payload));
+  } else dispatch(requestFail());
 };
 export const getAuthor = (dispatch) => async () => {
   dispatch(requestData());
-  try {
-    const response = await api.get('/instructor');
-    const result = response.data;
-    if (result.message === 'OK') {
-      dispatch(receiveAuthor(result.payload));
-    } else dispatch(requestFail());
-  } catch (error) {
-    console.log(error);
-    dispatch(requestFail());
-  }
+  const response = await api.get('/instructor');
+  if (response) {
+    dispatch(receiveAuthor(response.payload));
+  } else dispatch(requestFail());
 };
 export const getTopNew = (dispatch) => async () => {
   dispatch(requestData());
@@ -64,9 +52,8 @@ export const getTopNew = (dispatch) => async () => {
   };
   try {
     const response = await api.post('/course/top-new', data);
-    const result = response.data;
-    if (result.message === 'OK') {
-      dispatch(receiveTopNew(result.payload));
+    if (response) {
+      dispatch(receiveTopNew(response.payload));
     } else dispatch(requestFail());
   } catch (err) {
     dispatch(requestFail());
@@ -86,9 +73,8 @@ export const getCategoryDetails = (dispatch) => async (id, page = 0) => {
       offset: page,
     };
     const response = await api.post('/course/search', body);
-    const result = response.data;
-    if (result.message === 'OK') {
-      dispatch(receiveCategoryDetails(result.payload.rows));
+    if (response) {
+      dispatch(receiveCategoryDetails(response.payload.rows));
     } else dispatch(requestFail());
   } catch (error) {
     console.log(error);

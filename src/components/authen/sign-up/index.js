@@ -17,7 +17,7 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <LinearGradient colors={['#5f00a3', 'rgba(157,22,163,1)', 'rgba(35,121,255,0.9808298319327731)']} style={styles.container}>
+    <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.formContainer}>
           <Text style={styles.title}>Sign Up</Text>
           <CustomInput icon={imgSource.name} isHideContent={false} placeHolder="Name"/>

@@ -38,9 +38,15 @@ const ItemCourse = ({
                 )
                 : null
             }
-            <Text numberOfLines={1} style={styles.normalText}>
-              {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙  {duration}h
-            </Text>
+            {
+              (date && numOfVideos && duration)
+                ? (
+                <Text numberOfLines={1} style={styles.normalText}>
+                  {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙  {duration}h
+                </Text>
+                )
+                : null
+            }
             <View style={styles.ratingContainer}>
               <StarRating
                 containerStyle={styles.ratingBar}
@@ -52,7 +58,11 @@ const ItemCourse = ({
                 fullStarColor="#fcba03"
                 emptyStarColor="#d4d4d4"
                 starSize={10}/>
-              <Text style={styles.normalText}>
+              <Text style={{
+                ...styles.normalText,
+                color: price === 0 ? colorSource.gray : colorSource.red,
+                fontWeight: price === 0 ? 'normal' : 'bold',
+              }}>
                 {
                   price === 0
                     ? '(Miễn phí)'
@@ -61,9 +71,9 @@ const ItemCourse = ({
               </Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => onShowMenu}>
+          {/* <TouchableOpacity onPress={() => onShowMenu}>
             <MenuIcon width={15} height={15} style={{ fill: '#000' }}/>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </TouchableOpacity>
       )
     }

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-unused-styles */
 /* eslint-disable global-require */
 import React from 'react';
@@ -43,7 +44,11 @@ const ItemCourse = ({
                 fullStarColor="#fcba03"
                 emptyStarColor="#d4d4d4"
                 starSize={10}/>
-              <Text style={styles(theme).normalText}>
+              <Text style={{
+                ...styles.normalText,
+                color: price === 0 ? colorSource.gray : colorSource.red,
+                fontWeight: price === 0 ? 'normal' : 'bold',
+              }}>
                 {
                   price === 0
                     ? '(Miễn phí)'
@@ -115,7 +120,7 @@ const styles = (theme) => StyleSheet.create({
 ItemCourse.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  thumbnail: PropTypes.number,
+  thumbnail: PropTypes.string,
   author: PropTypes.string,
   numOfVideos: PropTypes.number,
   date: PropTypes.number,

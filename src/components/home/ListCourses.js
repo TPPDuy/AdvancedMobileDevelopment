@@ -7,6 +7,7 @@ import {
 import PropTypes, { object } from 'prop-types';
 import ItemCourse from '../common/ItemCourseRowType';
 import { ThemeContext } from '../../constants/theme';
+import NoDataIcon from '../../../assets/common/no-data-icon.svg';
 
 const renderSeparator = (dividerColor) => (
     <View style={{ height: 1, backgroundColor: dividerColor }}/>
@@ -19,23 +20,35 @@ const ListCourses = ({ title, courses, onItemClick }) => (
       {
         ({ theme }) => (
           <View style={styles.container}>
-            <Text style={{ ...styles.title, color: theme.textColor }}>{title}</Text>
+            {
+              (title && title.length !== 0)
+                ? (
+                <Text style={{ ...styles.title, color: theme.textColor }}>{title}</Text>
+                )
+                : null
+            }
             <FlatList
                 horizontal={false}
                 data={courses}
                 renderItem={({ item }) => <ItemCourse
-                                              name={item.title}
-                                              thumbnail={item.imageUrl}
-                                              author={item['instructor.user.name']}
+                                              name={item.title || item.courseTitle}
+                                              thumbnail={item.imageUrl || item.courseImage}
+                                              author={item['instructor.user.name'] || item.instructorName}
                                               numOfVideos={item.videoNumber}
                                               date={item.updatedAt}
                                               duration={item.totalHours}
-                                              rating={item.ratedNumber}
-                                              price={item.price}
+                                              rating={item.ratedNumber || item.courseAveragePoint}
+                                              price={item.price || item.coursePrice}
                                               onItemClick={() => onItemClick(item)}/>}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
-                ListFooterComponent={renderFooter}/>
+                ListFooterComponent={renderFooter}
+                ListEmptyComponent={() => (
+                  <View style={styles.emptyComponent}>
+                    <NoDataIcon width={50} height={50} />
+                    <Text style={{ fontSize: 14, color: theme.textColor, marginTop: 15 }}>Không tìm thấy khóa học nào</Text>
+                  </View>
+                )}/>
           </View>
         )
       }
@@ -47,6 +60,17 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     width: '100%',
+  },
+  emptyComponent: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
+    position: 'relative',
+    height: '100%',
+    marginBottom: '5%',
+    marginTop: '60%',
   },
   title: {
     fontSize: 23,
@@ -62,7 +86,7 @@ ListCourses.propTypes = {
 };
 
 ListCourses.defaultProps = {
-  title: 'Software Development',
+  title: '',
   courses: [
     {
       id: 1,

@@ -5,6 +5,8 @@ const {
   RECEIVE_TOP_RATE_HOME,
   RECEIVE_RECOMMENDED_HOME,
   RECEIVE_ALL_COURSE,
+  REQUEST_ALL_COURSE,
+  REQUEST_FAILED,
 } = require('../constants/actions/Home');
 
 const HomeReducer = (state, action) => {
@@ -13,6 +15,17 @@ const HomeReducer = (state, action) => {
       return ({
         ...state,
         isLoading: true,
+      });
+    case REQUEST_ALL_COURSE:
+      return ({
+        ...state,
+        isLoading: true,
+        allCourse: [],
+      });
+    case REQUEST_FAILED:
+      return ({
+        ...state,
+        isLoading: false,
       });
     case RECEIVE_TOP_SELL_HOME:
       return ({
@@ -54,6 +67,7 @@ const HomeReducer = (state, action) => {
       return ({
         ...state,
         allCourse: action.data,
+        isLoading: false,
       });
     default:
       return state;

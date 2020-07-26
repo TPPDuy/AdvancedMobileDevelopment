@@ -8,6 +8,7 @@ import {
   RECEIVE_TOP_RATE_HOME,
   RECEIVE_RECOMMENDED_HOME,
   RECEIVE_ALL_COURSE,
+  REQUEST_ALL_COURSE,
 } from '../constants/actions/Home';
 import { getUserInfo } from '../storage/Storage';
 
@@ -23,107 +24,101 @@ const requestFail = (error) => ({
   type: REQUEST_FAILED,
 });
 
-export const requestDataHomeScreen = (dispatch) => (page) => {
+export const requestDataHomeScreen = (dispatch) => async (page) => {
   dispatch(waitRequest());
-  const user = getUserInfo();
+  const user = await getUserInfo();
   const data = {
     offset: page,
     limit: 10,
   };
 
-  api.post('/course/top-sell', data)
-    .then((response) => {
-      dispatch(receiveData(RECEIVE_TOP_SELL_HOME, response.data.payload));
-    })
-    .catch((error) => {
-      requestFail(error);
-    });
+  const topSellResponse = await api.post('/course/top-sell', data);
+  if (topSellResponse) {
+    dispatch(receiveData(RECEIVE_TOP_SELL_HOME, topSellResponse.payload));
+  } else {
+    dispatch(requestFail());
+  }
 
-  api.post('/course/top-new', data)
-    .then((response) => {
-      dispatch(receiveData(RECEIVE_TOP_NEW_HOME, response.data.payload));
-    })
-    .catch((error) => {
-      requestFail(error);
-    });
+  const topNewResponse = await api.post('/course/top-new', data);
+  if (topNewResponse) {
+    dispatch(receiveData(RECEIVE_TOP_NEW_HOME, topNewResponse.payload));
+  } else {
+    dispatch(requestFail());
+  }
 
-  api.post('/course/top-rate', data)
-    .then((response) => {
-      dispatch(receiveData(RECEIVE_TOP_RATE_HOME, response.data.payload));
-    })
-    .catch((error) => {
-      requestFail(error);
-    });
+  const topRateResponse = await api.post('/course/top-rate', data);
+  if (topRateResponse) {
+    dispatch(receiveData(RECEIVE_TOP_RATE_HOME, topRateResponse.payload));
+  } else {
+    dispatch(requestFail());
+  }
 
   if (user !== null) {
-    user.then((res) => {
-      api.get(`/user/recommend-course/${res.id}/10/1`)
-        .then((response) => {
-          dispatch(receiveData(RECEIVE_RECOMMENDED_HOME, response.data.payload));
-        })
-        .catch((error) => {
-          console.log('request fail', error);
-          requestFail(error);
-        });
-    });
+    const recommendResponse = await api.get(`/user/recommend-course/${user.id}/10/1`);
+    if (recommendResponse) {
+      dispatch(receiveData(RECEIVE_RECOMMENDED_HOME, recommendResponse.payload));
+    } else {
+      dispatch(requestFail());
+    }
   }
 };
 
-export const requestTopNew = (dispatch) => (page) => {
+export const requestTopNew = (dispatch) => async (page) => {
   const data = {
     offset: page,
     limit: 10,
   };
-  api.post('/course/top-new', data)
-    .then((response) => {
-      dispatch(receiveData(RECEIVE_ALL_COURSE, response.data.payload));
-    })
-    .catch((error) => {
-      requestFail(error);
-    });
+  dispatch({ type: REQUEST_ALL_COURSE });
+  const topNewResponse = await api.post('/course/top-new', data);
+  if (topNewResponse) {
+    dispatch(receiveData(RECEIVE_ALL_COURSE, topNewResponse.payload));
+  } else {
+    dispatch(requestFail());
+  }
 };
 
-export const requestTopSell = (dispatch) => (page) => {
+export const requestTopSell = (dispatch) => async (page) => {
   const data = {
     offset: page,
     limit: 10,
   };
-  api.post('/course/top-sell', data)
-    .then((response) => {
-      dispatch(receiveData(RECEIVE_ALL_COURSE, response.data.payload));
-    })
-    .catch((error) => {
-      requestFail(error);
-    });
+  dispatch({ type: REQUEST_ALL_COURSE });
+
+  const topSellResponse = await api.post('/course/top-sell', data);
+  if (topSellResponse) {
+    dispatch(receiveData(RECEIVE_ALL_COURSE, topSellResponse.payload));
+  } else {
+    dispatch(requestFail());
+  }
 };
 
-export const requestTopRate = (dispatch) => (page) => {
+export const requestTopRate = (dispatch) => async (page) => {
   const data = {
     offset: page,
     limit: 10,
   };
-  api.post('/course/top-rate', data)
-    .then((response) => {
-      dispatch(receiveData(RECEIVE_ALL_COURSE, response.data.payload));
-    })
-    .catch((error) => {
-      requestFail(error);
-    });
+  dispatch({ type: REQUEST_ALL_COURSE });
+
+  const topRateResponse = await api.post('/course/top-rate', data);
+  if (topRateResponse) {
+    dispatch(receiveData(RECEIVE_ALL_COURSE, topRateResponse.payload));
+  } else {
+    dispatch(requestFail());
+  }
 };
 
-export const requestRecommended = (dispatch) => (page) => {
-  const user = getUserInfo();
+export const requestRecommended = (dispatch) => async (page) => {
+  const user = await getUserInfo();
   if (user !== null) {
-    user.then((res) => {
-      api.get(`/user/recommend-course/${res.id}/10/${page}`)
-        .then((response) => {
-          dispatch(receiveData(RECEIVE_ALL_COURSE, response.data.payload));
-        })
-        .catch((error) => {
-          requestFail(error);
-        });
-    });
-  } else requestFail(error);
+    dispatch({ type: REQUEST_ALL_COURSE });
+
+    const recommendResponse = await api.get(`/user/recommend-course/${user.id}/10/1`);
+    if (recommendResponse) {
+      dispatch(receiveData(RECEIVE_ALL_COURSE, recommendResponse.payload));
+    } else {
+      dispatch(requestFail());
+    }
+  }
 };
 
 export const requestAllCourse = (dispatch) => (type) => {

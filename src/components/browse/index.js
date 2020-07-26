@@ -86,7 +86,6 @@ const Browse = ({
                                               id={item.id}
                                               title={item.name}
                                               fontSize={15}
-                                              color={getRandomColor()}
                                               onItemClick={() => navigation.navigate(screenName.CategoryListDetails, { data: item })}/>
                                           </View>
                 }
