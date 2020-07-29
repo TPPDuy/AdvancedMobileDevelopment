@@ -5,10 +5,10 @@ const screenName = {
   SignUp: 'Sign Up',
   SignIn: 'Sign In',
   ForgotPass: 'Forgot Password',
-  HomeScreen: 'Home',
-  FavoriteScreen: 'Favorites',
-  BrowseScreen: 'Browse',
-  SearchScreen: 'Search',
+  HomeScreen: 'Trang chủ',
+  FavoriteScreen: 'Yêu thích',
+  BrowseScreen: 'Khám phá',
+  SearchScreen: 'Tìm kiếm',
   Search: 'Search Place',
   ListCourses: 'Courses',
   CourseDetails: 'Course Details',
@@ -21,6 +21,8 @@ const screenName = {
   ListGroupPaths: 'List Group Paths',
   ListPaths: 'List Paths',
   PathDetails: 'Path Details',
+  ProfileScreen: 'ProfileScreen',
+  Profile: 'Profile',
 };
 
 export default screenName;

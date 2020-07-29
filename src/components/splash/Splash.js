@@ -1,12 +1,13 @@
 /* eslint-disable global-require */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import AnimatedLoader from 'react-native-animated-loader';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
 import colorSource from '../../constants/color';
-import { getUserInfo } from '../../storage/Storage';
+import { getUserInfo, getProfile } from '../../storage/Storage';
 import screenName from '../../constants/screen-name';
+import { ProfileContext } from '../providers/Profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,10 +20,11 @@ const styles = StyleSheet.create({
   },
 });
 const Splash = ({ navigation }) => {
+  const profileContext = useContext(ProfileContext);
   const [isLogined, setIsLogined] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const checkLogined = async () => {
-    const user = await getUserInfo();
+    const user = await getProfile();
     if (user) {
       console.log('user is not null', user);
       setIsLogined(true);
@@ -32,6 +34,7 @@ const Splash = ({ navigation }) => {
     }
   };
   useEffect(() => {
+    profileContext.getProfile();
     setTimeout(() => checkLogined(), 2000);
   }, []);
 

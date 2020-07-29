@@ -35,6 +35,8 @@ import Splash from './src/components/splash/Splash';
 import { FavoriteProvider } from './src/components/providers/Favorite';
 import Favorite from './src/components/favorites/Favorite';
 import { SearchProvider } from './src/components/providers/Search';
+import { ProfileProvider } from './src/components/providers/Profile';
+import Profile from './src/components/profile/profile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -190,47 +192,75 @@ const SearchScreen = () => (
 );
 
 const MainScreens = () => (
-  <ThemeContext>
+  <ThemeContext.Consumer>
     {
       ({ theme }) => (
-        <Tab.Navigator
-          screenOptions = {
-            ({ route }) => (
-              {
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
-                  if (route.name === screenName.HomeScreen) {
-                    iconName = 'home';
-                  } else if (route.name === screenName.FavoriteScreen) {
-                    iconName = 'staro';
-                  } else if (route.name === screenName.BrowseScreen) {
-                    iconName = 'find';
-                  } else {
-                    iconName = 'search1';
-                  }
-                  return <AntDesign name={iconName} size={size} color={color} />;
-                },
-              }
-            )
-          }
-          tabBarOptions={{
-            activeTintColor: '#2378ff',
-            inactiveTintColor: 'gray',
-            style: {
-              backgroundColor: theme.headerBackground,
-              borderTopWidth: 0,
-            },
-          }}>
-          <Tab.Screen name={screenName.HomeScreen} component={HomeScreen}/>
-          <Tab.Screen name={screenName.FavoriteScreen} component={FavoriteScreen}/>
-          <Tab.Screen name={screenName.BrowseScreen} component={BrowseScreen}/>
-          <Tab.Screen name={screenName.SearchScreen} component={SearchScreen}/>
-        </Tab.Navigator>
+          <Tab.Navigator
+            screenOptions = {
+              ({ route }) => (
+                {
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    if (route.name === screenName.HomeScreen) {
+                      iconName = 'home';
+                    } else if (route.name === screenName.FavoriteScreen) {
+                      iconName = 'staro';
+                    } else if (route.name === screenName.BrowseScreen) {
+                      iconName = 'find';
+                    } else {
+                      iconName = 'search1';
+                    }
+                    return <AntDesign name={iconName} size={size} color={color} />;
+                  },
+                }
+              )
+            }
+            tabBarOptions={{
+              activeTintColor: '#2378ff',
+              inactiveTintColor: 'gray',
+              style: {
+                backgroundColor: theme.headerBackground,
+                borderTopWidth: 0,
+              },
+            }}>
+            <Tab.Screen name={screenName.HomeScreen} component={HomeScreen}/>
+            <Tab.Screen name={screenName.FavoriteScreen} component={FavoriteScreen}/>
+            <Tab.Screen name={screenName.BrowseScreen} component={BrowseScreen}/>
+            <Tab.Screen name={screenName.SearchScreen} component={SearchScreen}/>
+          </Tab.Navigator>
       )
     }
-  </ThemeContext>
+  </ThemeContext.Consumer>
 );
 
+const ProfileScreens = () => (
+  <ThemeContext.Consumer>
+    {
+      ({ theme }) => (
+        <Stack.Navigator
+          screenOptions={
+            {
+              headerTitleStyle: {
+                fontSize: 20,
+                fontWeight: '500',
+                color: theme.textColor,
+              },
+              headerStyle: {
+                backgroundColor: theme.headerBackground,
+              },
+              headerTintColor: theme.textColor,
+            }
+          }>
+          <Stack.Screen
+            name={screenName.Profile}
+            component={Profile}
+            options={{ headerShown: true }}
+          />
+        </Stack.Navigator>
+      )
+    }
+  </ThemeContext.Consumer>
+);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
@@ -260,24 +290,27 @@ function App() {
     <HomeProvider>
       <BrowseProvider>
         <AuthorProvider>
-          <ThemeContext.Provider value={{ theme, changeTheme }}>
-            <NavigationContainer>
-              <SafeAreaView
-                style={
-                  {
-                    ...styles.container,
-                    backgroundColor: theme.background,
-                    color: theme.textColor,
-                  }
-                }>
-                <Stack.Navigator screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name={screenName.Splash} component={Splash}/>
-                  <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
-                  <Stack.Screen name={screenName.Main} component={MainScreens}/>
-                </Stack.Navigator>
-              </SafeAreaView>
-            </NavigationContainer>
-          </ThemeContext.Provider>
+          <ProfileProvider>
+            <ThemeContext.Provider value={{ theme, changeTheme }}>
+              <NavigationContainer>
+                <SafeAreaView
+                  style={
+                    {
+                      ...styles.container,
+                      backgroundColor: theme.background,
+                      color: theme.textColor,
+                    }
+                  }>
+                  <Stack.Navigator screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name={screenName.Splash} component={Splash}/>
+                    <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
+                    <Stack.Screen name={screenName.Main} component={MainScreens}/>
+                    <Stack.Screen name={screenName.ProfileScreen} component={ProfileScreens} />
+                  </Stack.Navigator>
+                </SafeAreaView>
+              </NavigationContainer>
+            </ThemeContext.Provider>
+          </ProfileProvider>
         </AuthorProvider>
       </BrowseProvider>
     </HomeProvider>

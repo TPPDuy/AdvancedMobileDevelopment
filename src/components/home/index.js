@@ -45,7 +45,9 @@ const Home = ({ navigation }) => {
                         <DarkIcon width={28} height={28} />
                         </TouchableOpacity>
                 }
-                <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+                <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
+                  <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+                </TouchableOpacity>
               </View>
             )
           }

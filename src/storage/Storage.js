@@ -32,10 +32,39 @@ export const getTheme = async () => {
   try {
     const value = await AsyncStorage.getItem('theme');
     const jsonValue = value !== null ? JSON.parse(value) : null;
-    console.log(jsonValue);
     return jsonValue;
   } catch (e) {
     console.log(e);
     return null;
+  }
+};
+
+export const getProfile = async () => {
+  try {
+    const value = await AsyncStorage.getItem('profile');
+    const jsonValue = value !== null ? JSON.parse(value) : null;
+    return jsonValue;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const setProfile = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem('profile', jsonValue);
+  } catch (e) {
+    console.log(e);
+    await AsyncStorage.setItem('profile', null);
+  }
+};
+
+export const clearUserInfo = async () => {
+  try {
+    await AsyncStorage.setItem('user', null);
+    await AsyncStorage.setItem('profile', null);
+  } catch (e) {
+    console.log(e);
   }
 };
