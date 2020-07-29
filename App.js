@@ -34,6 +34,7 @@ import { AuthorProvider } from './src/components/providers/Author';
 import Splash from './src/components/splash/Splash';
 import { FavoriteProvider } from './src/components/providers/Favorite';
 import Favorite from './src/components/favorites/Favorite';
+import { SearchProvider } from './src/components/providers/Search';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -176,7 +177,17 @@ const FavoriteScreen = () => (
   }
   </ThemeContext.Consumer>
 );
-const SearchScreen = () => (<Search/>);
+const SearchScreen = () => (
+  <SearchProvider>
+    <Stack.Navigator>
+      <Stack.Screen
+        name={screenName.Search}
+        component={Search}
+        options={{ headerShown: false }}>
+      </Stack.Screen>
+    </Stack.Navigator>
+  </SearchProvider>
+);
 
 const MainScreens = () => (
   <ThemeContext>

@@ -90,18 +90,30 @@ const Browse = ({
                                           </View>
                 }
               />
-              <SectionCourse
-                  title='Các khóa học mới'
-                  courses={browseContext.state.topNew}
-                  onSeeAll={() => onSeeAll('TOP_NEW', 'Các khóa học mới')}
-                  onClickCourse={(course) => onClickCourse(course)}
-              />
-              <View style={styles.authorsContainer}>
-                <Text style={{ ...styles.topAuthorsText, color: theme.textColor }}>Giảng viên hàng đầu</Text>
-                <ListAuthors
-                  authors={browseContext.state.authors}
-                  onClickItem={(item) => navigation.navigate(screenName.AuthorProfile, { id: item.id })}/>
-              </View>
+              {
+                (browseContext.state.topNew && browseContext.state.topNew.length !== 0)
+                  ? (
+                    <SectionCourse
+                      title='Các khóa học mới'
+                      courses={browseContext.state.topNew}
+                      onSeeAll={() => onSeeAll('TOP_NEW', 'Các khóa học mới')}
+                      onClickCourse={(course) => onClickCourse(course)}
+                    />
+                  )
+                  : null
+              }
+              {
+                (browseContext.state.authors && browseContext.state.authors !== 0)
+                  ? (
+                    <View style={styles.authorsContainer}>
+                      <Text style={{ ...styles.topAuthorsText, color: theme.textColor }}>Giảng viên hàng đầu</Text>
+                      <ListAuthors
+                        authors={browseContext.state.authors}
+                        onClickItem={(item) => navigation.navigate(screenName.AuthorProfile, { id: item.id })}/>
+                    </View>
+                  )
+                  : null
+              }
               <View>
                 <AnimatedLoader
                   visible={browseContext.state.isLoading}

@@ -8,11 +8,11 @@ import {
 import { ThemeContext } from '../../constants/theme';
 import RecentIcon from '../../../assets/search/recent-icon.svg';
 
-const ItemRecentSearch = ({ searchKey }) => (
+const ItemRecentSearch = ({ searchKey, onClick }) => (
   <ThemeContext.Consumer>
     {
       ({ theme }) => (
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => onClick()}>
           <View style={styles.container}>
             <RecentIcon width={20} height={20} style={{ fill: theme.textColor, marginRight: 10 }}/>
             <Text style={{ color: theme.textColor, fontSize: 14 }}>{searchKey}</Text>
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 
 ItemRecentSearch.propTypes = {
   searchKey: PropTypes.string,
+  onClick: (f) => f,
 };
 
 export default ItemRecentSearch;

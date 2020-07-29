@@ -28,27 +28,27 @@ const ListCourses = ({ title, courses, onItemClick }) => (
                 : null
             }
             <FlatList
-                horizontal={false}
-                data={courses}
-                renderItem={({ item }) => <ItemCourse
-                                              name={item.title || item.courseTitle}
-                                              thumbnail={item.imageUrl || item.courseImage}
-                                              author={item['instructor.user.name'] || item.instructorName}
-                                              numOfVideos={item.videoNumber}
-                                              date={item.updatedAt}
-                                              duration={item.totalHours}
-                                              rating={item.ratedNumber || item.courseAveragePoint}
-                                              price={item.price || item.coursePrice}
-                                              onItemClick={() => onItemClick(item)}/>}
-                showsVerticalScrollIndicator={false}
-                ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
-                ListFooterComponent={renderFooter}
-                ListEmptyComponent={() => (
-                  <View style={styles.emptyComponent}>
-                    <NoDataIcon width={50} height={50} />
-                    <Text style={{ fontSize: 14, color: theme.textColor, marginTop: 15 }}>Không tìm thấy khóa học nào</Text>
-                  </View>
-                )}/>
+              horizontal={false}
+              data={courses}
+              renderItem={({ item }) => <ItemCourse
+                                            name={item.title || item.courseTitle}
+                                            thumbnail={item.imageUrl || item.courseImage}
+                                            author={item['instructor.user.name'] || item.instructorName}
+                                            numOfVideos={item.videoNumber}
+                                            date={item.updatedAt}
+                                            duration={item.totalHours}
+                                            rating={item.ratedNumber || item.courseAveragePoint}
+                                            price={item.price || item.coursePrice}
+                                            onItemClick={() => onItemClick(item)}/>}
+              showsVerticalScrollIndicator={false}
+              ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
+              ListFooterComponent={renderFooter}
+              ListEmptyComponent={() => (
+                <View style={styles.emptyComponent}>
+                  <NoDataIcon width={50} height={50} />
+                  <Text style={{ fontSize: 14, color: theme.textColor, marginTop: 15 }}>Không tìm thấy khóa học nào</Text>
+                </View>
+              )}/>
           </View>
         )
       }

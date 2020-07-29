@@ -30,7 +30,12 @@ export const requestLogin = (dispatch) => async (email, password) => {
   const response = await api.post('/user/login', data);
   if (response) {
     console.log('login: ', response);
-    storeUserInfo({ id: response.userInfo.id, token: response.token });
+    storeUserInfo({
+      id: response.userInfo.id,
+      token: response.token,
+      email: response.email,
+      password: response.password,
+    });
     setInterval(() => {
       dispatch(loginSuccess(response));
     }, 1500);

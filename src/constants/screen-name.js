@@ -9,6 +9,7 @@ const screenName = {
   FavoriteScreen: 'Favorites',
   BrowseScreen: 'Browse',
   SearchScreen: 'Search',
+  Search: 'Search Place',
   ListCourses: 'Courses',
   CourseDetails: 'Course Details',
   AllCourses: 'All Courses',
