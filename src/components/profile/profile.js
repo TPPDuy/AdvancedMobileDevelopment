@@ -16,7 +16,7 @@ const Profile = ({ navigation }) => {
   
   const handleLogout = async () => {
     await clearUserInfo();
-    // navigation.replace(screenName.Authen);
+    navigation.replace(screenName.Authen);
   };
   useEffect(() => {
     async function loadProfile() {

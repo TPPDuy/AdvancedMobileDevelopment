@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Video } from 'expo-av';
 import {
   View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView,
@@ -15,6 +15,7 @@ import Content from './Content';
 import CollapsableDescription from '../common/CollapsableDescription';
 import screenName from '../../constants/screen-name';
 import { ThemeContext } from '../../constants/theme';
+import { CourseDetailsContext } from '../providers/CourseDetails';
 
 const ItemFunction = ({ name, icon }) => (
   <View style={styles.itemFunctionContainer}>
@@ -40,57 +41,68 @@ const CourseDetails = ({
   route, navigation,
 }) => {
   const { course } = route.params;
-  const iconBookmarked = course.isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
+  const courseDetailContext = useContext(CourseDetailsContext);
+  // console.log('course', route.params);
+  useEffect(() => {
+    courseDetailContext.getCourseInfo(course);
+  }, []);
+  let iconLike = courseDetailContext.state.isLiked ? require('../../../assets/course-detail/like-fill-icon.png') : require('../../../assets/course-detail/like-icon.png');
+  // const iconBookmarked = course.isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
   return (
     <ThemeContext.Consumer>
       {
         ({ theme }) => (
           <View style={{ ...styles.container, backgroundColor: theme.background }}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
+            {/* <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
               <Image source={require('../../../assets/course-detail/down-arrow-icon.png')} style={styles.backIcon}/>
-            </TouchableOpacity>
-            <Video source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
-            shouldPlay
-            resizeMode={Video.RESIZE_MODE_CONTAIN}
-            useNativeControls={true}
-            usePoster={true}
-            volume={1.0}
-            rate={1.0}
-            style={styles.video}
-            />
+            </TouchableOpacity> */}
+            {
+              courseDetailContext.state.courseInfo
+                ? (
+                  <>
+                    <Video source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+                    shouldPlay
+                    resizeMode={Video.RESIZE_MODE_CONTAIN}
+                    useNativeControls={true}
+                    usePoster={true}
+                    volume={1.0}
+                    rate={1.0}
+                    style={styles.video}
+                    />
+                    <ScrollView>
+                      <View style={styles.infoCourseBlock}>
+                        <Text style={styles.title}>{courseDetailContext.state.courseInfo.title}</Text>
+                        <View>
+                          <Text>Giảng viên: </Text>
+                          <TouchableOpacity>
+                            <Text>{courseDetailContext.state.courseInfo.instructorName}</Text>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.info}>
+                          {formatMonthYearType(courseDetailContext.state.courseInfo.updatedAt)} ∙ {courseDetailContext.state.courseInfo.videoNumber} videos ∙ {courseDetailContext.state.courseInfo.totalHours}h
+                        </Text>
+                        <View style={styles.func}>
+                          <View style={styles.functionContainer}>
+                            <ItemFunction name='Yêu thích' icon={iconLike}/>
+                            <ItemFunction name='Add to Channel' icon={require('../../../assets/course-detail/channel-icon.png')}/>
+                            <ItemFunction name='Tải xuống' icon={require('../../../assets/course-detail/download-icon.png')}/>
+                          </View>
+                        </View>
+                        <View style={styles.description}>
+                          <CollapsableDescription minHeight={70} description={courseDetailContext.state.courseInfo.description}/>
+                        </View>
 
-            <ScrollView>
-              <View style={styles.infoCourseBlock}>
-                <Text style={styles.title}>{course.name}</Text>
-                <FlatList
-                  data={course.authors}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  ItemSeparatorComponent={authorSeparator}
-                  renderItem={({ item }) => <ItemAuthorHorizontal
-                                              name={item.name}
-                                              avatar={item.avatar}
-                                              onItemClick={(itemId) => navigation.navigate(screenName.AuthorProfile)}/>}
-                />
-                <Text style={styles.info}>{course.level} ∙ {formatMonthYearType(course.date)} ∙ {formatHourType1(course.duration)}</Text>
-                <View style={styles.func}>
-                  <View style={styles.functionContainer}>
-                    <ItemFunction name='Bookmark' icon={iconBookmarked}/>
-                    <ItemFunction name='Add to Channel' icon={require('../../../assets/course-detail/channel-icon.png')}/>
-                    <ItemFunction name='Download' icon={require('../../../assets/course-detail/download-icon.png')}/>
-                  </View>
-                </View>
-                <View style={styles.description}>
-                  <CollapsableDescription minHeight={70} description={course.description}/>
-                </View>
-
-                <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
-                <ButtonFunction name='View related paths & courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
-              </View>
-              <View style={{ paddingHorizontal: 15 }}>
-                <Content modules={course.content.modules}/>
-              </View>
-            </ScrollView>
+                        <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
+                        <ButtonFunction name='View related courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
+                      </View>
+                      <View style={{ paddingHorizontal: 15 }}>
+                        <Content modules={courseDetailContext.state.courseInfo.section}/>
+                      </View>
+                    </ScrollView>
+                  </>
+                )
+                : null
+            }
           </View>
         )
       }

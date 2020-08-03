@@ -10,15 +10,15 @@ const ItemSeperator = () => (
 
 const Content = ({ modules }) => (
     <FlatList
-        data={modules}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={ItemSeperator}
-        renderItem={({ item, index }) => <Module
-                                            moduleName={item.name}
-                                            index={index + 1}
-                                            duration={item.duration}
-                                            progress={item.progress}
-                                            lessons={item.lessons}/>}
+      data={modules}
+      showsVerticalScrollIndicator={false}
+      ItemSeparatorComponent={ItemSeperator}
+      renderItem={({ item }) => <Module
+                                  moduleName={item.name}
+                                  index={item.numberOrder}
+                                  duration={item.duration}
+                                  progress={item.progress}
+                                  lessons={item.lesson}/>}
     />
 );
 

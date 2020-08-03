@@ -56,14 +56,14 @@ export const setProfile = async (value) => {
     await AsyncStorage.setItem('profile', jsonValue);
   } catch (e) {
     console.log(e);
-    await AsyncStorage.setItem('profile', null);
+    await AsyncStorage.removeItem('profile');
   }
 };
 
 export const clearUserInfo = async () => {
   try {
-    await AsyncStorage.setItem('user', null);
-    await AsyncStorage.setItem('profile', null);
+    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem('profile');
   } catch (e) {
     console.log(e);
   }

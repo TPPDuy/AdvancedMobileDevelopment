@@ -41,7 +41,7 @@ const Splash = ({ navigation }) => {
   useEffect(() => {
     if (isLogined !== null) {
       setIsLoading(false);
-      if (isLogined) navigation.navigate(screenName.Main);
+      if (isLogined) navigation.replace(screenName.Main);
       else navigation.replace(screenName.Authen);
     }
   }, [isLogined]);
