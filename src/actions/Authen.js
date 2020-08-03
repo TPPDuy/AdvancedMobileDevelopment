@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import api from '../api/api';
-import { storeUserInfo } from '../storage/Storage';
+import { storeUserInfo, setProfile } from '../storage/Storage';
 import {
   REQUEST_LOGIN,
   LOGIN_SUCCESS,
@@ -34,9 +34,8 @@ export const requestLogin = (dispatch) => async (email, password) => {
     storeUserInfo({
       id: response.userInfo.id,
       token: response.token,
-      email: response.email,
-      password: response.password,
     });
+    setProfile(response.userInfo);
     setTimeout(() => {
       dispatch(loginSuccess(response));
     }, 1000);

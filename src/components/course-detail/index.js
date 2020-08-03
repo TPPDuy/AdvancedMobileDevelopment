@@ -4,6 +4,7 @@
 /* eslint-disable global-require */
 import React, { useContext, useEffect } from 'react';
 import { Video } from 'expo-av';
+import YoutubePlayer from 'react-native-youtube-iframe'
 import {
   View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Share,
 } from 'react-native';
@@ -17,6 +18,7 @@ import screenName from '../../constants/screen-name';
 import { ThemeContext } from '../../constants/theme';
 import { CourseDetailsContext } from '../providers/CourseDetails';
 import StarRating from 'react-native-star-rating';
+import { checkYoutubeUrl, extractVideoIdFromYoutubeUrl } from '../../utils/CommonUtils';
 
 const ItemFunction = ({ name, icon, onClick = (f) => f }) => (
   <View style={styles.itemFunctionContainer}>
@@ -47,8 +49,9 @@ const CourseDetails = ({
   useEffect(() => {
     courseDetailContext.getCourseInfo(course);
   }, []);
+
+  console.log('lesson', courseDetailContext.state.currentLesson);
   let iconLike = courseDetailContext.state.isLiked ? require('../../../assets/course-detail/like-fill-icon.png') : require('../../../assets/course-detail/like-icon.png');
-  // const iconBookmarked = course.isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
   
   const handleChangeLikeStatus = () => {
     courseDetailContext.changeLikeStatus(course);
@@ -83,18 +86,29 @@ const CourseDetails = ({
               <Image source={require('../../../assets/course-detail/down-arrow-icon.png')} style={styles.backIcon}/>
             </TouchableOpacity> */}
             {
-              courseDetailContext.state.courseInfo
+              courseDetailContext.state.courseInfo && courseDetailContext.state.currentLesson && courseDetailContext.state.currentLesson.videoUrl
                 ? (
                   <>
-                    <Video source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
-                    shouldPlay
-                    resizeMode={Video.RESIZE_MODE_CONTAIN}
-                    useNativeControls={true}
-                    usePoster={true}
-                    volume={1.0}
-                    rate={1.0}
-                    style={styles.video}
+                  {
+                    checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)
+                    ? (
+                      <YoutubePlayer
+                        videoId = {extractVideoIdFromYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)}
+                        height={230}
+                      />
+                    )
+                    : (
+                    <Video source={{
+                      uri: courseDetailContext.state.currentLesson.videoUrl}}
+                      resizeMode={Video.RESIZE_MODE_CONTAIN}
+                      useNativeControls={true}
+                      // usePoster={true}
+                      // volume={1.0}
+                      // rate={1.0}
+                      style={styles.video}
                     />
+                    )
+                  }
                     <ScrollView>
                       <View style={styles.infoCourseBlock}>
                         <Text style={styles.title}>{courseDetailContext.state.courseInfo.title}</Text>

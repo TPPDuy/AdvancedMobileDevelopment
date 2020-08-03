@@ -20,7 +20,7 @@ const Home = ({ navigation }) => {
     navigation.navigate(screenName.AllCourses, { category, title });
   };
   const onClickCourse = (course) => {
-    navigation.navigate(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
+    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
   };
 
   const homeContext = useContext(HomeContext);

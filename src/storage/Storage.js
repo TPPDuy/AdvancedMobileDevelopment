@@ -68,3 +68,18 @@ export const clearUserInfo = async () => {
     console.log(e);
   }
 };
+
+export const saveLearningCourse = async (courseId, sectionId, lessonId, time) => {
+  try {
+    const json = {
+      course: courseId,
+      section: sectionId,
+      lesson: lessonId,
+      time,
+    };
+    const jsonValue = JSON.stringify(json);
+    await AsyncStorage.setItem('learningCourse', jsonValue);
+  } catch (e) {
+    console.log(e);
+  }
+};

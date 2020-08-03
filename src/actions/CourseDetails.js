@@ -4,11 +4,12 @@ const {
   REQUEST_FAILED,
   RECEIVE_COURSE_INFO,
   RECEIVE_LIKE_STATUS,
+  RECEIVE_CURRENT_LESSON,
+  RECEIVE_LESSON_VIDEO,
 } = require('../constants/actions/CourseDetails');
 const { default: api } = require('../api/api');
-const { default: AlertModal } = require('../components/common/Alert');
 
-const requestCourse = () => ({
+const requestData = () => ({
   type: REQUEST_DATA,
 }
 );
@@ -27,8 +28,18 @@ const receiveLikeStatus = (data) => ({
   data,
 });
 
+const receiveCurrentLesson = (data) => ({
+  type: RECEIVE_CURRENT_LESSON,
+  data,
+});
+
+const receiveLessonVideo = (data) => ({
+  type: RECEIVE_LESSON_VIDEO,
+  data,
+});
+
 export const fetchCourseInfo = (dispatch) => async (courseId) => {
-  dispatch(requestCourse());
+  dispatch(requestData());
   console.log('course id: ', courseId);
   const responseOwnCourse = await api.get(`/user/check-own-course/${courseId}`);
   if (responseOwnCourse) {
@@ -38,6 +49,16 @@ export const fetchCourseInfo = (dispatch) => async (courseId) => {
       const responseLike = await api.get(`/user/get-course-like-status/${courseId}`);
       if (response) {
         dispatch(receiveCourseDetails(response.payload));
+        try {
+          dispatch(receiveCurrentLesson(response.payload.section[0].lesson[0]));
+          const responseLesson = await api.get(`/lesson/video/${courseId}/${response.payload.section[0].lesson[0].id}`);
+          if (response) {
+            dispatch(receiveLessonVideo(responseLesson.payload));
+          }
+          // dispatch(getLessonWithVideo(dispatch)(response.payload.id, response.payload.section[0].lesson[0].id));
+        } catch (e) {
+          dispatch(receiveCurrentLesson(null));
+        }
       } else {
         dispatch(requestFailed());
         // AlertModal('Oopps', 'Tải dữ liệu thất bại');
@@ -66,5 +87,14 @@ export const changeLikeStatus = (dispatch) => async (courseId) => {
 
   if (response) {
     dispatch(receiveLikeStatus(response.likeStatus));
+  }
+};
+
+export const getLessonWithVideo = (dispatch) => async (courseId, lessonId) => {
+  dispatch(requestData());
+
+  const response = await api.get(`/lesson/video/${courseId}/${lessonId}`);
+  if (response) {
+    dispatch(receiveLessonVideo(response.payload));
   }
 };
