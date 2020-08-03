@@ -77,7 +77,7 @@ const Module = ({
             ItemSeparatorComponent={ItemSeparator}
             renderItem={({ item }) => <ItemLesson
                                         name={item.name}
-                                        duration={item.duration}
+                                        duration={(item.hours || 0) * 3600 * 1000}
                                         isCompleted={item.isCompleted}
                                         isPlaying={item.isPlaying}/>}
           />

@@ -16,8 +16,8 @@ const Content = ({ modules }) => (
       renderItem={({ item }) => <Module
                                   moduleName={item.name}
                                   index={item.numberOrder}
-                                  duration={item.duration}
-                                  progress={item.progress}
+                                  duration={(item.sumHours || 0) * 3600 * 1000}
+                                  progress={(item.sumLessonFinish || 0) * 3600 * 1000}
                                   lessons={item.lesson}/>}
     />
 );

@@ -41,7 +41,7 @@ const SectionCourse = ({
                                             numOfVideos={item.videoNumber}
                                             date={item.date}
                                             duration={item.totalHours}
-                                            rating={item.ratedNumber}
+                                            rating={item.contentPoint}
                                             price={item.price}
                                             onShowMenu={showActionSheet()}
                                             onClickItem={() => onClickCourse(item)}/>}

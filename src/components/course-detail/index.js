@@ -5,7 +5,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Video } from 'expo-av';
 import {
-  View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView,
+  View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Share,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
@@ -16,18 +16,19 @@ import CollapsableDescription from '../common/CollapsableDescription';
 import screenName from '../../constants/screen-name';
 import { ThemeContext } from '../../constants/theme';
 import { CourseDetailsContext } from '../providers/CourseDetails';
+import StarRating from 'react-native-star-rating';
 
-const ItemFunction = ({ name, icon }) => (
+const ItemFunction = ({ name, icon, onClick = (f) => f }) => (
   <View style={styles.itemFunctionContainer}>
-    <TouchableOpacity style={styles.iconFunctionContainer}>
+    <TouchableOpacity style={styles.iconFunctionContainer} onPress={() => onClick()}>
       <Image source={icon} style={styles.iconFunction}/>
     </TouchableOpacity>
     <Text style={styles.nameFunction}>{name}</Text>
   </View>
 );
 
-const ButtonFunction = ({ name, icon }) => (
-  <TouchableOpacity style={styles.btnContainer}>
+const ButtonFunction = ({ name, icon, onClick = (f) => f }) => (
+  <TouchableOpacity style={styles.btnContainer} onPress={() => onClick()}>
     <Image source={icon} style={styles.iconFunction}/>
     <Text style={{ ...styles.nameFunction, marginLeft: 5 }}>{name}</Text>
   </TouchableOpacity>
@@ -48,6 +49,31 @@ const CourseDetails = ({
   }, []);
   let iconLike = courseDetailContext.state.isLiked ? require('../../../assets/course-detail/like-fill-icon.png') : require('../../../assets/course-detail/like-icon.png');
   // const iconBookmarked = course.isBookmarked ? require('../../../assets/course-detail/bookmark-fill-icon.png') : require('../../../assets/course-detail/bookmark-icon.png');
+  
+  const handleChangeLikeStatus = () => {
+    courseDetailContext.changeLikeStatus(course);
+  };
+
+  const handleShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native | A framework for building native apps using React',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <ThemeContext.Consumer>
       {
@@ -72,28 +98,46 @@ const CourseDetails = ({
                     <ScrollView>
                       <View style={styles.infoCourseBlock}>
                         <Text style={styles.title}>{courseDetailContext.state.courseInfo.title}</Text>
-                        <View>
-                          <Text>Giảng viên: </Text>
-                          <TouchableOpacity>
-                            <Text>{courseDetailContext.state.courseInfo.instructorName}</Text>
-                          </TouchableOpacity>
+                        <ItemAuthorHorizontal
+                          name={courseDetailContext.state.courseInfo.instructor.name}
+                          avatar={courseDetailContext.state.courseInfo.instructor.avatar}
+                        />
+                        <View style={styles.infoBlock}>
+                          <Text style={styles.info}>
+                            {formatMonthYearType(courseDetailContext.state.courseInfo.updatedAt)} ∙ {courseDetailContext.state.courseInfo.videoNumber} video(s) ∙ {courseDetailContext.state.courseInfo.totalHours}h ∙ 
+                          </Text>
+                          <StarRating
+                          containerStyle={styles.ratingBar}
+                          disabled
+                          halfStarEnabled
+                          halfStarColor="#fcba03"
+                          maxStars={5}
+                          rating={courseDetailContext.state.courseInfo.contentPoint}
+                          fullStarColor="#fcba03"
+                          emptyStarColor="#d4d4d4"
+                          starSize={10}/>
                         </View>
-                        <Text style={styles.info}>
-                          {formatMonthYearType(courseDetailContext.state.courseInfo.updatedAt)} ∙ {courseDetailContext.state.courseInfo.videoNumber} videos ∙ {courseDetailContext.state.courseInfo.totalHours}h
-                        </Text>
                         <View style={styles.func}>
                           <View style={styles.functionContainer}>
-                            <ItemFunction name='Yêu thích' icon={iconLike}/>
-                            <ItemFunction name='Add to Channel' icon={require('../../../assets/course-detail/channel-icon.png')}/>
+                            <ItemFunction name='Yêu thích' icon={iconLike} onClick={() => handleChangeLikeStatus()}/>
+                            <ItemFunction
+                              name='Chia sẻ'
+                              icon={require('../../../assets/course-detail/share-icon.png')}
+                              onClick={() => handleShare()}
+                            />
                             <ItemFunction name='Tải xuống' icon={require('../../../assets/course-detail/download-icon.png')}/>
                           </View>
                         </View>
                         <View style={styles.description}>
-                          <CollapsableDescription minHeight={70} description={courseDetailContext.state.courseInfo.description}/>
+                          <CollapsableDescription minHeight="100%" description={courseDetailContext.state.courseInfo.description}/>
                         </View>
 
-                        <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/>
-                        <ButtonFunction name='View related courses' icon={require('../../../assets/course-detail/related-icon.png')}/>
+                        {/* <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/> */}
+                        <ButtonFunction
+                          name='Các khóa học cùng chủ đề'
+                          icon={require('../../../assets/course-detail/related-icon.png')}
+                          onClick={(f) => f}
+                        />
                       </View>
                       <View style={{ paddingHorizontal: 15 }}>
                         <Content modules={courseDetailContext.state.courseInfo.section}/>
@@ -164,6 +208,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 10,
   },
+  infoBlock: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+  },
   infoCourseBlock: {
     backgroundColor: colorSource.darkGray,
     flexDirection: 'column',
@@ -186,6 +236,12 @@ const styles = StyleSheet.create({
   },
   video: {
     height: 220,
+  },
+  ratingBar: {
+    backgroundColor: colorSource.transparent,
+    marginRight: 5,
+    marginHorizontal: 3,
+    marginTop: 10,
   },
 });
 
