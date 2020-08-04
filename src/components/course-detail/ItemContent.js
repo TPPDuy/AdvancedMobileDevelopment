@@ -7,20 +7,9 @@ import {
 } from 'react-native';
 import PropTypes, { object } from 'prop-types';
 import colorSource from '../../constants/color';
-import { getPercentage } from '../../utils/MathUtils';
 import { formatHourType2 } from '../../utils/DateTimeUtils';
 import MenuIcon from '../../../assets/common/menu-icon.svg';
 import { ThemeContext } from '../../constants/theme';
-
-const ProgressBar = ({ progress, total }) => {
-  const progressColor = progress === total ? colorSource.green : colorSource.yellow;
-  const progressWidth = `${getPercentage(progress, total)}%`;
-  return (
-    <View style={styles.progressContainer}>
-        <View style={{ ...styles.progress, width: progressWidth, backgroundColor: progressColor }}/>
-    </View>
-  );
-};
 
 const ItemLesson = ({
   name, duration, isCompleted, isPlaying,
@@ -59,9 +48,6 @@ const Module = ({
               <View style={styles.textThumbnailContainer}>
                 <Text style={styles.textThumbnail}>{index}</Text>
               </View>
-              <View style={styles.progressBar}>
-                <ProgressBar progress={progress} total={duration}/>
-              </View>
             </View>
             <View style={styles.moduleInfo}>
               <Text style={{ ...styles.moduleName, color: theme.textColor }}>{moduleName}</Text>
@@ -78,7 +64,7 @@ const Module = ({
             renderItem={({ item }) => <ItemLesson
                                         name={item.name}
                                         duration={(item.hours || 0) * 3600 * 1000}
-                                        isCompleted={item.isCompleted}
+                                        isCompleted={item.isFinish}
                                         isPlaying={item.isPlaying}/>}
           />
         </View>
@@ -129,18 +115,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
-  progress: {
-    height: '100%',
-  },
-  progressBar: {
-    height: 4,
-    width: '100%',
-  },
-  progressContainer: {
-    backgroundColor: colorSource.lightGray,
-    height: '100%',
-    width: '100%',
-  },
   textThumbnail: {
     color: colorSource.white,
     fontSize: 16,
@@ -167,11 +141,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
-
-ProgressBar.propTypes = {
-  progress: PropTypes.number,
-  total: PropTypes.number,
-};
 
 ItemLesson.propTypes = {
   name: PropTypes.string,

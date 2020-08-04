@@ -17,7 +17,6 @@ const Content = ({ modules }) => (
                                   moduleName={item.name}
                                   index={item.numberOrder}
                                   duration={(item.sumHours || 0) * 3600 * 1000}
-                                  progress={(item.sumLessonFinish || 0) * 3600 * 1000}
                                   lessons={item.lesson}/>}
     />
 );

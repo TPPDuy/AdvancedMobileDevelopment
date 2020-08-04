@@ -19,6 +19,7 @@ import { ThemeContext } from '../../constants/theme';
 import { CourseDetailsContext } from '../providers/CourseDetails';
 import StarRating from 'react-native-star-rating';
 import { checkYoutubeUrl, extractVideoIdFromYoutubeUrl } from '../../utils/CommonUtils';
+import AnimatedLoader from 'react-native-animated-loader';
 
 const ItemFunction = ({ name, icon, onClick = (f) => f }) => (
   <View style={styles.itemFunctionContainer}>
@@ -35,6 +36,15 @@ const ButtonFunction = ({ name, icon, onClick = (f) => f }) => (
     <Text style={{ ...styles.nameFunction, marginLeft: 5 }}>{name}</Text>
   </TouchableOpacity>
 );
+
+const ProgressBar = ({ progress }) => {
+  const progressColor = progress === 100 ? colorSource.green : colorSource.yellow;
+  return (
+    <View style={styles.progressContainer}>
+        <View style={{ ...styles.progress, width: `${progress}%`, backgroundColor: progressColor }}/>
+    </View>
+  );
+};
 
 const authorSeparator = () => (
   <View style={styles.authorSeparator}/>
@@ -98,8 +108,7 @@ const CourseDetails = ({
                       />
                     )
                     : (
-                    <Video source={{
-                      uri: courseDetailContext.state.currentLesson.videoUrl}}
+                    <Video source={{uri: courseDetailContext.state.currentLesson.videoUrl}}
                       resizeMode={Video.RESIZE_MODE_CONTAIN}
                       useNativeControls={true}
                       // usePoster={true}
@@ -109,7 +118,7 @@ const CourseDetails = ({
                     />
                     )
                   }
-                    <ScrollView>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                       <View style={styles.infoCourseBlock}>
                         <Text style={styles.title}>{courseDetailContext.state.courseInfo.title}</Text>
                         <ItemAuthorHorizontal
@@ -121,15 +130,15 @@ const CourseDetails = ({
                             {formatMonthYearType(courseDetailContext.state.courseInfo.updatedAt)} ∙ {courseDetailContext.state.courseInfo.videoNumber} video(s) ∙ {courseDetailContext.state.courseInfo.totalHours}h ∙ 
                           </Text>
                           <StarRating
-                          containerStyle={styles.ratingBar}
-                          disabled
-                          halfStarEnabled
-                          halfStarColor="#fcba03"
-                          maxStars={5}
-                          rating={courseDetailContext.state.courseInfo.contentPoint}
-                          fullStarColor="#fcba03"
-                          emptyStarColor="#d4d4d4"
-                          starSize={10}/>
+                            containerStyle={styles.ratingBar}
+                            disabled
+                            halfStarEnabled
+                            halfStarColor="#fcba03"
+                            maxStars={5}
+                            rating={courseDetailContext.state.courseInfo.contentPoint}
+                            fullStarColor="#fcba03"
+                            emptyStarColor="#d4d4d4"
+                            starSize={10}/>
                         </View>
                         <View style={styles.func}>
                           <View style={styles.functionContainer}>
@@ -143,23 +152,40 @@ const CourseDetails = ({
                           </View>
                         </View>
                         <View style={styles.description}>
-                          <CollapsableDescription minHeight="100%" description={courseDetailContext.state.courseInfo.description}/>
+                          <CollapsableDescription description={courseDetailContext.state.courseInfo.description}/>
                         </View>
 
-                        {/* <ButtonFunction name='Take a learning check' icon={require('../../../assets/course-detail/learning-check-icon.png')}/> */}
                         <ButtonFunction
                           name='Các khóa học cùng chủ đề'
                           icon={require('../../../assets/course-detail/related-icon.png')}
                           onClick={(f) => f}
                         />
                       </View>
+                      <View style={styles.progressBar}>
+                          <ProgressBar progress={courseDetailContext.state.process}/>
+                      </View>
                       <View style={{ paddingHorizontal: 15 }}>
-                        <Content modules={courseDetailContext.state.courseInfo.section}/>
+                        <Content modules={courseDetailContext.state.sections}/>
                       </View>
                     </ScrollView>
+                    <AnimatedLoader
+                      visible={courseDetailContext.state.isLoading}
+                      overlayColor="rgba(0,0,0,0.65)"
+                      source={require('../../../assets/common/loader.json')}
+                      animationStyle={styles.loading}
+                      speed={2}
+                    />
                   </>
                 )
-                : null
+                : (
+                  <AnimatedLoader
+                      visible
+                      overlayColor="rgba(0,0,0,0.65)"
+                      source={require('../../../assets/common/loader.json')}
+                      animationStyle={styles.loading}
+                      speed={2}
+                    />
+                )
             }
           </View>
         )
@@ -207,6 +233,10 @@ const styles = StyleSheet.create({
   iconFunction: {
     height: 20,
     width: 20,
+  },
+  loading: {
+    height: 100,
+    width: 100,
   },
   iconFunctionContainer: {
     alignItems: 'center',
@@ -257,6 +287,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
     marginTop: 10,
   },
+  progress: {
+    height: '100%',
+  },
+  progressBar: {
+    height: 4,
+    width: '100%',
+  },
+  progressContainer: {
+    backgroundColor: colorSource.lightGray,
+    height: '100%',
+    width: '100%',
+  },
 });
 
 ItemFunction.propTypes = {
@@ -267,7 +309,10 @@ ButtonFunction.propTypes = {
   name: PropTypes.string,
   icon: PropTypes.number,
 };
-
+ProgressBar.propTypes = {
+  progress: PropTypes.number,
+  total: PropTypes.number,
+};
 CourseDetails.propTypes = {
   route: PropTypes.object,
   navigation: PropTypes.object,

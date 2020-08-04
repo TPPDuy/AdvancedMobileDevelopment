@@ -1,3 +1,5 @@
+import { getUserInfo } from '../storage/Storage';
+
 /* eslint-disable import/prefer-default-export */
 const {
   REQUEST_DATA,
@@ -6,6 +8,9 @@ const {
   RECEIVE_LIKE_STATUS,
   RECEIVE_CURRENT_LESSON,
   RECEIVE_LESSON_VIDEO,
+  FINISH_REQUEST_DATA,
+  RECEIVE_COURSE_SECTION,
+  RECEIVE_PROCESS,
 } = require('../constants/actions/CourseDetails');
 const { default: api } = require('../api/api');
 
@@ -18,8 +23,17 @@ const requestFailed = () => ({
   type: REQUEST_FAILED,
 });
 
+const finishRequestData = () => ({
+  type: FINISH_REQUEST_DATA,
+});
+
 const receiveCourseDetails = (data) => ({
   type: RECEIVE_COURSE_INFO,
+  data,
+});
+
+const receiveCourseSection = (data) => ({
+  type: RECEIVE_COURSE_SECTION,
   data,
 });
 
@@ -38,15 +52,25 @@ const receiveLessonVideo = (data) => ({
   data,
 });
 
+const receiveProcess = (data) => ({
+  type: RECEIVE_PROCESS,
+  data,
+});
+
 export const fetchCourseInfo = (dispatch) => async (courseId) => {
   dispatch(requestData());
-  console.log('course id: ', courseId);
+  try {
+    const userId = await getUserInfo().id;
+  } catch (e) {
+    console.log(e);
+  }
   const responseOwnCourse = await api.get(`/user/check-own-course/${courseId}`);
   if (responseOwnCourse) {
-    console.log('own course: ', responseOwnCourse);
     if (responseOwnCourse.payload.isUserOwnCourse) {
       const response = await api.get(`/course/get-course-detail/${courseId}/null`);
       const responseLike = await api.get(`/user/get-course-like-status/${courseId}`);
+      const responseSection = await api.get(`/course/detail-with-lesson/${courseId}`);
+      const responseProcess = await api.get(`/course/process-course/${courseId}`);
       if (response) {
         dispatch(receiveCourseDetails(response.payload));
         try {
@@ -55,28 +79,35 @@ export const fetchCourseInfo = (dispatch) => async (courseId) => {
           if (response) {
             dispatch(receiveLessonVideo(responseLesson.payload));
           }
-          // dispatch(getLessonWithVideo(dispatch)(response.payload.id, response.payload.section[0].lesson[0].id));
         } catch (e) {
           dispatch(receiveCurrentLesson(null));
         }
       } else {
         dispatch(requestFailed());
-        // AlertModal('Oopps', 'Tải dữ liệu thất bại');
       }
+
       if (responseLike) {
-        console.log('like status: ', responseLike);
         dispatch(receiveLikeStatus(responseLike.likeStatus));
       } else {
         console.log('request like failed');
       }
+
+      if (responseSection) {
+        dispatch(receiveCourseSection(responseSection.payload.section));
+      } else {
+        console.log('request section failed');
+      }
+
+      if (responseProcess) {
+        dispatch(receiveProcess(responseProcess.payload));
+      }
     } else {
-      console.log('course details failed ');
       dispatch(requestFailed());
     }
   } else {
     dispatch(requestFailed());
-    // AlertModal('Oopps', 'Tải dữ liệu thất bại');
   }
+  dispatch(finishRequestData());
 };
 
 export const changeLikeStatus = (dispatch) => async (courseId) => {

@@ -6,7 +6,6 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
 } from '../constants/actions/Authen';
-import { AlertModal } from '../components/common/Alert';
 
 const waitLogin = () => ({
   type: REQUEST_LOGIN,
@@ -42,7 +41,6 @@ export const requestLogin = (dispatch) => async (email, password) => {
   } else {
     console.log('login failed');
     dispatch(loginFailed());
-    AlertModal('Đăng nhập', 'Đăng nhập thất bại!');
   }
 };
 export const requestRegister = () => {};

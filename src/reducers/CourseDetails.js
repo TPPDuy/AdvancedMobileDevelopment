@@ -5,6 +5,9 @@ const {
   RECEIVE_LIKE_STATUS,
   RECEIVE_CURRENT_LESSON,
   RECEIVE_LESSON_VIDEO,
+  FINISH_REQUEST_DATA,
+  RECEIVE_COURSE_SECTION,
+  RECEIVE_PROCESS,
 } = require('../constants/actions/CourseDetails');
 
 const courseDetailsReducer = (state, action) => {
@@ -20,11 +23,25 @@ const courseDetailsReducer = (state, action) => {
         ...state,
         isLoading: false,
       };
-    case RECEIVE_COURSE_INFO:
+    case FINISH_REQUEST_DATA:
       return {
         ...state,
         isLoading: false,
+      };
+    case RECEIVE_COURSE_INFO:
+      return {
+        ...state,
         courseInfo: action.data,
+      };
+    case RECEIVE_COURSE_SECTION:
+      return {
+        ...state,
+        sections: action.data,
+      };
+    case RECEIVE_PROCESS:
+      return {
+        ...state,
+        process: action.data,
       };
     case RECEIVE_CURRENT_LESSON:
       return {

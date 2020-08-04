@@ -9,7 +9,9 @@ const initialState = {
   isLoading: false,
   courseInfo: null,
   isLiked: false,
-  currentLesson: null,
+  currentLesson: {},
+  sections: [],
+  process: 0,
 };
 
 const CourseDetailsProvider = (props) => {
