@@ -122,8 +122,6 @@ export const changeLikeStatus = (dispatch) => async (courseId) => {
 };
 
 export const getLessonWithVideo = (dispatch) => async (courseId, lessonId) => {
-  dispatch(requestData());
-
   const response = await api.get(`/lesson/video/${courseId}/${lessonId}`);
   if (response) {
     dispatch(receiveLessonVideo(response.payload));

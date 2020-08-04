@@ -12,12 +12,12 @@ import MenuIcon from '../../../assets/common/menu-icon.svg';
 import { ThemeContext } from '../../constants/theme';
 
 const ItemLesson = ({
-  name, duration, isCompleted, isPlaying,
+  name, duration, isCompleted, isPlaying, onClickLesson,
 }) => (
   <ThemeContext.Consumer>
     {
       ({ theme }) => (
-        <TouchableOpacity style={styles.lessonContainer}>
+        <TouchableOpacity style={styles.lessonContainer} onPress={() => onClickLesson()}>
           {isPlaying
             ? <Image source={require('../../../assets/course-detail/play-icon.png')} style={{ ...styles.lessonStatus, backgroundColor: theme.background }}/>
             : isCompleted
@@ -37,7 +37,7 @@ const ItemSeparator = () => (
 );
 
 const Module = ({
-  moduleName, index, duration, progress, lessons,
+  moduleName, index, duration, playingLesson, lessons, onClickLesson,
 }) => (
   <ThemeContext.Consumer>
     {
@@ -65,7 +65,10 @@ const Module = ({
                                         name={item.name}
                                         duration={(item.hours || 0) * 3600 * 1000}
                                         isCompleted={item.isFinish}
-                                        isPlaying={item.isPlaying}/>}
+                                        isPlaying={playingLesson === item.id}
+                                        onClickLesson={() => onClickLesson(item.id)}
+                                      />
+            }
           />
         </View>
       )
@@ -147,14 +150,16 @@ ItemLesson.propTypes = {
   duration: PropTypes.number,
   isCompleted: PropTypes.bool,
   isPlaying: PropTypes.bool,
+  onClickLesson: PropTypes.func,
 };
 
 Module.propTypes = {
   moduleName: PropTypes.string,
   index: PropTypes.number,
+  playingLesson: PropTypes.string,
   duration: PropTypes.number,
-  progress: PropTypes.number,
   lessons: PropTypes.arrayOf(object),
+  onClickLesson: PropTypes.func,
 };
 
 Module.defaultProps = {

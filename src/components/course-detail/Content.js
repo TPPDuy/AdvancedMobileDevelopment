@@ -8,7 +8,7 @@ const ItemSeperator = () => (
     <View style={styles.separator}/>
 );
 
-const Content = ({ modules }) => (
+const Content = ({ modules, playingLesson, onClickLesson }) => (
     <FlatList
       data={modules}
       showsVerticalScrollIndicator={false}
@@ -17,7 +17,11 @@ const Content = ({ modules }) => (
                                   moduleName={item.name}
                                   index={item.numberOrder}
                                   duration={(item.sumHours || 0) * 3600 * 1000}
-                                  lessons={item.lesson}/>}
+                                  lessons={item.lesson}
+                                  playingLesson={playingLesson}
+                                  onClickLesson={(lessonId) => onClickLesson(item.id, lessonId)}
+                                />
+      }
     />
 );
 
@@ -31,6 +35,8 @@ const styles = StyleSheet.create({
 
 Content.propTypes = {
   modules: PropTypes.arrayOf(object),
+  playingLesson: PropTypes.string,
+  onClickLesson: PropTypes.func,
 };
 
 export default Content;

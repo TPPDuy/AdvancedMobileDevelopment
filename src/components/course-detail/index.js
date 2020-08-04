@@ -46,10 +46,6 @@ const ProgressBar = ({ progress }) => {
   );
 };
 
-const authorSeparator = () => (
-  <View style={styles.authorSeparator}/>
-);
-
 const CourseDetails = ({
   route, navigation,
 }) => {
@@ -87,6 +83,11 @@ const CourseDetails = ({
     }
   };
 
+  const handleChangeLesson = (sectionId, lessonId) => {
+    if (lessonId !== courseDetailContext.state.currentLesson.id) {
+      courseDetailContext.changeCurrentLesson(course, sectionId, lessonId);
+    }
+  }
   return (
     <ThemeContext.Consumer>
       {
@@ -111,9 +112,6 @@ const CourseDetails = ({
                     <Video source={{uri: courseDetailContext.state.currentLesson.videoUrl}}
                       resizeMode={Video.RESIZE_MODE_CONTAIN}
                       useNativeControls={true}
-                      // usePoster={true}
-                      // volume={1.0}
-                      // rate={1.0}
                       style={styles.video}
                     />
                     )
@@ -165,26 +163,23 @@ const CourseDetails = ({
                           <ProgressBar progress={courseDetailContext.state.process}/>
                       </View>
                       <View style={{ paddingHorizontal: 15 }}>
-                        <Content modules={courseDetailContext.state.sections}/>
+                        <Content
+                          modules={courseDetailContext.state.sections}
+                          playingLesson={courseDetailContext.state.currentLesson.id}
+                          onClickLesson={(sectionId, lessonId) => handleChangeLesson(sectionId, lessonId)}
+                        />
                       </View>
                     </ScrollView>
-                    <AnimatedLoader
-                      visible={courseDetailContext.state.isLoading}
-                      overlayColor="rgba(0,0,0,0.65)"
-                      source={require('../../../assets/common/loader.json')}
-                      animationStyle={styles.loading}
-                      speed={2}
-                    />
                   </>
                 )
                 : (
                   <AnimatedLoader
-                      visible
-                      overlayColor="rgba(0,0,0,0.65)"
-                      source={require('../../../assets/common/loader.json')}
-                      animationStyle={styles.loading}
-                      speed={2}
-                    />
+                    visible={courseDetailContext.state.isLoading}
+                    overlayColor="rgba(0,0,0,0.65)"
+                    source={require('../../../assets/common/loader.json')}
+                    animationStyle={styles.loading}
+                    speed={2}
+                  />
                 )
             }
           </View>
