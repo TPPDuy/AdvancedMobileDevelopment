@@ -3,7 +3,7 @@
 /* eslint-disable global-require */
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  View, ScrollView, StyleSheet, Image,
+  View, ScrollView, StyleSheet, Image, AppState
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -22,14 +22,17 @@ const Favorite = ({ navigation }) => {
 
   const favoriteContext = useContext(FavoriteContext);
   const [profileInfo, setProfileInfo] = useState({});
-
   useEffect(() => {
     async function loadProfile() {
       const profile = await getProfile();
       if (profile) setProfileInfo(profile);
     }
     loadProfile();
-    favoriteContext.getData();
+    favoriteContext.getData()
+    const interval = setInterval(() => favoriteContext.getData(), 3000);
+    return function cleanup() {
+      clearInterval(interval);
+    }
   }, []);
 
   const handleClickCourse = (course) => {
