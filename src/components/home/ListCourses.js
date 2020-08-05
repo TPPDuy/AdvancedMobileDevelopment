@@ -37,9 +37,9 @@ const ListCourses = ({ title, courses, onItemClick }) => (
                                             numOfVideos={item.videoNumber}
                                             date={item.updatedAt}
                                             duration={item.totalHours}
-                                            rating={item.ratedNumber || item.courseAveragePoint}
+                                            rating={item.contentPoint || item.courseAveragePoint}
                                             price={item.price || item.coursePrice}
-                                            onItemClick={() => onItemClick(item)}/>}
+                                            onItemClick={() => onItemClick(item.id)}/>}
               showsVerticalScrollIndicator={false}
               ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
               ListFooterComponent={renderFooter}

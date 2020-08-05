@@ -24,6 +24,10 @@ const AuthorProfile = ({
   useEffect(() => {
     authorContext.getAuthorDetails(authorId);
   }, []);
+
+  const handleClickCourse = (course) => {
+    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
+  };
   return (
     <ThemeContext.Consumer>
       {
@@ -92,7 +96,7 @@ const AuthorProfile = ({
                       <ListCourses
                         courses={authorContext.state.authorDetails.courses}
                         title='Các khóa học'
-                        onItemClick={(id) => navigation.push(screenName.CourseDetails)}/>
+                        onItemClick={(id) => handleClickCourse(id)}/>
                     </View>
                   )
                   : null

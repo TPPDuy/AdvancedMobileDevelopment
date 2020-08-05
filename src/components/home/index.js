@@ -66,22 +66,22 @@ const Home = ({ navigation }) => {
                   title='Có thể bạn quan tâm'
                   courses={homeContext.state.homeScreen.recommended}
                   onSeeAll={() => onSeeAll('RECOMMENDED', 'Có thể bạn quan tâm')}
-                  onClickCourse={(course) => onClickCourse(course.id)}/>
+                  onClickCourse={(course) => onClickCourse(course)}/>
                 <SectionCourse
                   title='Các khóa học mới'
                   courses={homeContext.state.homeScreen.topNew}
                   onSeeAll={() => onSeeAll('TOP_NEW', 'Các khóa học mới')}
-                  onClickCourse={(course) => onClickCourse(course.id)}/>
+                  onClickCourse={(course) => onClickCourse(course)}/>
                 <SectionCourse
                   title='Bán chạy nhất'
                   courses={homeContext.state.homeScreen.topSell}
                   onSeeAll={() => onSeeAll('TOP_SELL', 'Bán chạy nhất')}
-                  onClickCourse={(course) => onClickCourse(course.id)}/>
+                  onClickCourse={(course) => onClickCourse(course)}/>
                 <SectionCourse
                   title='Đánh giá cao nhất'
                   courses={homeContext.state.homeScreen.topRate}
                   onSeeAll={() => onSeeAll('TOP_RATE', 'Đánh giá cao nhất')}
-                  onClickCourse={(course) => onClickCourse(course.id)}/>
+                  onClickCourse={(course) => onClickCourse(course)}/>
               </View>
               <View>
                 <AnimatedLoader

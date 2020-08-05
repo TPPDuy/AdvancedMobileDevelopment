@@ -56,6 +56,12 @@ const CourseDetails = ({
     courseDetailContext.getCourseInfo(course);
   }, []);
 
+  useEffect(() => {
+    return function cleanup() {
+      console.log('component did unmount');
+    };
+  })
+
   console.log('lesson', courseDetailContext.state.currentLesson);
   let iconLike = courseDetailContext.state.isLiked ? require('../../../assets/course-detail/like-fill-icon.png') : require('../../../assets/course-detail/like-icon.png');
   
@@ -109,11 +115,11 @@ const CourseDetails = ({
                       />
                     )
                     : (
-                    <Video source={{uri: courseDetailContext.state.currentLesson.videoUrl}}
-                      resizeMode={Video.RESIZE_MODE_CONTAIN}
-                      useNativeControls={true}
-                      style={styles.video}
-                    />
+                      <Video source={{uri: courseDetailContext.state.currentLesson.videoUrl}}
+                        resizeMode={Video.RESIZE_MODE_CONTAIN}
+                        useNativeControls={true}
+                        style={styles.video}
+                      />
                     )
                   }
                     <ScrollView showsVerticalScrollIndicator={false}>

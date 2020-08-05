@@ -21,7 +21,6 @@ const CourseDetailsProvider = (props) => {
     const section = state.sections.find((item) => item.id === sectionId);
     if (section) {
       const lesson = section.lesson.find((item) => item.id === lessonId);
-      console.log('change to lesson: ', lesson);
       if (lesson) {
         dispatch({
           type: CHANGE_CURRENT_LESSON,
@@ -39,7 +38,7 @@ const CourseDetailsProvider = (props) => {
         getLessonVideo: getLessonWithVideo(dispatch),
         changeCurrentLesson,
       }}>
-          {props.children}
+        {props.children}
       </CourseDetailsContext.Provider>
   );
 };

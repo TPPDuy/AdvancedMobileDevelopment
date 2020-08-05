@@ -15,7 +15,6 @@ import themes, { ThemeContext } from '../../constants/theme';
 import DarkIcon from '../../../assets/common/dark.svg';
 import LightIcon from '../../../assets/common/light.svg';
 import { BrowseContext } from '../providers/Browse';
-import { getRandomColor } from '../../utils/ColorUtils';
 import SectionCourse from '../home/SectionCourse';
 
 
@@ -64,8 +63,9 @@ const Browse = ({
   const onSeeAll = (category, title) => {
     navigation.navigate(screenName.AllCourses, { category, title });
   };
-  const onClickCourse = (course) => {
-    navigation.navigate(screenName.CourseDetails, { course });
+
+  const handleClickCourse = (course) => {
+    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
   };
   return (
     <ThemeContext.Consumer>
@@ -97,7 +97,7 @@ const Browse = ({
                       title='Các khóa học mới'
                       courses={browseContext.state.topNew}
                       onSeeAll={() => onSeeAll('TOP_NEW', 'Các khóa học mới')}
-                      onClickCourse={(course) => onClickCourse(course)}
+                      onClickCourse={(course) => handleClickCourse(course)}
                     />
                   )
                   : null

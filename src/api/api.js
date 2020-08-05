@@ -48,7 +48,7 @@ const request = async (url, data, config, method = 'GET') => {
     const response = await fetch(host + newUrl, options);
     if (response.status === 200) {
       const body = await response.json();
-      if (body.message !== 'OK') return null;
+      console.log('response success: ', body);
       return body;
     }
     const body = await response.json();

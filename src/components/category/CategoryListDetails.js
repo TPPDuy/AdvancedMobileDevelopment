@@ -30,6 +30,9 @@ const CategoryListDetails = ({
   useEffect(() => {
     browseContext.getCategoryDetails(category.id);
   }, []);
+  const handleClickCourse = (course) => {
+    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
+  };
   return (
     <ThemeContext.Consumer>
       {
@@ -66,11 +69,9 @@ const CategoryListDetails = ({
                                   numOfVideos={item.videoNumber}
                                   date={item.date}
                                   duration={item.totalHours}
-                                  rating={item.ratedNumber}
+                                  rating={item.contentPoint}
                                   price={item.price}
-                                  onItemClick={
-                                    (itemId) => navigation.navigate(screenName.CourseDetails)
-                                  }
+                                  onItemClick={() => handleClickCourse(item.id)}
                                 />
                   }
                 showsVerticalScrollIndicator={false}

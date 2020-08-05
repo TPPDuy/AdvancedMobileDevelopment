@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
@@ -8,29 +8,117 @@ import PropTypes from 'prop-types';
 import CustomInput from '../../common/Input';
 import colorSource from '../../../constants/color';
 import screenName from '../../../constants/screen-name';
+import { AuthenContext } from '../../providers/Authen';
+import ErrorDialog from '../errorDialog';
+import VerifyEmail from '../verify';
 
 const SignUp = ({ navigation }) => {
   const imgSource = {
     name: require('../../../../assets/authen/name-icon.png'),
     email: require('../../../../assets/authen/email-icon.png'),
+    phone: require('../../../../assets/authen/phone-icon.png'),
     password: require('../../../../assets/authen/password-icon.png'),
   };
+  const [registerInfo, setRegisterInfo] = useState({
+    username: '',
+    email: '',
+    phone: '',
+    password: '',
+  });
+  const [showMsg, setShowMsg] = useState(false);
+  const authenContext = useContext(AuthenContext);
+  useEffect(() => {
+    if (authenContext.state.registerStatus === 2) {
+      console.log('failed');
+      setShowMsg(true);
+      const interval = setInterval(() => {
+        setShowMsg(false);
+        clearInterval(interval);
+      }, 2000);
+    }
+  }, [authenContext.state]);
 
+  const handleRegister = () => {
+    authenContext.register(registerInfo.username, registerInfo.email,
+      registerInfo.phone, registerInfo.password);
+  };
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.formContainer}>
-          <Text style={styles.title}>Sign Up</Text>
-          <CustomInput icon={imgSource.name} isHideContent={false} placeHolder="Name"/>
-          <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>
-          <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Password"/>
-          <TouchableOpacity style={styles.buttonSignIn} onPress={() => navigation.replace(screenName.Main)}>
-            <Text style={styles.buttonText}>Create account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.signIn} onPress={() => navigation.goBack()}>
-            <Text style={styles.signInText}>Have an account? Sign in now!</Text>
-          </TouchableOpacity>
+          <Text style={styles.title}>Đăng ký</Text>
+          {
+            authenContext.state.registerStatus === 1
+            ? (
+              <>
+                <VerifyEmail />
+                <View style={{height: 20}}/>
+                <TouchableOpacity style={styles.buttonSignIn} onPress={() => {
+                    authenContext.resetRegisterStatus();
+                    navigation.goBack();
+                  }
+                }>
+                  <Text style={styles.buttonText}>Đăng nhập</Text>
+                </TouchableOpacity>
+              </>
+            )
+            : (
+              <>
+                <CustomInput
+                  icon={imgSource.name}
+                  isHideContent={false}
+                  placeHolder="Họ tên"
+                  onTextChange={(value) => setRegisterInfo({
+                    ...registerInfo,
+                    username: value,
+                  })}
+                />
+                <CustomInput
+                  icon={imgSource.email}
+                  isHideContent={false}
+                  placeHolder="Email"
+                  onTextChange={(value) => setRegisterInfo({
+                    ...registerInfo,
+                    email: value,
+                  })}
+                />
+                <CustomInput
+                  icon={imgSource.phone}
+                  isHideContent={false}
+                  placeHolder="Điện thoại"
+                  onTextChange={(value) => setRegisterInfo({
+                    ...registerInfo,
+                    phone: value,
+                  })}
+                />
+                <CustomInput
+                  icon={imgSource.password}
+                  isHideContent={true}
+                  placeHolder="Mật khẩu"
+                  onTextChange={(value) => setRegisterInfo({
+                    ...registerInfo,
+                    password: value,
+                  })}
+                />
+                <TouchableOpacity style={styles.buttonSignIn} onPress={() => handleRegister()}>
+                  <Text style={styles.buttonText}>Tạo tài khoản</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.signIn} onPress={() => navigation.goBack()}>
+                  <Text style={styles.signInText}>Đã có tài khoản? Đăng nhập ngay!</Text>
+                </TouchableOpacity>
+              </>
+            )
+          }
       </View>
-      <Text style={styles.descText}>By clicking on "Create account" you agree to our Terms of Use and Privacy Policy.</Text>
+      <Text style={styles.descText}>Bằng việc nhấn chọn đăng ký tài khoản, bạn đã đồng ý các điều khoản của hệ thống chúng tôi</Text>
+      {
+        showMsg
+          ? (
+          <View style={styles.errorDialog}>
+            <ErrorDialog msg={authenContext.state.msg} />
+          </View>
+          )
+          : null
+      }
     </LinearGradient>
   );
 };
@@ -67,6 +155,10 @@ const styles = StyleSheet.create({
     marginTop: 12,
     textAlign: 'center',
   },
+  errorDialog: {
+    position: 'absolute',
+    top: 20,
+  },
   formContainer: {
     alignItems: 'center',
     flexDirection: 'column',
@@ -79,6 +171,7 @@ const styles = StyleSheet.create({
   signInText: {
     color: colorSource.white,
     marginTop: 30,
+    textDecorationLine: 'underline',
   },
   title: {
     color: colorSource.white,

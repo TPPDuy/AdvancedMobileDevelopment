@@ -25,6 +25,10 @@ const Favorite = ({ navigation }) => {
     favoriteContext.getData();
   }, []);
 
+  const handleClickCourse = (course) => {
+    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
+  };
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -59,6 +63,7 @@ const Favorite = ({ navigation }) => {
               >
                 <ListCourses
                   courses={favoriteContext.state.favorites}
+                  onItemClick={(courseId) => handleClickCourse(courseId)}
                 />
             </ScrollView>
         )

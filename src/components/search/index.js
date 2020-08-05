@@ -17,6 +17,7 @@ import { ThemeContext } from '../../constants/theme';
 import ClearIcon from '../../../assets/search/clear-icon.svg';
 import { SearchContext } from '../providers/Search';
 import ListCourses from '../home/ListCourses';
+import screenName from '../../constants/screen-name';
 
 const verticalSeparator = () => (
     <View style={styles.verticalSeparator}/>
@@ -102,6 +103,11 @@ const Search = ({ navigation }) => {
     if (value.length === 0) setIsSearching(false);
     setSearchKey(value);
   };
+
+  const handleClickCourse = (course) => {
+    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
+  };
+
   return (
   <ThemeContext.Consumer>
     {
@@ -163,6 +169,7 @@ const Search = ({ navigation }) => {
                     <ListCourses
                       title=''
                       courses={searchContext.state.searchResult}
+                      onItemClick={(courseId) => handleClickCourse(courseId)}
                     />
                   </View>
                 )

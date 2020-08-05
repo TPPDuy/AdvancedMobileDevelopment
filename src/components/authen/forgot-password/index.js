@@ -1,32 +1,87 @@
 /* eslint-disable max-len */
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../../common/Input';
 import colorSource from '../../../constants/color';
+import { AuthenContext } from '../../providers/Authen';
+import VerifyEmail from '../verify';
+import ErrorDialog from '../errorDialog';
 
-const ForgotPassword = () => {
+const ForgotPassword = ({navigation}) => {
   const imgSource = {
     email: require('../../../../assets/authen/email-icon.png'),
   };
+  const authenContext = useContext(AuthenContext);
+  const [email, setEmail] = useState('');
+  const [showMsg, setShowMsg] = useState(false);
 
+  useEffect(() => {
+    if (authenContext.state.forgotPassStatus === 2) {
+      console.log('failed');
+      setShowMsg(true);
+      const interval = setInterval(() => {
+        setShowMsg(false);
+        clearInterval(interval);
+      }, 2000);
+    }
+  }, [authenContext.state]);
+
+  const handleForgotPass = () => {
+    authenContext.resetPassword(email);
+  };
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Reset Password</Text>
-        <Text style={styles.descText}>
-          Enter the email associated with your account and we will send you a link to reset your password.
-        </Text>
+        <Text style={styles.title}>Quên mật khẩu</Text>
       </View>
-      <View style={styles.formContainer}>
-          <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email"/>
-          <TouchableOpacity style={styles.buttonSignIn}>
-            <Text style={styles.buttonText}>Reset password</Text>
-          </TouchableOpacity>
-      </View>
+      {
+        authenContext.state.forgotPassStatus === 1
+        ? (
+          <>
+            <View style={{height: 50}}/>
+            <VerifyEmail />
+            <View style={{height: 20}}/>
+            <TouchableOpacity style={styles.buttonSignIn} onPress={() => {
+                authenContext.resetForgotPassStatus();
+                navigation.goBack();
+              }
+            }>
+              <Text style={styles.buttonText}>Đăng nhập</Text>
+            </TouchableOpacity>
+          </>
+        )
+        : (
+          <>
+            <Text style={styles.descText}>
+              Nhập email liên kết với tài khoản. Chúng tôi sẽ gửi liên kết về email để đặt lại mật khẩu.
+            </Text>
+            <View style={styles.formContainer}>
+                <CustomInput
+                  icon={imgSource.email}
+                  isHideContent={false}
+                  placeHolder="Email"
+                  onTextChange={(value) => setEmail(value)}
+                />
+                <TouchableOpacity style={styles.buttonSignIn} onPress={handleForgotPass}>
+                  <Text style={styles.buttonText}>Đặt lại mật khẩu</Text>
+                </TouchableOpacity>
+            </View>
+          </>
+        )
+      }
+      {
+        showMsg
+          ? (
+          <View style={styles.errorDialog}>
+            <ErrorDialog msg={authenContext.state.msg} />
+          </View>
+          )
+          : null
+      }
     </LinearGradient>
   );
 };
@@ -61,6 +116,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 12,
     textAlign: 'center',
+  },
+  errorDialog: {
+    position: 'absolute',
+    top: 20,
   },
   formContainer: {
     alignItems: 'flex-start',

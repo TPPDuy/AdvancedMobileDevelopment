@@ -12,6 +12,7 @@ import CustomInput from '../../common/Input';
 import colorSource from '../../../constants/color';
 import screenName from '../../../constants/screen-name';
 import { AuthenContext } from '../../providers/Authen';
+import ErrorDialog from '../errorDialog';
 
 const SignIn = ({ navigation }) => {
   const imgSource = {
@@ -26,11 +27,20 @@ const SignIn = ({ navigation }) => {
   });
   const authenContext = useContext(AuthenContext);
 
+  const [showMsg, setShowMsg] = useState(false);
+
   useEffect(() => {
     if (authenContext.state.loginStatus === 1) {
       navigation.replace(screenName.Main);
+    } else if (authenContext.state.loginStatus === 2) {
+      console.log('failed');
+      setShowMsg(true);
+      const interval = setInterval(() => {
+        setShowMsg(false);
+        clearInterval(interval);
+      }, 2000);
     }
-  }, [authenContext.state.loginStatus]);
+  }, [authenContext.state]);
 
   const handleInputEmail = (value) => {
     setLoginInfo({
@@ -49,26 +59,29 @@ const SignIn = ({ navigation }) => {
   const handleLogin = () => {
     authenContext.login(loginInfo.email, loginInfo.password);
   };
-  // () => navigation.replace(screenName.Main)
+
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
+      <Text style={styles.title}>Đăng nhập</Text>
       <View style={styles.formContainer}>
         <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email" onTextChange={(email) => handleInputEmail(email)}/>
-        <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Password" onTextChange={(password) => handleInputPassword(password)}/>
+        <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Mật khẩu" onTextChange={(password) => handleInputPassword(password)}/>
         <TouchableOpacity style={styles.buttonSignIn} onPress={() => handleLogin()}>
-          <Text style={styles.buttonText}>Sign in</Text>
+          <Text style={styles.buttonText}>Đăng nhập</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.dividerContainer}>
         <View style={styles.dividerLine}/>
-        <Text style={styles.dividerText}>or</Text>
+        <Text style={styles.dividerText}>hoặc</Text>
         <View style={styles.dividerLine}/>
       </View>
-      <LoginOption title="Sign in with Google" icon={imgSource.google} onChooseOption={null}/>
-      <LoginOption title="Sign in with Facebook" icon={imgSource.facebook} onChooseOption={null}/>
+      <LoginOption title="Đăng nhập với Google" icon={imgSource.google} onChooseOption={null}/>
+      <LoginOption title="Đăng nhập với Facebook" icon={imgSource.facebook} onChooseOption={null}/>
       <TouchableOpacity style={styles.createAccountContainer} onPress={() => navigation.navigate(screenName.SignUp)}>
-        <Text style={styles.createAccount}>New here? Create an account now!</Text>
+        <Text style={styles.createAccount}>Chưa có tài khoản? Đăng ký ngay!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.forgotPassContainer} onPress={() => navigation.navigate(screenName.ForgotPass)}>
+        <Text style={styles.forgotPass}>Quên mật khẩu</Text>
       </TouchableOpacity>
       <View>
         <AnimatedLoader
@@ -79,6 +92,15 @@ const SignIn = ({ navigation }) => {
           speed={2}
         />
       </View>
+      {
+        showMsg
+          ? (
+          <View style={styles.errorDialog}>
+            <ErrorDialog msg={authenContext.state.msg} />
+          </View>
+          )
+          : null
+      }
     </LinearGradient>
   );
 };
@@ -127,12 +149,26 @@ const styles = StyleSheet.create({
   dividerLine: {
     backgroundColor: colorSource.divider,
     height: 1,
-    width: '45%',
+    width: '41%',
   },
   dividerText: {
     color: colorSource.white,
     fontSize: 15,
     margin: 15,
+  },
+  errorDialog: {
+    position: 'absolute',
+    top: 20,
+  },
+  forgotPass: {
+    color: colorSource.white,
+    fontSize: 15,
+  },
+  forgotPassContainer: {
+    bottom: 20,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    position: 'absolute',
   },
   formContainer: {
     alignItems: 'center',

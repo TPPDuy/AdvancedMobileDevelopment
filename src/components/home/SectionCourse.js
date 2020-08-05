@@ -44,7 +44,7 @@ const SectionCourse = ({
                                             rating={item.contentPoint}
                                             price={item.price}
                                             onShowMenu={showActionSheet()}
-                                            onClickItem={() => onClickCourse(item)}/>}
+                                            onClickItem={() => onClickCourse(item.id)}/>}
                 keyExtractor={(item) => item.id}
                 horizontal={true}
               />
