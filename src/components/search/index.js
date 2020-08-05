@@ -95,7 +95,7 @@ const Search = ({ navigation }) => {
   const handleSearch = (value) => {
     if (value && value.length !== 0) {
       Keyboard.dismiss();
-      searchContext.performSearch(value, 1);
+      searchContext.performSearch(searchContext.state.recentSearch, value, 1);
       setIsSearching(true);
     }
   };
@@ -129,7 +129,7 @@ const Search = ({ navigation }) => {
                         ? <View style={styles.block}>
                             <View style={styles.blockTitle}>
                               <Text style={{ ...styles.blockTitleText, color: theme.textColor }}>Recent searches</Text>
-                              <TouchableOpacity>
+                              <TouchableOpacity onPress={() => searchContext.clearRecentSearch()}>
                                 <ClearIcon width={20} height={20} style={{ fill: theme.textColor }}/>
                               </TouchableOpacity>
                             </View>

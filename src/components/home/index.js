@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/display-name */
 /* eslint-disable global-require */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View, ScrollView, StyleSheet, Image,
 } from 'react-native';
@@ -14,6 +14,7 @@ import DarkIcon from '../../../assets/common/dark.svg';
 import LightIcon from '../../../assets/common/light.svg';
 import themes, { ThemeContext } from '../../constants/theme';
 import { HomeContext } from '../providers/Home';
+import { getProfile } from '../../storage/Storage';
 
 const Home = ({ navigation }) => {
   const onSeeAll = (category, title) => {
@@ -24,8 +25,15 @@ const Home = ({ navigation }) => {
   };
 
   const homeContext = useContext(HomeContext);
+  const [profileInfo, setProfileInfo] = useState({});
 
   useEffect(() => {
+    async function loadProfile() {
+      const profile = await getProfile();
+      console.log(profile);
+      if (profile) setProfileInfo(profile);
+    }
+    loadProfile();
     homeContext.getDataHomeScreen();
   }, []);
 
@@ -46,7 +54,15 @@ const Home = ({ navigation }) => {
                         </TouchableOpacity>
                 }
                 <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
-                  <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+                  <Image
+                    source={
+                      profileInfo
+                        ? {uri: profileInfo.avatar}
+                        : require('../../../assets/common/avatar-holder-icon.png')
+                    }
+                    resizeMode='cover'
+                    style={styles.avatar}
+                  />
                 </TouchableOpacity>
               </View>
             )
@@ -104,6 +120,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginHorizontal: 15,
     width: 30,
+    borderRadius: 20,
   },
   headerRightContainer: {
     alignItems: 'center',

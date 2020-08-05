@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable global-require */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View, StyleSheet, Text, ScrollView, FlatList, Image, TouchableOpacity,
 } from 'react-native';
@@ -16,6 +16,7 @@ import DarkIcon from '../../../assets/common/dark.svg';
 import LightIcon from '../../../assets/common/light.svg';
 import { BrowseContext } from '../providers/Browse';
 import SectionCourse from '../home/SectionCourse';
+import { getProfile } from '../../storage/Storage';
 
 
 const renderSeparator = () => (
@@ -28,6 +29,21 @@ const renderSpaceHeader = () => (
 const Browse = ({
   navigation,
 }) => {
+  const browseContext = useContext(BrowseContext);
+  const [profileInfo, setProfileInfo] = useState({});
+
+  useEffect(() => {
+    async function loadProfile() {
+      const profile = await getProfile();
+      console.log(profile);
+      if (profile) setProfileInfo(profile);
+    }
+    loadProfile();
+    browseContext.getCategory();
+    browseContext.getTopNew();
+    browseContext.getAuthor();
+  }, []);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -44,8 +60,18 @@ const Browse = ({
                           <DarkIcon width={28} height={28} />
                         </TouchableOpacity>
                   }
-                  <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
-                </View>
+                  <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
+                    <Image
+                      source={
+                        profileInfo
+                          ? {uri: profileInfo.avatar}
+                          : require('../../../assets/common/avatar-holder-icon.png')
+                      }
+                      resizeMode='cover'
+                      style={styles.avatar}
+                    />
+                  </TouchableOpacity>                
+              </View>
             )
           }
         </ThemeContext.Consumer>
@@ -53,13 +79,6 @@ const Browse = ({
     });
   });
 
-  const browseContext = useContext(BrowseContext);
-
-  useEffect(() => {
-    browseContext.getCategory();
-    browseContext.getTopNew();
-    browseContext.getAuthor();
-  }, []);
   const onSeeAll = (category, title) => {
     navigation.navigate(screenName.AllCourses, { category, title });
   };
@@ -139,6 +158,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginHorizontal: 15,
     width: 30,
+    borderRadius: 20,
   },
   container: {
     flex: 1,

@@ -59,11 +59,6 @@ const receiveProcess = (data) => ({
 
 export const fetchCourseInfo = (dispatch) => async (courseId) => {
   dispatch(requestData());
-  try {
-    const userId = await getUserInfo().id;
-  } catch (e) {
-    console.log(e);
-  }
   const responseOwnCourse = await api.get(`/user/check-own-course/${courseId}`);
   if (responseOwnCourse) {
     if (responseOwnCourse.payload.isUserOwnCourse) {

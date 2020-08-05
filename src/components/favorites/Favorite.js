@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/display-name */
 /* eslint-disable global-require */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View, ScrollView, StyleSheet, Image,
 } from 'react-native';
@@ -13,6 +13,7 @@ import LightIcon from '../../../assets/common/light.svg';
 import themes, { ThemeContext } from '../../constants/theme';
 import { FavoriteContext } from '../providers/Favorite';
 import ListCourses from '../home/ListCourses';
+import { getProfile } from '../../storage/Storage';
 
 const Favorite = ({ navigation }) => {
   const onClickCourse = (course) => {
@@ -20,8 +21,14 @@ const Favorite = ({ navigation }) => {
   };
 
   const favoriteContext = useContext(FavoriteContext);
+  const [profileInfo, setProfileInfo] = useState({});
 
   useEffect(() => {
+    async function loadProfile() {
+      const profile = await getProfile();
+      if (profile) setProfileInfo(profile);
+    }
+    loadProfile();
     favoriteContext.getData();
   }, []);
 
@@ -45,7 +52,16 @@ const Favorite = ({ navigation }) => {
                         <DarkIcon width={28} height={28} />
                         </TouchableOpacity>
                 }
-                <Image source={require('../../../assets/common/avatar-holder-icon.png')} style={styles.avatar}/>
+                <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
+                  <Image
+                    source={
+                      profileInfo
+                        ? {uri: profileInfo.avatar}
+                        : require('../../../assets/common/avatar-holder-icon.png')
+                    }
+                    style={styles.avatar}
+                  />
+                </TouchableOpacity>
               </View>
             )
           }
@@ -77,6 +93,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginHorizontal: 15,
     width: 30,
+    borderRadius: 20,
   },
   headerRightContainer: {
     alignItems: 'center',

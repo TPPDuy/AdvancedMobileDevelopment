@@ -51,16 +51,10 @@ const CourseDetails = ({
 }) => {
   const { course } = route.params;
   const courseDetailContext = useContext(CourseDetailsContext);
-  // console.log('course', route.params);
+  console.log('course', route.params);
   useEffect(() => {
     courseDetailContext.getCourseInfo(course);
   }, []);
-
-  useEffect(() => {
-    return function cleanup() {
-      console.log('component did unmount');
-    };
-  })
 
   console.log('lesson', courseDetailContext.state.currentLesson);
   let iconLike = courseDetailContext.state.isLiked ? require('../../../assets/course-detail/like-fill-icon.png') : require('../../../assets/course-detail/like-icon.png');
