@@ -2,14 +2,15 @@
 /* eslint-disable global-require */
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity,
+  View, Text, StyleSheet, TouchableOpacity, Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../../common/Input';
 import colorSource from '../../../constants/color';
 import { AuthenContext } from '../../providers/Authen';
 import VerifyEmail from '../verify';
-import ErrorDialog from '../errorDialog';
+import ErrorDialog from '../../common/ErrorDialog';
+import BackIcon from '../../../../assets/common/back-icon.svg';
 
 const ForgotPassword = ({navigation}) => {
   const imgSource = {
@@ -68,6 +69,17 @@ const ForgotPassword = ({navigation}) => {
                 />
                 <TouchableOpacity style={styles.buttonSignIn} onPress={handleForgotPass}>
                   <Text style={styles.buttonText}>Đặt lại mật khẩu</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{
+                    display: 'flex',
+                    flexDirection:'row',
+                    alignItems:'center',
+                    marginTop: 30,
+                  }}>
+                  <BackIcon width={12} height={12} style={{ fill: '#fff' }}/>
+                  <Text style={styles.signInText}>Trở về</Text>
                 </TouchableOpacity>
             </View>
           </>
@@ -129,6 +141,11 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingHorizontal: 15,
     width: '100%',
+  },
+  signInText: {
+    color: colorSource.white,
+    textDecorationLine: 'underline',
+    marginLeft: 5,
   },
   title: {
     color: colorSource.white,

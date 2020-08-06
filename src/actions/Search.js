@@ -30,7 +30,7 @@ export const performSearch = (dispatch) => async (recentSearch, searchKey, page)
     dispatch(requestSearch());
     const data = {
       keyword: searchKey,
-      limit: 10,
+      limit: 20,
       page,
     };
     const response = await api.post('/course/search', data);

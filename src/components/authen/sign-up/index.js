@@ -9,7 +9,7 @@ import CustomInput from '../../common/Input';
 import colorSource from '../../../constants/color';
 import screenName from '../../../constants/screen-name';
 import { AuthenContext } from '../../providers/Authen';
-import ErrorDialog from '../errorDialog';
+import ErrorDialog from '../../common/ErrorDialog';
 import VerifyEmail from '../verify';
 
 const SignUp = ({ navigation }) => {

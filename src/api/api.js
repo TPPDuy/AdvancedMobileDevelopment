@@ -31,6 +31,15 @@ const request = async (url, data, config, method = 'GET') => {
     if (method === 'GET') {
       // eslint-disable-next-line no-param-reassign
       newUrl += `?${objectToQueryString(newData)}`;
+    } else if (method === 'POST-FORM-DATA') {
+      const formData = new FormData();
+      options.method = 'POST';
+
+      Object.entries(newData).forEach((e) => formData.append(e[0], e[1]));
+
+      delete options.headers['Content-Type'];
+
+      options.body = formData;
     } else {
       options.body = JSON.stringify(newData);
     }
@@ -61,8 +70,12 @@ const request = async (url, data, config, method = 'GET') => {
 
 const get = (url, params) => request(url, params);
 const post = (url, data, config) => request(url, data, config, 'POST');
+const postFormData = (url, data, config) => request(url, data, config, 'POST-FORM-DATA');
+const put = (url, data, config) => request(url, data, config, 'PUT');
 
 export default {
   get,
   post,
+  postFormData,
+  put,
 };

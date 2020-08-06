@@ -36,8 +36,9 @@ import { FavoriteProvider } from './src/components/providers/Favorite';
 import Favorite from './src/components/favorites/Favorite';
 import { SearchProvider } from './src/components/providers/Search';
 import { ProfileProvider } from './src/components/providers/Profile';
-import Profile from './src/components/profile/profile';
+import Profile from './src/components/profile/Profile';
 import { CourseDetailsProvider } from './src/components/providers/CourseDetails';
+import UpdateProfile from './src/components/profile/UpdateProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,7 +46,7 @@ const Stack = createStackNavigator();
 
 const AuthenScreens = () => (
   <AuthenProvider>
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
       <Stack.Screen name={screenName.SignIn} component={SignIn}/>
       <Stack.Screen name={screenName.SignUp} component={SignUp}/>
       <Stack.Screen name={screenName.ForgotPass} component={ForgotPassword}/>
@@ -60,6 +61,7 @@ const HomeScreen = () => (
           initialRouteName={screenName.ListCourses}
           screenOptions={
             {
+              gestureEnabled: false,
               headerTitleStyle: {
                 fontSize: 20,
                 fontWeight: '500',
@@ -81,15 +83,6 @@ const HomeScreen = () => (
             component={AllCourses}
             options={{ title: '' }}
           />
-          {/* <Stack.Screen
-            name={screenName.CourseDetails}
-            component={CourseDetails}
-            options={{ headerShown: false }}
-          /> */}
-          {/* <Stack.Screen
-            name={screenName.AuthorProfile}
-            component={AuthorProfile}
-          /> */}
         </Stack.Navigator>
       )
     }
@@ -104,6 +97,7 @@ const BrowseScreen = () => (
           initialRouteName={screenName.Browse}
           screenOptions={
             {
+              gestureEnabled: false,
               headerTitleStyle: {
                 fontSize: 20,
                 fontWeight: '500',
@@ -241,6 +235,7 @@ const ProfileScreens = () => (
         <Stack.Navigator
           screenOptions={
             {
+              gestureEnabled: false,
               headerTitleStyle: {
                 fontSize: 20,
                 fontWeight: '500',
@@ -257,6 +252,11 @@ const ProfileScreens = () => (
             component={Profile}
             options={{ headerShown: true }}
           />
+          <Stack.Screen
+            name={screenName.UpdateProfile}
+            component={UpdateProfile}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       )
     }
@@ -272,6 +272,7 @@ const CourseInfoScreen = () => (
             initialRouteName={screenName.Browse}
             screenOptions={
               {
+                gestureEnabled: false,
                 headerTitleStyle: {
                   fontSize: 20,
                   fontWeight: '500',
@@ -339,7 +340,7 @@ function App() {
                       color: theme.textColor,
                     }
                   }>
-                  <Stack.Navigator screenOptions={{ headerShown: false }}>
+                  <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
                     <Stack.Screen name={screenName.Splash} component={Splash}/>
                     <Stack.Screen name={screenName.Authen} component={AuthenScreens}/>
                     <Stack.Screen name={screenName.Main} component={MainScreens}/>

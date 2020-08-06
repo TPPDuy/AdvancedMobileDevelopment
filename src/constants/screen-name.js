@@ -25,6 +25,9 @@ const screenName = {
   PathDetails: 'Path Details',
   ProfileScreen: 'ProfileScreen',
   Profile: 'Profile',
+  UpdateProfile: 'UpdateProfile',
+  UpdateEmail: 'UpdateEmail',
+  UpdatePassword: 'UpdatePassword',
 };
 
 export default screenName;

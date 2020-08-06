@@ -10,21 +10,27 @@ import RightArrow from '../../../assets/profile/right-arrow-icon.svg';
 import { getProfile, clearUserInfo } from '../../storage/Storage';
 import screenName from '../../constants/screen-name';
 import { CommonActions } from '@react-navigation/native';
+import BackIcon from '../../../assets/common/back-icon.svg';
 
 const Profile = ({ navigation }) => {
   const [profile, setProfile] = useState({});
   
   const handleLogout = async () => {
     await clearUserInfo();
+    navigation.pop();
     navigation.replace(screenName.Authen);
   };
+  async function loadProfile() {
+    const profileInfo = await getProfile();
+    if (profileInfo) setProfile(profileInfo);
+  }
   useEffect(() => {
-    async function loadProfile() {
-      const profileInfo = await getProfile();
-      if (profileInfo) setProfile(profileInfo);
-    }
-    loadProfile();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadProfile();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <ThemeContext.Consumer>
       {
@@ -82,17 +88,17 @@ const Profile = ({ navigation }) => {
                 : null
             } */}
             <View style={styles.optionBlock}>
-              <View style={styles.option}>
+              <TouchableOpacity style={styles.option} onPress={() => navigation.navigate(screenName.UpdateProfile)}>
                 <Text style={{...styles.optionText, color: theme.textColor}}>Cập nhật thông tin</Text>
-                <RightArrow width={15} height={15} fill={theme.textColor}/>
-              </View>
+                <RightArrow width={13} height={13} fill={theme.textColor}/>
+              </TouchableOpacity>
               <View style={styles.option}>
                 <Text style={{...styles.optionText, color: theme.textColor}}>Thay đổi email</Text>
-                <RightArrow width={15} height={15} fill={theme.textColor}/>
+                <RightArrow width={13} height={13} fill={theme.textColor}/>
               </View>
               <View style={styles.option}>
                 <Text style={{...styles.optionText, color: theme.textColor}}>Đổi mật khẩu</Text>
-                <RightArrow width={15} height={15} fill={theme.textColor}/>
+                <RightArrow width={13} height={13} fill={theme.textColor}/>
               </View>
             </View>
             
@@ -105,6 +111,18 @@ const Profile = ({ navigation }) => {
                   alignSelf: 'center'
                 }}>Đăng xuất</Text>
               </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.pop()}
+              style={{
+                display: 'flex',
+                flexDirection:'row',
+                alignItems:'center',
+                marginTop: 30,
+                paddingHorizontal: 20,
+              }}>
+              <BackIcon width={10} height={10} style={{ fill: theme.textColor }}/>
+              <Text style={{...styles.optionText, color: theme.textColor, marginLeft: 5}}>Trở về</Text>
             </TouchableOpacity>
           </ScrollView>
         )

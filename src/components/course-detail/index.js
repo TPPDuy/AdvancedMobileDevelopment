@@ -118,7 +118,18 @@ const CourseDetails = ({
                   }
                     <ScrollView showsVerticalScrollIndicator={false}>
                       <View style={styles.infoCourseBlock}>
-                        <Text style={styles.title}>{courseDetailContext.state.courseInfo.title}</Text>
+                        <View style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          marginBottom: 10,
+                        }}>
+                          <Text style={styles.title}>{courseDetailContext.state.courseInfo.title}</Text>
+                          <TouchableOpacity onPress={() => navigation.pop()}>
+                            <Image source={require('../../../assets/common/close-icon.png')} style={styles.closeIcon}/>
+                          </TouchableOpacity>
+                        </View>
                         <ItemAuthorHorizontal
                           name={courseDetailContext.state.courseInfo.instructor.name}
                           avatar={courseDetailContext.state.courseInfo.instructor.avatar}
@@ -216,6 +227,11 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  closeIcon: {
+    width: 15,
+    height: 15,
+    marginTop: 10,
+  },
   description: {
     marginBottom: 15,
     width: '100%',
@@ -257,6 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: colorSource.darkGray,
     flexDirection: 'column',
     padding: 15,
+    position: 'relative',
   },
   itemFunctionContainer: {
     alignItems: 'center',
@@ -271,7 +288,7 @@ const styles = StyleSheet.create({
     color: colorSource.white,
     fontSize: 25,
     fontWeight: '500',
-    marginBottom: 10,
+    marginRight: 20,
   },
   video: {
     height: 220,

@@ -27,15 +27,20 @@ const Home = ({ navigation }) => {
   const homeContext = useContext(HomeContext);
   const [profileInfo, setProfileInfo] = useState({});
 
+  async function loadProfile() {
+    const profile = await getProfile();
+    if (profile) setProfileInfo(profile);
+  }
   useEffect(() => {
-    async function loadProfile() {
-      const profile = await getProfile();
-      console.log(profile);
-      if (profile) setProfileInfo(profile);
-    }
-    loadProfile();
     homeContext.getDataHomeScreen();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadProfile();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

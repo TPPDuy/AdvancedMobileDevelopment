@@ -22,18 +22,23 @@ const Favorite = ({ navigation }) => {
 
   const favoriteContext = useContext(FavoriteContext);
   const [profileInfo, setProfileInfo] = useState({});
+
+  async function loadProfile() {
+    const profile = await getProfile();
+    if (profile) setProfileInfo(profile);
+  };
+
   useEffect(() => {
-    async function loadProfile() {
-      const profile = await getProfile();
-      if (profile) setProfileInfo(profile);
-    }
-    loadProfile();
-    favoriteContext.getData()
-    const interval = setInterval(() => favoriteContext.getData(), 3000);
-    return function cleanup() {
-      clearInterval(interval);
-    }
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Screen was focused
+      // Do something
+      loadProfile();
+      favoriteContext.getData()
+    });
+
+    return unsubscribe;
+
+  }, [navigation]);
 
   const handleClickCourse = (course) => {
     navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });

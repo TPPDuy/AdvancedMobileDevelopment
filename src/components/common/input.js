@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, StyleSheet, TextInput, Image,
 } from 'react-native';
@@ -8,15 +8,18 @@ import PropTypes from 'prop-types';
 import colorSource from '../../constants/color';
 
 const CustomInput = ({
-  icon, placeHolder, isHideContent, onTextChange,
+  icon, value, placeHolder, isHideContent, onTextChange,
 }) => {
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState(value);
 
   const updateValue = (text) => {
     onTextChange(text);
     setInputText(text);
   };
 
+  useEffect(() => {
+    setInputText(value);
+  }, [value]);
   return (
     <View style={styles.inputContainer}>
         <Image source={icon} style={styles.inputIcon}/>
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
 CustomInput.propTypes = {
   icon: PropTypes.number,
   placeHolder: PropTypes.string,
+  value: PropTypes.string,
   isHideContent: PropTypes.bool,
   onTextChange: PropTypes.func,
 };
@@ -66,6 +70,7 @@ CustomInput.propTypes = {
 CustomInput.defaultProps = {
   icon: undefined,
   placeHolder: '',
+  value: '',
   isHideContent: false,
   onTextChange: (f) => f,
 };

@@ -32,18 +32,23 @@ const Browse = ({
   const browseContext = useContext(BrowseContext);
   const [profileInfo, setProfileInfo] = useState({});
 
+  async function loadProfile() {
+    const profile = await getProfile();
+    if (profile) setProfileInfo(profile);
+  }
+
   useEffect(() => {
-    async function loadProfile() {
-      const profile = await getProfile();
-      console.log(profile);
-      if (profile) setProfileInfo(profile);
-    }
-    loadProfile();
     browseContext.getCategory();
     browseContext.getTopNew();
     browseContext.getAuthor();
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadProfile();
+    });
+    return unsubscribe;
+  }, [navigation]);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (

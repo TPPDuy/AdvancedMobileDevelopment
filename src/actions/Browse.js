@@ -48,7 +48,7 @@ export const getTopNew = (dispatch) => async () => {
   dispatch(requestData());
   const data = {
     offset: 1,
-    limit: 10,
+    limit: 20,
   };
   try {
     const response = await api.post('/course/top-new', data);
@@ -69,7 +69,7 @@ export const getCategoryDetails = (dispatch) => async (id, page = 0) => {
           id,
         ],
       },
-      limit: 10,
+      limit: 20,
       offset: page,
     };
     const response = await api.post('/course/search', body);

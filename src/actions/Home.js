@@ -66,7 +66,7 @@ export const requestDataHomeScreen = (dispatch) => async (page) => {
 export const requestTopNew = (dispatch) => async (page) => {
   const data = {
     offset: page,
-    limit: 10,
+    limit: 20,
   };
   dispatch({ type: REQUEST_ALL_COURSE });
   const topNewResponse = await api.post('/course/top-new', data);
@@ -80,7 +80,7 @@ export const requestTopNew = (dispatch) => async (page) => {
 export const requestTopSell = (dispatch) => async (page) => {
   const data = {
     offset: page,
-    limit: 10,
+    limit: 20,
   };
   dispatch({ type: REQUEST_ALL_COURSE });
 
@@ -95,7 +95,7 @@ export const requestTopSell = (dispatch) => async (page) => {
 export const requestTopRate = (dispatch) => async (page) => {
   const data = {
     offset: page,
-    limit: 10,
+    limit: 20,
   };
   dispatch({ type: REQUEST_ALL_COURSE });
 
@@ -112,7 +112,7 @@ export const requestRecommended = (dispatch) => async (page) => {
   if (user !== null) {
     dispatch({ type: REQUEST_ALL_COURSE });
 
-    const recommendResponse = await api.get(`/user/recommend-course/${user.id}/10/1`);
+    const recommendResponse = await api.get(`/user/recommend-course/${user.id}/20/1`);
     if (recommendResponse) {
       dispatch(receiveData(RECEIVE_ALL_COURSE, recommendResponse.payload));
     } else {

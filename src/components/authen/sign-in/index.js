@@ -12,7 +12,7 @@ import CustomInput from '../../common/Input';
 import colorSource from '../../../constants/color';
 import screenName from '../../../constants/screen-name';
 import { AuthenContext } from '../../providers/Authen';
-import ErrorDialog from '../errorDialog';
+import ErrorDialog from '../../common/ErrorDialog';
 
 const SignIn = ({ navigation }) => {
   const imgSource = {
@@ -76,7 +76,6 @@ const SignIn = ({ navigation }) => {
         <View style={styles.dividerLine}/>
       </View>
       <LoginOption title="Đăng nhập với Google" icon={imgSource.google} onChooseOption={null}/>
-      <LoginOption title="Đăng nhập với Facebook" icon={imgSource.facebook} onChooseOption={null}/>
       <TouchableOpacity style={styles.createAccountContainer} onPress={() => navigation.navigate(screenName.SignUp)}>
         <Text style={styles.createAccount}>Chưa có tài khoản? Đăng ký ngay!</Text>
       </TouchableOpacity>
