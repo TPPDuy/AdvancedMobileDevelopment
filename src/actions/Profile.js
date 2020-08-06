@@ -1,7 +1,9 @@
 import { setProfile, getProfile, getUserInfo } from '../storage/Storage';
 
 /* eslint-disable import/prefer-default-export */
-const { REQUEST_DATA, REQUEST_FAILED, RECEIVE_DATA, REQUEST_FINISH, UPDATE_PROFILE_SUCCESS, CHANGE_PASSWORD_SUCCESS } = require('../constants/actions/Profile');
+const {
+  REQUEST_DATA, REQUEST_FAILED, RECEIVE_DATA, REQUEST_FINISH, UPDATE_PROFILE_SUCCESS, CHANGE_PASSWORD_SUCCESS,
+} = require('../constants/actions/Profile');
 const { default: api } = require('../api/api');
 
 const requestData = () => ({
@@ -78,22 +80,27 @@ export const updateEmail = (dispatch) => (email) => {
 
 };
 
-export const updatePassword = (dispatch) => async (oldPass, newPass) => {
-  const userInfo = await getUserInfo();
-  if (userInfo) {
-    const { id } = userInfo;
-    const data = {
-      id,
-      oldPass,
-      newPass,
-    };
+export const updatePassword = (dispatch) => async (oldPass, newPass, confirmPass) => {
+  if (confirmPass === newPass) {
+    dispatch(requestData());
+    const userInfo = await getUserInfo();
+    if (userInfo) {
+      const { id } = userInfo;
+      const data = {
+        id,
+        oldPass,
+        newPass,
+      };
 
-    const response = await api.post('/user/change-password', data);
-    dispatch(requestFinish());
-    if (response) {
-      dispatch(changePassSuccess('Cập nhật mật khẩu thành công!'));
-    } else {
-      dispatch(requestFailed('Cập nhật thất bại! Mật khẩu cũ không chính xác!'));
+      const response = await api.post('/user/change-password', data);
+      dispatch(requestFinish());
+      if (response) {
+        dispatch(changePassSuccess('Cập nhật mật khẩu thành công!'));
+      } else {
+        dispatch(requestFailed('Mật khẩu cũ không chính xác!'));
+      }
     }
+  } else {
+    dispatch(requestFailed('Xác nhận mật khẩu không trùng khớp!'));
   }
 };

@@ -149,7 +149,7 @@ const UpdateProfile = ({ navigation }) => {
               <Text style={styles.buttonText}>Cập nhật</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.pop()}
               style={{
                 display: 'flex',
                 flexDirection:'row',
@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 30,
     width: '100%',
+    backgroundColor: colorSource.black,
   },
   descText: {
     color: colorSource.white,

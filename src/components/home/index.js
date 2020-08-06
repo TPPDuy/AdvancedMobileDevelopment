@@ -66,7 +66,7 @@ const Home = ({ navigation }) => {
                         : require('../../../assets/common/avatar-holder-icon.png')
                     }
                     resizeMode='cover'
-                    style={styles.avatar}
+                    style={{...styles.avatar, backgroundColor: theme.textColor}}
                   />
                 </TouchableOpacity>
               </View>

@@ -92,14 +92,14 @@ const Profile = ({ navigation }) => {
                 <Text style={{...styles.optionText, color: theme.textColor}}>Cập nhật thông tin</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
               </TouchableOpacity>
-              <View style={styles.option}>
+              <TouchableOpacity style={styles.option}>
                 <Text style={{...styles.optionText, color: theme.textColor}}>Thay đổi email</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
-              </View>
-              <View style={styles.option}>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.option} onPress={() => navigation.navigate(screenName.UpdatePassword)}>
                 <Text style={{...styles.optionText, color: theme.textColor}}>Đổi mật khẩu</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
-              </View>
+              </TouchableOpacity>
             </View>
             
             <TouchableOpacity onPress={() => handleLogout()}>
@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     height: 60,
     width: 60,
+    backgroundColor: colorSource.white,
   },
   container: {
     flexDirection: 'column',

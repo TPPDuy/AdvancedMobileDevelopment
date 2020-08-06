@@ -67,7 +67,7 @@ const Favorite = ({ navigation }) => {
                         ? {uri: profileInfo.avatar}
                         : require('../../../assets/common/avatar-holder-icon.png')
                     }
-                    style={styles.avatar}
+                    style={{...styles.avatar, backgroundColor: theme.textColor}}
                   />
                 </TouchableOpacity>
               </View>
