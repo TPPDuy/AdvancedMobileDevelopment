@@ -47,12 +47,12 @@ const UpdateProfile = ({ navigation }) => {
   }
 
   useEffect(() => {
+    profileContext.resetStatus();
     loadProfile();
   }, []);
 
   useEffect(() => {
     if (profileContext.state.isSuccess || profileContext.state.isError) {
-      console.log('failed');
       setShowMsg(true);
       const interval = setInterval(() => {
         setShowMsg(false);
@@ -65,7 +65,7 @@ const UpdateProfile = ({ navigation }) => {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
+        alert('Oops, bạn cần cấp quyền truy cập để có thể đổi ảnh đổi diện!');
       }
       return status;
     }

@@ -5,6 +5,9 @@ const {
   REQUEST_FINISH,
   CHANGE_PASSWORD_SUCCESS,
   UPDATE_PROFILE_SUCCESS,
+  RESET_STATUS,
+  CHANGE_EMAIL_SUCCESS,
+  CHANGE_EMAIL_FAILED,
 } = require('../constants/actions/Profile');
 
 const profileReducer = (state, action) => {
@@ -46,6 +49,19 @@ const profileReducer = (state, action) => {
         isLoading: false,
         isSuccess: true,
         msg: action.msg,
+      };
+    case CHANGE_EMAIL_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+      };
+    case RESET_STATUS:
+      return {
+        ...state,
+        isSuccess: false,
+        isError: false,
+        msg: '',
       };
     default:
       return state;

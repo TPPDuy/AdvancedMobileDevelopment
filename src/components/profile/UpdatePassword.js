@@ -27,6 +27,10 @@ const UpdatePassword = ({ navigation }) => {
   });
 
   useEffect(() => {
+    profileContext.resetStatus();
+  }, []);
+
+  useEffect(() => {
     if (profileContext.state.isSuccess || profileContext.state.isError) {
       console.log('failed');
       setShowMsg(true);

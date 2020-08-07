@@ -92,7 +92,7 @@ const Profile = ({ navigation }) => {
                 <Text style={{...styles.optionText, color: theme.textColor}}>Cập nhật thông tin</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.option}>
+              <TouchableOpacity style={styles.option} onPress={() => navigation.navigate(screenName.UpdateEmail)}>
                 <Text style={{...styles.optionText, color: theme.textColor}}>Thay đổi email</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
               </TouchableOpacity>

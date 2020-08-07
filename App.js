@@ -40,6 +40,7 @@ import Profile from './src/components/profile/Profile';
 import { CourseDetailsProvider } from './src/components/providers/CourseDetails';
 import UpdateProfile from './src/components/profile/UpdateProfile';
 import UpdatePassword from './src/components/profile/UpdatePassword';
+import UpdateEmail from './src/components/profile/UpdateEmail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -261,6 +262,11 @@ const ProfileScreens = () => (
           <Stack.Screen
             name={screenName.UpdatePassword}
             component={UpdatePassword}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={screenName.UpdateEmail}
+            component={UpdateEmail}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
