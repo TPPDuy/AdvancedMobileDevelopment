@@ -46,11 +46,11 @@ const Favorite = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
+      headerLeft: () => (
         <ThemeContext.Consumer>
           {
-            ({ theme, changeTheme }) => (
-              <View style={styles.headerRightContainer}>
+            ({theme, changeTheme}) => (
+              <View style={{marginLeft: 10}}>
                 {
                   theme.type === 'LIGHT'
                     ? <TouchableOpacity onPress={() => changeTheme(themes.dark)}>
@@ -58,18 +58,29 @@ const Favorite = ({ navigation }) => {
                       </TouchableOpacity>
                     : <TouchableOpacity onPress={() => changeTheme(themes.light)}>
                         <DarkIcon width={28} height={28} />
-                        </TouchableOpacity>
+                      </TouchableOpacity>
                 }
-                <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
-                  <Image
-                    source={
-                      profileInfo
-                        ? {uri: profileInfo.avatar}
-                        : require('../../../assets/common/avatar-holder-icon.png')
-                    }
-                    style={{...styles.avatar, backgroundColor: theme.textColor}}
-                  />
-                </TouchableOpacity>
+              </View>
+            )
+          }
+        </ThemeContext.Consumer>
+      ),
+      headerRight: () => (
+        <ThemeContext.Consumer>
+          {
+            ({ theme }) => (
+                <View style={styles.headerRightContainer}>
+                  <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
+                    <Image
+                      source={
+                        profileInfo
+                          ? {uri: profileInfo.avatar}
+                          : require('../../../assets/common/avatar-holder-icon.png')
+                      }
+                      resizeMode='cover'
+                      style={{...styles.avatar, backgroundColor: theme.textColor}}
+                      />
+                  </TouchableOpacity>                
               </View>
             )
           }
@@ -77,6 +88,7 @@ const Favorite = ({ navigation }) => {
       ),
     });
   });
+
   return (
     <ThemeContext.Consumer>
       {

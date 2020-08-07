@@ -18,8 +18,11 @@ const receiveResult = (data) => ({
 });
 
 export const performSearch = (dispatch) => async (recentSearch, searchKey, page) => {
-  if (searchKey && searchKey.length !== 0) {
+  console.log('search key', searchKey);
+  console.log('recent search', recentSearch);
+  if (searchKey.length !== 0) {
     if (recentSearch.indexOf(searchKey) === -1) {
+      console.log('save recent');
       const history = [...recentSearch, searchKey];
       saveSearchHistory(history);
       dispatch({
@@ -30,13 +33,15 @@ export const performSearch = (dispatch) => async (recentSearch, searchKey, page)
     dispatch(requestSearch());
     const data = {
       keyword: searchKey,
-      limit: 20,
+      limit: 10,
       page,
     };
     const response = await api.post('/course/search', data);
     if (response) {
+      console.log('result search: ', response);
       dispatch(receiveResult(response.payload.rows));
     } else {
+      console.log('search failed');
       dispatch(requestFailed());
     }
   }

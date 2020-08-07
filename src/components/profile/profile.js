@@ -11,10 +11,12 @@ import { getProfile, clearUserInfo } from '../../storage/Storage';
 import screenName from '../../constants/screen-name';
 import { CommonActions } from '@react-navigation/native';
 import BackIcon from '../../../assets/common/back-icon.svg';
+import { LanguageContext } from '../providers/Language';
 
 const Profile = ({ navigation }) => {
   const [profile, setProfile] = useState({});
-  
+  const languageContext = useContext(LanguageContext);
+
   const handleLogout = async () => {
     await clearUserInfo();
     navigation.pop();
@@ -89,15 +91,15 @@ const Profile = ({ navigation }) => {
             } */}
             <View style={styles.optionBlock}>
               <TouchableOpacity style={styles.option} onPress={() => navigation.navigate(screenName.UpdateProfile)}>
-                <Text style={{...styles.optionText, color: theme.textColor}}>Cập nhật thông tin</Text>
+                <Text style={{...styles.optionText, color: theme.textColor}}>{languageContext.state.UpdateInfo}</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
               </TouchableOpacity>
               <TouchableOpacity style={styles.option} onPress={() => navigation.navigate(screenName.UpdateEmail)}>
-                <Text style={{...styles.optionText, color: theme.textColor}}>Thay đổi email</Text>
+                <Text style={{...styles.optionText, color: theme.textColor}}>{languageContext.state.ChangeEmail}</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
               </TouchableOpacity>
               <TouchableOpacity style={styles.option} onPress={() => navigation.navigate(screenName.UpdatePassword)}>
-                <Text style={{...styles.optionText, color: theme.textColor}}>Đổi mật khẩu</Text>
+                <Text style={{...styles.optionText, color: theme.textColor}}>{languageContext.state.ChangePassword}</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
               </TouchableOpacity>
             </View>
@@ -109,7 +111,7 @@ const Profile = ({ navigation }) => {
                   fontWeight: '500',
                   color: colorSource.white,
                   alignSelf: 'center'
-                }}>Đăng xuất</Text>
+                }}>{languageContext.state.Signout}</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -122,7 +124,7 @@ const Profile = ({ navigation }) => {
                 paddingHorizontal: 20,
               }}>
               <BackIcon width={10} height={10} style={{ fill: theme.textColor }}/>
-              <Text style={{...styles.optionText, color: theme.textColor, marginLeft: 5}}>Trở về</Text>
+              <Text style={{...styles.optionText, color: theme.textColor, marginLeft: 5}}>{languageContext.state.Back}</Text>
             </TouchableOpacity>
           </ScrollView>
         )

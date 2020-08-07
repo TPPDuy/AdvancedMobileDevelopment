@@ -13,12 +13,15 @@ import ErrorDialog from '../common/ErrorDialog';
 import { ProfileContext } from '../providers/Profile';
 import BackIcon from '../../../assets/common/back-icon.svg';
 import SuccessDialog from '../common/SuccessDialog';
+import { LanguageContext } from '../providers/Language';
 
 const UpdatePassword = ({ navigation }) => {
   const imgSource = {
     password: require('../../../assets/authen/password-icon.png'),
   };
   const profileContext = useContext(ProfileContext);
+  const languageContext = useContext(LanguageContext);
+
   const [showMsg, setShowMsg] = useState(false);
   const [updateInfo, setUpdateInfo] = useState({
     oldPass: '',
@@ -50,12 +53,12 @@ const UpdatePassword = ({ navigation }) => {
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Đổi mật khẩu</Text>
+        <Text style={styles.title}>{languageContext.state.ChangePassword}</Text>
         <View style={styles.infoContainer}>
             <CustomInput
                 icon={imgSource.password}
                 isHideContent
-                placeHolder="Mật khẩu cũ"
+                placeHolder={languageContext.state.OldPass}
                 onTextChange={(value) => setUpdateInfo({
                   ...updateInfo,
                   oldPass: value,
@@ -64,7 +67,7 @@ const UpdatePassword = ({ navigation }) => {
             <CustomInput
                 icon={imgSource.password}
                 isHideContent
-                placeHolder="Mật khẩu mới"
+                placeHolder={languageContext.state.NewPass}
                 onTextChange={(value) => setUpdateInfo({
                   ...updateInfo,
                   newPass: value,
@@ -73,14 +76,14 @@ const UpdatePassword = ({ navigation }) => {
             <CustomInput
                 icon={imgSource.password}
                 isHideContent
-                placeHolder="Xác nhận mật khẩu mới"
+                placeHolder={languageContext.state.ConfirmPass}
                 onTextChange={(value) => setUpdateInfo({
                   ...updateInfo,
                   confirmPass: value,
                 })}
             />
             <TouchableOpacity style={styles.buttonSignIn} onPress={() => handleUpdate()}>
-              <Text style={styles.buttonText}>Cập nhật</Text>
+              <Text style={styles.buttonText}>{languageContext.state.Update}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.pop()}
@@ -92,7 +95,7 @@ const UpdatePassword = ({ navigation }) => {
                 marginTop: 30,
               }}>
               <BackIcon width={12} height={12} style={{ fill: '#fff' }}/>
-              <Text style={styles.signInText}>Trở về</Text>
+              <Text style={styles.signInText}>{languageContext.state.Back}</Text>
             </TouchableOpacity>
         </View>
       </View>

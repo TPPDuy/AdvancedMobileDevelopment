@@ -20,6 +20,7 @@ import { CourseDetailsContext } from '../providers/CourseDetails';
 import StarRating from 'react-native-star-rating';
 import { checkYoutubeUrl, extractVideoIdFromYoutubeUrl } from '../../utils/CommonUtils';
 import AnimatedLoader from 'react-native-animated-loader';
+import { LanguageContext } from '../providers/Language';
 
 const ItemFunction = ({ name, icon, onClick = (f) => f }) => (
   <View style={styles.itemFunctionContainer}>
@@ -51,6 +52,7 @@ const CourseDetails = ({
 }) => {
   const { course } = route.params;
   const courseDetailContext = useContext(CourseDetailsContext);
+  const languageContext = useContext(LanguageContext);
   console.log('course', route.params);
   useEffect(() => {
     courseDetailContext.getCourseInfo(course);
@@ -151,13 +153,13 @@ const CourseDetails = ({
                         </View>
                         <View style={styles.func}>
                           <View style={styles.functionContainer}>
-                            <ItemFunction name='Yêu thích' icon={iconLike} onClick={() => handleChangeLikeStatus()}/>
+                            <ItemFunction name={languageContext.state.Like} icon={iconLike} onClick={() => handleChangeLikeStatus()}/>
                             <ItemFunction
-                              name='Chia sẻ'
+                              name={languageContext.state.Share}
                               icon={require('../../../assets/course-detail/share-icon.png')}
                               onClick={() => handleShare()}
                             />
-                            <ItemFunction name='Tải xuống' icon={require('../../../assets/course-detail/download-icon.png')}/>
+                            <ItemFunction name={languageContext.state.Download} icon={require('../../../assets/course-detail/download-icon.png')}/>
                           </View>
                         </View>
                         <View style={styles.description}>
@@ -165,7 +167,7 @@ const CourseDetails = ({
                         </View>
 
                         <ButtonFunction
-                          name='Các khóa học cùng chủ đề'
+                          name={languageContext.state.RelatedCourses}
                           icon={require('../../../assets/course-detail/related-icon.png')}
                           onClick={(f) => f}
                         />

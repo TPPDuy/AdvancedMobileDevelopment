@@ -11,12 +11,14 @@ import { AuthenContext } from '../../providers/Authen';
 import VerifyEmail from '../verify';
 import ErrorDialog from '../../common/ErrorDialog';
 import BackIcon from '../../../../assets/common/back-icon.svg';
+import { LanguageContext } from '../../providers/Language';
 
 const ForgotPassword = ({navigation}) => {
   const imgSource = {
     email: require('../../../../assets/authen/email-icon.png'),
   };
   const authenContext = useContext(AuthenContext);
+  const languageContext = useContext(LanguageContext);
   const [email, setEmail] = useState('');
   const [showMsg, setShowMsg] = useState(false);
 
@@ -37,7 +39,7 @@ const ForgotPassword = ({navigation}) => {
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Quên mật khẩu</Text>
+        <Text style={styles.title}>{languageContext.state.ForgotPass}</Text>
       </View>
       {
         authenContext.state.forgotPassStatus === 1
@@ -51,24 +53,24 @@ const ForgotPassword = ({navigation}) => {
                 navigation.goBack();
               }
             }>
-              <Text style={styles.buttonText}>Đăng nhập</Text>
+              <Text style={styles.buttonText}>{languageContext.state.SignIn}</Text>
             </TouchableOpacity>
           </>
         )
         : (
           <>
             <Text style={styles.descText}>
-              Nhập email liên kết với tài khoản. Chúng tôi sẽ gửi liên kết về email để đặt lại mật khẩu.
+            {languageContext.state.ForgotPassDesc}
             </Text>
             <View style={styles.formContainer}>
                 <CustomInput
                   icon={imgSource.email}
                   isHideContent={false}
-                  placeHolder="Email"
+                  placeHolder={languageContext.state.Email}
                   onTextChange={(value) => setEmail(value)}
                 />
                 <TouchableOpacity style={styles.buttonSignIn} onPress={handleForgotPass}>
-                  <Text style={styles.buttonText}>Đặt lại mật khẩu</Text>
+                  <Text style={styles.buttonText}>{languageContext.state.ResetPass}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigation.goBack()}
@@ -79,7 +81,7 @@ const ForgotPassword = ({navigation}) => {
                     marginTop: 30,
                   }}>
                   <BackIcon width={12} height={12} style={{ fill: '#fff' }}/>
-                  <Text style={styles.signInText}>Trở về</Text>
+                  <Text style={styles.signInText}>{languageContext.state.Back}</Text>
                 </TouchableOpacity>
             </View>
           </>

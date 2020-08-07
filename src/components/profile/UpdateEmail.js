@@ -11,12 +11,14 @@ import ErrorDialog from '../common/ErrorDialog';
 import BackIcon from '../../../assets/common/back-icon.svg';
 import CustomInput from '../common/Input';
 import VerifyEmail from '../authen/verify';
+import { LanguageContext } from '../providers/Language';
 
 const UpdateEmail = ({navigation}) => {
   const imgSource = {
     email: require('../../../assets/authen/email-icon.png'),
   };
   const profileContext = useContext(ProfileContext);
+  const languageContext = useContext(LanguageContext);
   const [email, setEmail] = useState('');
   const [showMsg, setShowMsg] = useState(false);
 
@@ -40,7 +42,7 @@ const UpdateEmail = ({navigation}) => {
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Đổi email</Text>
+        <Text style={styles.title}>{languageContext.state.ChangeEmail}</Text>
       </View>
       {
         profileContext.state.isSuccess
@@ -53,14 +55,14 @@ const UpdateEmail = ({navigation}) => {
                 navigation.pop();
               }
             }>
-              <Text style={styles.buttonText}>Trở về</Text>
+              <Text style={styles.buttonText}>{languageContext.state.Back}</Text>
             </TouchableOpacity>
           </>
         )
         : (
           <>
             <Text style={styles.descText}>
-              Nhập email mới. Chúng tôi sẽ gửi liên kết về email để xác nhận việc thay đổi này.
+              {languageContext.state.ChangeEmailDesc}
             </Text>
             <View style={styles.formContainer}>
                 <CustomInput
@@ -70,7 +72,7 @@ const UpdateEmail = ({navigation}) => {
                   onTextChange={(value) => setEmail(value)}
                 />
                 <TouchableOpacity style={styles.buttonSignIn} onPress={handleUpdateEmail}>
-                  <Text style={styles.buttonText}>Cập nhật</Text>
+                  <Text style={styles.buttonText}>{languageContext.state.Update}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigation.pop()}
@@ -81,7 +83,7 @@ const UpdateEmail = ({navigation}) => {
                     marginTop: 30,
                   }}>
                   <BackIcon width={12} height={12} style={{ fill: '#fff' }}/>
-                  <Text style={styles.signInText}>Trở về</Text>
+                  <Text style={styles.signInText}>{languageContext.state.Back}</Text>
                 </TouchableOpacity>
             </View>
           </>

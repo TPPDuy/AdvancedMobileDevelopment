@@ -15,6 +15,7 @@ import LightIcon from '../../../assets/common/light.svg';
 import themes, { ThemeContext } from '../../constants/theme';
 import { HomeContext } from '../providers/Home';
 import { getProfile } from '../../storage/Storage';
+import { LanguageContext } from '../providers/Language';
 
 const Home = ({ navigation }) => {
   const onSeeAll = (category, title) => {
@@ -25,6 +26,7 @@ const Home = ({ navigation }) => {
   };
 
   const homeContext = useContext(HomeContext);
+  const languageContext = useContext(LanguageContext);
   const [profileInfo, setProfileInfo] = useState({});
 
   async function loadProfile() {
@@ -44,11 +46,11 @@ const Home = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
+      headerLeft: () => (
         <ThemeContext.Consumer>
           {
-            ({ theme, changeTheme }) => (
-              <View style={styles.headerRightContainer}>
+            ({theme, changeTheme}) => (
+              <View style={{marginLeft: 10}}>
                 {
                   theme.type === 'LIGHT'
                     ? <TouchableOpacity onPress={() => changeTheme(themes.dark)}>
@@ -56,19 +58,29 @@ const Home = ({ navigation }) => {
                       </TouchableOpacity>
                     : <TouchableOpacity onPress={() => changeTheme(themes.light)}>
                         <DarkIcon width={28} height={28} />
-                        </TouchableOpacity>
+                      </TouchableOpacity>
                 }
-                <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
-                  <Image
-                    source={
-                      profileInfo
-                        ? {uri: profileInfo.avatar}
-                        : require('../../../assets/common/avatar-holder-icon.png')
-                    }
-                    resizeMode='cover'
-                    style={{...styles.avatar, backgroundColor: theme.textColor}}
-                  />
-                </TouchableOpacity>
+              </View>
+            )
+          }
+        </ThemeContext.Consumer>
+      ),
+      headerRight: () => (
+        <ThemeContext.Consumer>
+          {
+            ({ theme }) => (
+                <View style={styles.headerRightContainer}>
+                  <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
+                    <Image
+                      source={
+                        profileInfo
+                          ? {uri: profileInfo.avatar}
+                          : require('../../../assets/common/avatar-holder-icon.png')
+                      }
+                      resizeMode='cover'
+                      style={{...styles.avatar, backgroundColor: theme.textColor}}
+                      />
+                  </TouchableOpacity>                
               </View>
             )
           }
@@ -76,6 +88,7 @@ const Home = ({ navigation }) => {
       ),
     });
   });
+
   return (
     <ThemeContext.Consumer>
       {
@@ -84,24 +97,24 @@ const Home = ({ navigation }) => {
               <View style={{ backgroundColor: theme.background }}>
                 <Image source={require('../../../assets/common/explore-image.gif')} style={styles.homeImage} resizeMode="stretch"/>
                 <SectionCourse
-                  title='Có thể bạn quan tâm'
+                  title={languageContext.state.Recommended}
                   courses={homeContext.state.homeScreen.recommended}
-                  onSeeAll={() => onSeeAll('RECOMMENDED', 'Có thể bạn quan tâm')}
+                  onSeeAll={() => onSeeAll('RECOMMENDED', languageContext.state.Recommended)}
                   onClickCourse={(course) => onClickCourse(course)}/>
                 <SectionCourse
-                  title='Các khóa học mới'
+                  title={languageContext.state.NewCourses}
                   courses={homeContext.state.homeScreen.topNew}
-                  onSeeAll={() => onSeeAll('TOP_NEW', 'Các khóa học mới')}
+                  onSeeAll={() => onSeeAll('TOP_NEW', languageContext.state.NewCourses)}
                   onClickCourse={(course) => onClickCourse(course)}/>
                 <SectionCourse
-                  title='Bán chạy nhất'
+                  title={languageContext.state.TopSell}
                   courses={homeContext.state.homeScreen.topSell}
-                  onSeeAll={() => onSeeAll('TOP_SELL', 'Bán chạy nhất')}
+                  onSeeAll={() => onSeeAll('TOP_SELL', languageContext.state.TopSell)}
                   onClickCourse={(course) => onClickCourse(course)}/>
                 <SectionCourse
-                  title='Đánh giá cao nhất'
+                  title={languageContext.state.TopRate}
                   courses={homeContext.state.homeScreen.topRate}
-                  onSeeAll={() => onSeeAll('TOP_RATE', 'Đánh giá cao nhất')}
+                  onSeeAll={() => onSeeAll('TOP_RATE', languageContext.state.TopRate)}
                   onClickCourse={(course) => onClickCourse(course)}/>
               </View>
               <View>

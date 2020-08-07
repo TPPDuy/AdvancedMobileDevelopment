@@ -13,6 +13,7 @@ import BackIcon from '../../../assets/common/back-icon.svg';
 import { ThemeContext } from '../../constants/theme';
 import { BrowseContext } from '../providers/Browse';
 import NoDataIcon from '../../../assets/common/no-data-icon.svg';
+import { LanguageContext } from '../providers/Language';
 
 const renderSeparator = (dividerColor) => (
     <View style={{ height: 1, backgroundColor: dividerColor }}/>
@@ -26,7 +27,7 @@ const CategoryListDetails = ({
 }) => {
   const category = route.params.data;
   const browseContext = useContext(BrowseContext);
-
+  const languageContext = useContext(LanguageContext);
   useEffect(() => {
     browseContext.getCategoryDetails(category.id);
   }, []);
@@ -79,7 +80,7 @@ const CategoryListDetails = ({
                 ListEmptyComponent={() => (
                   <View style={styles.emptyComponent}>
                     <NoDataIcon width={50} height={50} />
-                    <Text style={{ fontSize: 14, color: theme.textColor, marginTop: 15 }}>Không tìm thấy khóa học nào</Text>
+                    <Text style={{ fontSize: 14, color: theme.textColor, marginTop: 15 }}>{languageContext.state.NoCourses}</Text>
                   </View>)}
                 ListFooterComponent={renderFooter}
               />

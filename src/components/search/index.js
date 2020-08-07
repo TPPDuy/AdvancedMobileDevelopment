@@ -18,6 +18,7 @@ import ClearIcon from '../../../assets/search/clear-icon.svg';
 import { SearchContext } from '../providers/Search';
 import ListCourses from '../home/ListCourses';
 import screenName from '../../constants/screen-name';
+import { LanguageContext } from '../providers/Language';
 
 const verticalSeparator = () => (
     <View style={styles.verticalSeparator}/>
@@ -36,6 +37,7 @@ const SearchBar = ({
   onCancel = (f) => f,
 }) => {
   const inputRef = useRef();
+  const languageContext = useContext(LanguageContext);
   const handleSearch = () => {
     onSearch();
   };
@@ -59,7 +61,7 @@ const SearchBar = ({
         ref={inputRef}
         style={styles.textInput}
         value={value}
-        placeholder='Search...'
+        placeholder={`${languageContext.state.Search}...`}
         placeholderTextColor={colorSource.lightGray}
         returnKeyType='search'
         onSubmitEditing={() => handleSearch()}
@@ -81,6 +83,7 @@ const SearchBar = ({
 };
 const Search = ({ navigation }) => {
   const searchContext = useContext(SearchContext);
+  const languageContext = useContext(LanguageContext);
   const [searchKey, setSearchKey] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
@@ -93,9 +96,10 @@ const Search = ({ navigation }) => {
     setIsSearching(false);
   };
   const handleSearch = (value) => {
+    console.log('search key: ', value);
     if (value && value.length !== 0) {
       Keyboard.dismiss();
-      searchContext.performSearch(searchContext.state.recentSearch, value, 1);
+      searchContext.performSearch(searchContext.state.recentSearch || [], value, 1);
       setIsSearching(true);
     }
   };
@@ -128,7 +132,7 @@ const Search = ({ navigation }) => {
                       searchContext.state.recentSearch && searchContext.state.recentSearch.length > 0
                         ? <View style={styles.block}>
                             <View style={styles.blockTitle}>
-                              <Text style={{ ...styles.blockTitleText, color: theme.textColor }}>Recent searches</Text>
+                              <Text style={{ ...styles.blockTitleText, color: theme.textColor }}>{languageContext.state.RecentSearch}</Text>
                               <TouchableOpacity onPress={() => searchContext.clearRecentSearch()}>
                                 <ClearIcon width={20} height={20} style={{ fill: theme.textColor }}/>
                               </TouchableOpacity>
@@ -149,7 +153,7 @@ const Search = ({ navigation }) => {
                         : null
                     }
                     <View style={styles.block}>
-                      <Text style={{ ...styles.blockTitle, color: theme.textColor }}>Tìm kiếm phổ biến</Text>
+                      <Text style={{ ...styles.blockTitle, color: theme.textColor }}>{languageContext.state.PopularSearch}</Text>
                       <View style={styles.interestsBlock}>
                         {
                           searchContext.state.populars.map((item, index) => (

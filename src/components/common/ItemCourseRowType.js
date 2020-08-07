@@ -1,84 +1,87 @@
 /* eslint-disable global-require */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View, Text, Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import PropTypes, { string } from 'prop-types';
 import StarRating from 'react-native-star-rating';
-import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
+import { formatMonthYearType } from '../../utils/DateTimeUtils';
 import colorSource from '../../constants/color';
-import MenuIcon from '../../../assets/common/menu-icon.svg';
 import { ThemeContext } from '../../constants/theme';
+import { LanguageContext } from '../providers/Language';
 
 const ItemCourse = ({
   id, name, thumbnail, author, numOfVideos, date, duration, rating, price,
   onShowMenu, onItemClick,
-}) => (
-  <ThemeContext.Consumer>
-    {
-      ({ theme }) => (
-        <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
-          <Image resizeMode="cover" source={{ uri: thumbnail }} style={{
-            width: '22%', height: 60, borderRadius: 2, marginRight: 10, backgroundColor: colorSource.white,
-          }}/>
-          <View style={styles.infoContainer}>
-            <Text
-              numberOfLines={2}
-              style={{ ...styles.courseName, color: theme.textColor }}
-            >
-              {name}
-            </Text>
-            {
-              (author && author.length !== 0)
-                ? (
-                  <Text numberOfLines={1} style={styles.normalText}>
-                    {author}
-                  </Text>
-                )
-                : null
-            }
-            {
-              (date && numOfVideos && duration)
-                ? (
-                <Text numberOfLines={1} style={styles.normalText}>
-                  {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙  {duration}h
-                </Text>
-                )
-                : null
-            }
-            <View style={styles.ratingContainer}>
-              <StarRating
-                containerStyle={styles.ratingBar}
-                disabled
-                halfStarEnabled
-                halfStarColor="#fcba03"
-                maxStars={5}
-                rating={rating}
-                fullStarColor="#fcba03"
-                emptyStarColor="#d4d4d4"
-                starSize={10}/>
-              <Text style={{
-                ...styles.normalText,
-                color: price === 0 ? colorSource.gray : colorSource.red,
-                fontWeight: price === 0 ? 'normal' : 'bold',
-              }}>
-                {
-                  price === 0
-                    ? '(Miễn phí)'
-                    : `(${price} VNĐ)`
-                }
+}) => {
+  const languageContext = useContext(LanguageContext);
+  return (
+    <ThemeContext.Consumer>
+      {
+        ({ theme }) => (
+          <TouchableOpacity style={styles.container} onPress={() => onItemClick(id)}>
+            <Image resizeMode="cover" source={{ uri: thumbnail }} style={{
+              width: '22%', height: 60, borderRadius: 2, marginRight: 10, backgroundColor: colorSource.white,
+            }}/>
+            <View style={styles.infoContainer}>
+              <Text
+                numberOfLines={2}
+                style={{ ...styles.courseName, color: theme.textColor }}
+              >
+                {name}
               </Text>
+              {
+                (author && author.length !== 0)
+                  ? (
+                    <Text numberOfLines={1} style={styles.normalText}>
+                      {author}
+                    </Text>
+                  )
+                  : null
+              }
+              {
+                (date && numOfVideos && duration)
+                  ? (
+                  <Text numberOfLines={1} style={styles.normalText}>
+                    {formatMonthYearType(date)} ∙ {numOfVideos} videos ∙  {duration}h
+                  </Text>
+                  )
+                  : null
+              }
+              <View style={styles.ratingContainer}>
+                <StarRating
+                  containerStyle={styles.ratingBar}
+                  disabled
+                  halfStarEnabled
+                  halfStarColor="#fcba03"
+                  maxStars={5}
+                  rating={rating}
+                  fullStarColor="#fcba03"
+                  emptyStarColor="#d4d4d4"
+                  starSize={10}/>
+                <Text style={{
+                  ...styles.normalText,
+                  color: price === 0 ? colorSource.gray : colorSource.red,
+                  fontWeight: price === 0 ? 'normal' : 'bold',
+                }}>
+                  {
+                    price === 0
+                      ? `(${languageContext.state.Free})`
+                      : `(${price} VNĐ)`
+                  }
+                </Text>
+              </View>
             </View>
-          </View>
-          {/* <TouchableOpacity onPress={() => onShowMenu}>
-            <MenuIcon width={15} height={15} style={{ fill: '#000' }}/>
-          </TouchableOpacity> */}
-        </TouchableOpacity>
-      )
-    }
-  </ThemeContext.Consumer>
-);
+            {/* <TouchableOpacity onPress={() => onShowMenu}>
+              <MenuIcon width={15} height={15} style={{ fill: '#000' }}/>
+            </TouchableOpacity> */}
+          </TouchableOpacity>
+        )
+      }
+    </ThemeContext.Consumer>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

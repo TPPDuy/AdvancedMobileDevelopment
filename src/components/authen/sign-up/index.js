@@ -11,6 +11,7 @@ import screenName from '../../../constants/screen-name';
 import { AuthenContext } from '../../providers/Authen';
 import ErrorDialog from '../../common/ErrorDialog';
 import VerifyEmail from '../verify';
+import { LanguageContext } from '../../providers/Language';
 
 const SignUp = ({ navigation }) => {
   const imgSource = {
@@ -27,6 +28,8 @@ const SignUp = ({ navigation }) => {
   });
   const [showMsg, setShowMsg] = useState(false);
   const authenContext = useContext(AuthenContext);
+  const languageContext = useContext(LanguageContext);
+
   useEffect(() => {
     if (authenContext.state.registerStatus === 2) {
       console.log('failed');
@@ -45,7 +48,7 @@ const SignUp = ({ navigation }) => {
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.formContainer}>
-          <Text style={styles.title}>Đăng ký</Text>
+          <Text style={styles.title}>{languageContext.state.SignUp}</Text>
           {
             authenContext.state.registerStatus === 1
             ? (
@@ -57,7 +60,7 @@ const SignUp = ({ navigation }) => {
                     navigation.goBack();
                   }
                 }>
-                  <Text style={styles.buttonText}>Đăng nhập</Text>
+                  <Text style={styles.buttonText}>{languageContext.state.SignIn}</Text>
                 </TouchableOpacity>
               </>
             )
@@ -66,7 +69,7 @@ const SignUp = ({ navigation }) => {
                 <CustomInput
                   icon={imgSource.name}
                   isHideContent={false}
-                  placeHolder="Họ tên"
+                  placeHolder={languageContext.state.Name}
                   onTextChange={(value) => setRegisterInfo({
                     ...registerInfo,
                     username: value,
@@ -75,7 +78,7 @@ const SignUp = ({ navigation }) => {
                 <CustomInput
                   icon={imgSource.email}
                   isHideContent={false}
-                  placeHolder="Email"
+                  placeHolder={languageContext.state.Email}
                   onTextChange={(value) => setRegisterInfo({
                     ...registerInfo,
                     email: value,
@@ -84,7 +87,7 @@ const SignUp = ({ navigation }) => {
                 <CustomInput
                   icon={imgSource.phone}
                   isHideContent={false}
-                  placeHolder="Điện thoại"
+                  placeHolder={languageContext.state.Phone}
                   onTextChange={(value) => setRegisterInfo({
                     ...registerInfo,
                     phone: value,
@@ -93,23 +96,23 @@ const SignUp = ({ navigation }) => {
                 <CustomInput
                   icon={imgSource.password}
                   isHideContent={true}
-                  placeHolder="Mật khẩu"
+                  placeHolder={languageContext.state.Password}
                   onTextChange={(value) => setRegisterInfo({
                     ...registerInfo,
                     password: value,
                   })}
                 />
                 <TouchableOpacity style={styles.buttonSignIn} onPress={() => handleRegister()}>
-                  <Text style={styles.buttonText}>Tạo tài khoản</Text>
+                  <Text style={styles.buttonText}>{languageContext.state.SignUp}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.signIn} onPress={() => navigation.goBack()}>
-                  <Text style={styles.signInText}>Đã có tài khoản? Đăng nhập ngay!</Text>
+                  <Text style={styles.signInText}>{languageContext.state.SignUpDesc}</Text>
                 </TouchableOpacity>
               </>
             )
           }
       </View>
-      <Text style={styles.descText}>Bằng việc nhấn chọn đăng ký tài khoản, bạn đã đồng ý các điều khoản của hệ thống chúng tôi</Text>
+      <Text style={styles.descText}>{languageContext.state.TCDesc}</Text>
       {
         showMsg
           ? (

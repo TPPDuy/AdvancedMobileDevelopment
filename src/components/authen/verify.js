@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Image,
   StyleSheet,
@@ -7,18 +7,22 @@ import {
   Text,
 } from 'react-native';
 import colorSource from '../../constants/color';
+import { LanguageContext } from '../providers/Language';
 
-const VerifyEmail = () => (
+const VerifyEmail = () => {
+  const languageContext = useContext(LanguageContext);
+  return (
     <View style={styles.container}>
         <Image
           source={require('../../../assets/authen/email-sent-icon.png')}
           style={styles.imgVerify}
         />
         <Text style={styles.text}>
-            Chúng tôi đã gửi liên kết xác nhận về email của bạn. Vui lòng kiểm tra hộp thư!
+            {languageContext.state.VerifyDesc}
         </Text>
     </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

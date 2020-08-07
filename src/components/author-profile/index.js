@@ -12,6 +12,7 @@ import screenName from '../../constants/screen-name';
 import { ThemeContext } from '../../constants/theme';
 import { AuthorContext } from '../providers/Author';
 import ListItemSkill from '../skill/ListItemSkill';
+import { LanguageContext } from '../providers/Language';
 
 const AuthorProfile = ({
   route, navigation,
@@ -20,6 +21,7 @@ const AuthorProfile = ({
   const buttonTextColor = colorSource.white;
   const authorId = route.params.id;
   const authorContext = useContext(AuthorContext);
+  const languageContext = useContext(LanguageContext);
 
   useEffect(() => {
     authorContext.getAuthorDetails(authorId);
@@ -40,7 +42,7 @@ const AuthorProfile = ({
                 </Text>
 
                 <Text style={{ ...styles.btnFollow, backgroundColor: buttonBackground, color: buttonTextColor }}>
-                  {authorContext.state.authorDetails.soldNumber} học viên
+                  {authorContext.state.authorDetails.soldNumber} {languageContext.state.Student}
                 </Text>
 
                 <Text style={styles.followDesc}>
@@ -49,7 +51,7 @@ const AuthorProfile = ({
                 {
                   authorContext.state.authorDetails.intro && authorContext.state.authorDetails.intro.length !== 0
                     ? <CollapsableDescription minHeight={40} description={authorContext.state.authorDetails.intro}/>
-                    : <Text style={{ color: colorSource.white }}>(Chưa cập nhật giới thiệu)</Text>
+                    : <Text style={{ color: colorSource.white }}>({languageContext.state.NoUpdate})</Text>
 
                 }
                 {
@@ -81,7 +83,7 @@ const AuthorProfile = ({
                 (authorContext.state.authorDetails.skills && authorContext.state.authorDetails.skills.length !== 0)
                   ? (
                     <View style={styles.listCourses}>
-                      <Text style={{ ...styles.title, color: theme.textColor }}>Kỹ năng</Text>
+                      <Text style={{ ...styles.title, color: theme.textColor }}>{languageContext.state.Skill}</Text>
                       <ListItemSkill
                         listSkills={authorContext.state.authorDetails.skills}
                       />
@@ -95,7 +97,7 @@ const AuthorProfile = ({
                     <View style={styles.listCourses}>
                       <ListCourses
                         courses={authorContext.state.authorDetails.courses}
-                        title='Các khóa học'
+                        title={languageContext.state.Courses}
                         onItemClick={(id) => handleClickCourse(id)}/>
                     </View>
                   )

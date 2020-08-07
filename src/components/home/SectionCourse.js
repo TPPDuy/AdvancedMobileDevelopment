@@ -3,7 +3,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable global-require */
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View, Text, StyleSheet, FlatList, SafeAreaView, TouchableOpacity,
 } from 'react-native';
@@ -12,12 +12,14 @@ import ItemCourse from '../common/ItemCourseBlockType';
 import RightArrow from '../../../assets/common/right-arrow-icon.svg';
 import { ThemeContext } from '../../constants/theme';
 import NoDataIcon from '../../../assets/common/no-data-icon.svg';
+import { LanguageContext } from '../providers/Language';
 
 const SectionCourse = ({
   id, title, courses, onSeeAll, onClickCourse,
 }) => {
   const showActionSheet = () => {
   };
+  const languageContext = useContext(LanguageContext);
   return (
     <ThemeContext.Consumer>
       {
@@ -26,7 +28,7 @@ const SectionCourse = ({
             <View style={styles(theme).titleBlock}>
                 <Text style={styles(theme).title}>{title}</Text>
                 <TouchableOpacity style={styles(theme).seeAllBlock} onPress={() => onSeeAll()}>
-                  <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>See all</Text>
+                  <Text style={{ color: '#808080', fontSize: 14, marginRight: 5 }}>{languageContext.state.SeeAll}</Text>
                   <RightArrow width={8} height={8} style={{ fill: '#808080' }}/>
                 </TouchableOpacity>
             </View>

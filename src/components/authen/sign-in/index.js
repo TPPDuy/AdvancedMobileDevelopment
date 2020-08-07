@@ -13,6 +13,7 @@ import colorSource from '../../../constants/color';
 import screenName from '../../../constants/screen-name';
 import { AuthenContext } from '../../providers/Authen';
 import ErrorDialog from '../../common/ErrorDialog';
+import { LanguageContext } from '../../providers/Language';
 
 const SignIn = ({ navigation }) => {
   const imgSource = {
@@ -26,6 +27,7 @@ const SignIn = ({ navigation }) => {
     password: null,
   });
   const authenContext = useContext(AuthenContext);
+  const languageContext = useContext(LanguageContext);
 
   const [showMsg, setShowMsg] = useState(false);
 
@@ -62,25 +64,34 @@ const SignIn = ({ navigation }) => {
 
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
-      <Text style={styles.title}>Đăng nhập</Text>
+      <Text style={styles.title}>{languageContext.state.SignIn}</Text>
       <View style={styles.formContainer}>
-        <CustomInput icon={imgSource.email} isHideContent={false} placeHolder="Email" onTextChange={(email) => handleInputEmail(email)}/>
-        <CustomInput icon={imgSource.password} isHideContent={true} placeHolder="Mật khẩu" onTextChange={(password) => handleInputPassword(password)}/>
+        <CustomInput
+          icon={imgSource.email}
+          isHideContent={false}
+          placeHolder={languageContext.state.Email}
+          onTextChange={(email) => handleInputEmail(email)}
+        />
+        <CustomInput
+          icon={imgSource.password}
+          isHideContent={true}
+          placeHolder={languageContext.state.Password}
+          onTextChange={(password) => handleInputPassword(password)}/>
         <TouchableOpacity style={styles.buttonSignIn} onPress={() => handleLogin()}>
-          <Text style={styles.buttonText}>Đăng nhập</Text>
+          <Text style={styles.buttonText}>{languageContext.state.SignIn}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.dividerContainer}>
         <View style={styles.dividerLine}/>
-        <Text style={styles.dividerText}>hoặc</Text>
+        <Text style={styles.dividerText}>{languageContext.state.Or}</Text>
         <View style={styles.dividerLine}/>
       </View>
-      <LoginOption title="Đăng nhập với Google" icon={imgSource.google} onChooseOption={null}/>
+      <LoginOption title={languageContext.state.SignInGoogle} icon={imgSource.google} onChooseOption={null}/>
       <TouchableOpacity style={styles.createAccountContainer} onPress={() => navigation.navigate(screenName.SignUp)}>
-        <Text style={styles.createAccount}>Chưa có tài khoản? Đăng ký ngay!</Text>
+        <Text style={styles.createAccount}>{languageContext.state.SignInDesc}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.forgotPassContainer} onPress={() => navigation.navigate(screenName.ForgotPass)}>
-        <Text style={styles.forgotPass}>Quên mật khẩu</Text>
+        <Text style={styles.forgotPass}>{languageContext.state.ForgotPass}</Text>
       </TouchableOpacity>
       <View>
         <AnimatedLoader
@@ -147,8 +158,8 @@ const styles = StyleSheet.create({
   },
   dividerLine: {
     backgroundColor: colorSource.divider,
+    flex: 1,
     height: 1,
-    width: '41%',
   },
   dividerText: {
     color: colorSource.white,

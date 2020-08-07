@@ -17,6 +17,7 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import BackIcon from '../../../assets/common/back-icon.svg';
 import SuccessDialog from '../common/SuccessDialog';
+import { LanguageContext } from '../providers/Language';
 
 const UpdateProfile = ({ navigation }) => {
   const imgSource = {
@@ -24,6 +25,8 @@ const UpdateProfile = ({ navigation }) => {
     phone: require('../../../assets/authen/phone-icon.png'),
   };
   const profileContext = useContext(ProfileContext);
+  const languageContext = useContext(LanguageContext);
+
   const [showMsg, setShowMsg] = useState(false);
   const [profile, setProfile] = useState({});
   const [updateInfo, setUpdateInfo] = useState({
@@ -116,7 +119,7 @@ const UpdateProfile = ({ navigation }) => {
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Cập nhật thông tin</Text>
+        <Text style={styles.title}>{languageContext.state.UpdateInfo}</Text>
         <View style={styles.infoContainer}>
             <TouchableOpacity onPress={pickImage}>
                 <Image
@@ -146,7 +149,7 @@ const UpdateProfile = ({ navigation }) => {
                 })}
             />
             <TouchableOpacity style={styles.buttonSignIn} onPress={() => handleUpdate()}>
-              <Text style={styles.buttonText}>Cập nhật</Text>
+              <Text style={styles.buttonText}>{languageContext.state.Update}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.pop()}
@@ -158,7 +161,7 @@ const UpdateProfile = ({ navigation }) => {
                 marginTop: 30,
               }}>
               <BackIcon width={12} height={12} style={{ fill: '#fff' }}/>
-              <Text style={styles.signInText}>Trở về</Text>
+              <Text style={styles.signInText}>{languageContext.state.Back}</Text>
             </TouchableOpacity>
         </View>
       </View>

@@ -17,6 +17,7 @@ import LightIcon from '../../../assets/common/light.svg';
 import { BrowseContext } from '../providers/Browse';
 import SectionCourse from '../home/SectionCourse';
 import { getProfile } from '../../storage/Storage';
+import { LanguageContext } from '../providers/Language';
 
 
 const renderSeparator = () => (
@@ -30,6 +31,7 @@ const Browse = ({
   navigation,
 }) => {
   const browseContext = useContext(BrowseContext);
+  const languageContext = useContext(LanguageContext);
   const [profileInfo, setProfileInfo] = useState({});
 
   async function loadProfile() {
@@ -49,22 +51,33 @@ const Browse = ({
     });
     return unsubscribe;
   }, [navigation]);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => (
+        <ThemeContext.Consumer>
+          {
+            ({theme, changeTheme}) => (
+              <View style={{marginLeft: 10}}>
+                {
+                  theme.type === 'LIGHT'
+                    ? <TouchableOpacity onPress={() => changeTheme(themes.dark)}>
+                        <LightIcon width={28} height={28} />
+                      </TouchableOpacity>
+                    : <TouchableOpacity onPress={() => changeTheme(themes.light)}>
+                        <DarkIcon width={28} height={28} />
+                      </TouchableOpacity>
+                }
+              </View>
+            )
+          }
+        </ThemeContext.Consumer>
+      ),
       headerRight: () => (
         <ThemeContext.Consumer>
           {
-            ({ theme, changeTheme }) => (
+            ({ theme }) => (
                 <View style={styles.headerRightContainer}>
-                  {
-                    theme.type === 'LIGHT'
-                      ? <TouchableOpacity onPress={() => changeTheme(themes.dark)}>
-                          <LightIcon width={28} height={28} />
-                        </TouchableOpacity>
-                      : <TouchableOpacity onPress={() => changeTheme(themes.light)}>
-                          <DarkIcon width={28} height={28} />
-                        </TouchableOpacity>
-                  }
                   <TouchableOpacity onPress={() => navigation.navigate(screenName.ProfileScreen)}>
                     <Image
                       source={
@@ -118,9 +131,9 @@ const Browse = ({
                 (browseContext.state.topNew && browseContext.state.topNew.length !== 0)
                   ? (
                     <SectionCourse
-                      title='Các khóa học mới'
+                      title={languageContext.state.NewCourses}
                       courses={browseContext.state.topNew}
-                      onSeeAll={() => onSeeAll('TOP_NEW', 'Các khóa học mới')}
+                      onSeeAll={() => onSeeAll('TOP_NEW', languageContext.state.NewCourses)}
                       onClickCourse={(course) => handleClickCourse(course)}
                     />
                   )
@@ -130,7 +143,7 @@ const Browse = ({
                 (browseContext.state.authors && browseContext.state.authors !== 0)
                   ? (
                     <View style={styles.authorsContainer}>
-                      <Text style={{ ...styles.topAuthorsText, color: theme.textColor }}>Giảng viên hàng đầu</Text>
+                      <Text style={{ ...styles.topAuthorsText, color: theme.textColor }}>{languageContext.state.TopAuthor}</Text>
                       <ListAuthors
                         authors={browseContext.state.authors}
                         onClickItem={(item) => navigation.navigate(screenName.AuthorProfile, { id: item.id })}/>
