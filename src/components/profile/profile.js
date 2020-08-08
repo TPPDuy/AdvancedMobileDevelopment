@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  View, Image, Text, StyleSheet, ScrollView, TouchableOpacity,
+  View, Image, Text, StyleSheet, ScrollView, TouchableOpacity, TouchableWithoutFeedback,
 } from 'react-native';
 import { ThemeContext } from '../../constants/theme';
 import colorSource from '../../constants/color';
@@ -12,6 +12,7 @@ import screenName from '../../constants/screen-name';
 import { CommonActions } from '@react-navigation/native';
 import BackIcon from '../../../assets/common/back-icon.svg';
 import { LanguageContext } from '../providers/Language';
+import languages from '../../constants/language';
 
 const Profile = ({ navigation }) => {
   const [profile, setProfile] = useState({});
@@ -102,6 +103,40 @@ const Profile = ({ navigation }) => {
                 <Text style={{...styles.optionText, color: theme.textColor}}>{languageContext.state.ChangePassword}</Text>
                 <RightArrow width={13} height={13} fill={theme.textColor}/>
               </TouchableOpacity>
+              <View style={styles.option}>
+                <Text style={{...styles.optionText, color: theme.textColor}}>{languageContext.state.ChangeLanguage}</Text>
+                <View style={{
+                  ...styles.languageOptions,
+                  borderColor: theme.textColor,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      ...styles.languageItem,
+                      backgroundColor: languageContext.state.status === 'vi' ? theme.textColor : theme.background
+                    }}
+                    onPress={() => languageContext.changeLanguage(languages.vi)}
+                  >
+                    <Text
+                      style={{
+                        ...styles.languageText,
+                        color: languageContext.state.status === 'vi' ? theme.background : theme.textColor
+                      }}>VI</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={{
+                      ...styles.languageItem,
+                      backgroundColor: languageContext.state.status === 'eng' ? theme.textColor : theme.background
+                    }}
+                    onPress={() => languageContext.changeLanguage(languages.eng)}
+                  >
+                    <Text 
+                      style={{
+                        ...styles.languageText,
+                        color: languageContext.state.status === 'eng' ? theme.background : theme.textColor
+                      }}>EN</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
             
             <TouchableOpacity onPress={() => handleLogout()}>
@@ -158,6 +193,20 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginHorizontal: 15,
     padding: 15,
+  },
+  languageOptions: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 2,
+  },
+  languageItem: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  languageText: {
+    fontSize: 13,
+    fontWeight: 'bold',
   },
   link: {
     color: colorSource.white,

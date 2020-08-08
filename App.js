@@ -28,7 +28,7 @@ import ForgotPassword from './src/components/authen/forgot-password';
 import themes, { ThemeContext } from './src/constants/theme';
 import { AuthenProvider } from './src/components/providers/Authen';
 import { HomeProvider } from './src/components/providers/Home';
-import { getTheme, storeTheme } from './src/storage/Storage';
+import { getTheme, storeTheme, getLanguage } from './src/storage/Storage';
 import { BrowseProvider } from './src/components/providers/Browse';
 import { AuthorProvider } from './src/components/providers/Author';
 import Splash from './src/components/splash/Splash';

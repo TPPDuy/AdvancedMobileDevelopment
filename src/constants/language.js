@@ -50,6 +50,7 @@ const languages = {
     ChangeEmail: 'Thay đổi email',
     ChangeEmailDesc: 'Nhập email mới. Chúng tôi sẽ gửi liên kết về email mới để xác nhận việc thay đổi này.',
     ChangePassword: 'Đổi mật khẩu',
+    ChangeLanguage: 'Đổi ngôn ngữ',
     Signout: 'Đăng xuất',
     Update: 'Cập nhật',
     // Course Detail
@@ -113,6 +114,7 @@ const languages = {
     ChangeEmail: 'Change email',
     ChangeEmailDesc: 'Enter a new email. We will sent a link to this email for comfirming this change.',
     ChangePassword: 'Change password',
+    ChangeLanguage: 'Change language',
     Signout: 'Sign out',
     Update: 'Update',
     // Course Detail

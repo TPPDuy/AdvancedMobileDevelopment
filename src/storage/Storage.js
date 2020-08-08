@@ -39,6 +39,26 @@ export const getTheme = async () => {
   }
 };
 
+export const storeLanguage = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem('language', jsonValue);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getLanguage = async () => {
+  try {
+    const value = await AsyncStorage.getItem('language');
+    const jsonValue = value !== null ? JSON.parse(value) : null;
+    return jsonValue;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
 export const getProfile = async () => {
   try {
     const value = await AsyncStorage.getItem('profile');
