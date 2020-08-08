@@ -69,10 +69,15 @@ export const fetchCourseInfo = (dispatch) => async (courseId) => {
       if (response) {
         dispatch(receiveCourseDetails(response.payload));
         try {
-          dispatch(receiveCurrentLesson(response.payload.section[0].lesson[0]));
-          const responseLesson = await api.get(`/lesson/video/${courseId}/${response.payload.section[0].lesson[0].id}`);
-          if (response) {
-            dispatch(receiveLessonVideo(responseLesson.payload));
+          const recentLessonResponse = await api.get(`/course/last-watched-lesson/${courseId}`);
+          if (recentLessonResponse) {
+            dispatch(receiveCurrentLesson(recentLessonResponse.payload));
+          } else {
+            dispatch(receiveCurrentLesson(response.payload.section[0].lesson[0]));
+            const responseLesson = await api.get(`/lesson/video/${courseId}/${response.payload.section[0].lesson[0].id}`);
+            if (response) {
+              dispatch(receiveLessonVideo(responseLesson.payload));
+            }
           }
         } catch (e) {
           dispatch(receiveCurrentLesson(null));
@@ -121,4 +126,11 @@ export const getLessonWithVideo = (dispatch) => async (courseId, lessonId) => {
   if (response) {
     dispatch(receiveLessonVideo(response.payload));
   }
+};
+
+export const updateLessonStatus = (dispatch) => async (lessonId) => {
+  const data = {
+    lessonId,
+  };
+  api.post('/lesson/update-status', data);
 };

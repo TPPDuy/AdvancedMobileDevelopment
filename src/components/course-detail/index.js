@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Video } from 'expo-av';
 import YoutubePlayer from 'react-native-youtube-iframe'
 import {
@@ -21,6 +21,7 @@ import StarRating from 'react-native-star-rating';
 import { checkYoutubeUrl, extractVideoIdFromYoutubeUrl } from '../../utils/CommonUtils';
 import AnimatedLoader from 'react-native-animated-loader';
 import { LanguageContext } from '../providers/Language';
+import { duration } from 'moment';
 
 const ItemFunction = ({ name, icon, onClick = (f) => f }) => (
   <View style={styles.itemFunctionContainer}>
@@ -53,6 +54,11 @@ const CourseDetails = ({
   const { course } = route.params;
   const courseDetailContext = useContext(CourseDetailsContext);
   const languageContext = useContext(LanguageContext);
+  const youtubeRef = useRef();
+  var expoRef;
+  var seeked = false;
+  const [isFinishLesson, setIsFinishLesson] = useState(false);
+  const [isLoadVideo, setIsLoadVideo] = useState(true);
   console.log('course', route.params);
   useEffect(() => {
     courseDetailContext.getCourseInfo(course);
@@ -85,19 +91,47 @@ const CourseDetails = ({
     }
   };
 
+  // useEffect(() => {
+  //   if (courseDetailContext.state.currentLesson) {
+  //     console.log('play from: ', courseDetailContext.state.currentLesson.currentTime);
+  //     expoAVRef.current.playFromPositionAsync(courseDetailContext.state.currentLesson.currentTime || 0)
+  //   }
+  // }, [courseDetailContext.state.currentLesson]);
+
   const handleChangeLesson = (sectionId, lessonId) => {
     if (lessonId !== courseDetailContext.state.currentLesson.id) {
       courseDetailContext.changeCurrentLesson(course, sectionId, lessonId);
     }
   }
+
+  const handlePlayback = component => {
+    if (component) {
+      expoRef = component;
+      component.loadAsync({uri: courseDetailContext.state.currentLesson.videoUrl});
+    }
+  };
+
+  const handlePlayVideo = (status) => {
+    if (status) {
+      console.log('status', status);
+      if (status.isLoaded) {
+        setIsLoadVideo(false);
+        if (!seeked) {
+          expoRef.setStatusAsync({ shouldPlay: true, positionMillis: 60000});
+          seeked = true;
+        }
+      }
+      if (!courseDetailContext.state.currentLesson.isFinish && status.positionMillis >= Math.floor(status.durationMillis * 95/100)) {
+        courseDetailContext.updateLessonStatus(courseDetailContext.state.currentLesson.id);
+      }
+    }
+  };
+
   return (
     <ThemeContext.Consumer>
       {
         ({ theme }) => (
           <View style={{ ...styles.container, backgroundColor: theme.background }}>
-            {/* <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
-              <Image source={require('../../../assets/course-detail/down-arrow-icon.png')} style={styles.backIcon}/>
-            </TouchableOpacity> */}
             {
               courseDetailContext.state.courseInfo && courseDetailContext.state.currentLesson && courseDetailContext.state.currentLesson.videoUrl
                 ? (
@@ -106,15 +140,28 @@ const CourseDetails = ({
                     checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)
                     ? (
                       <YoutubePlayer
+                        ref={youtubeRef}
                         videoId = {extractVideoIdFromYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)}
                         height={230}
+                        onChangeState={(state) => {
+                          if (state === 'buffering' && !seeked) {
+                            youtubeRef.current.seekTo(courseDetailContext.state.currentLesson.currentTime)
+                            seeked = true;
+                          }
+                        }}
+                        onPlaybackRateChange={(e) => console.log('playback rate change: ', e)}
                       />
                     )
                     : (
-                      <Video source={{uri: courseDetailContext.state.currentLesson.videoUrl}}
+                      <Video
+                        ref={handlePlayback}
                         resizeMode={Video.RESIZE_MODE_CONTAIN}
-                        useNativeControls={true}
+                        useNativeControls
+                        usePoster={isLoadVideo}
+                        posterSource={{uri: 'https://i.pinimg.com/originals/85/e2/4b/85e24bd18e3658cd321688b4c34cc576.gif'}}
                         style={styles.video}
+                        positionMillis={60000}
+                        onPlaybackStatusUpdate={(status) => handlePlayVideo(status)}
                       />
                     )
                   }
@@ -178,7 +225,7 @@ const CourseDetails = ({
                       <View style={{ paddingHorizontal: 15 }}>
                         <Content
                           modules={courseDetailContext.state.sections}
-                          playingLesson={courseDetailContext.state.currentLesson.id}
+                          playingLesson={courseDetailContext.state.currentLesson.id || courseDetailContext.state.currentLesson.lessonId}
                           onClickLesson={(sectionId, lessonId) => handleChangeLesson(sectionId, lessonId)}
                         />
                       </View>
