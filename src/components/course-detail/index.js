@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Video } from 'expo-av';
 import YoutubePlayer from 'react-native-youtube-iframe'
 import {
-  View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Share,
+  View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Share, Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { formatMonthYearType, formatHourType1 } from '../../utils/DateTimeUtils';
@@ -92,7 +92,7 @@ const CourseDetails = ({
   };
 
   async function saveCurrentTime() {
-    if (courseDetailContext.state.currentLesson) {
+    if (courseDetailContext.state.currentLesson && courseDetailContext.state.isOwnCourse) {
       if (!checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)) {
         const status = await expoRef.getStatusAsync();
         courseDetailContext.updateLearningTime(courseDetailContext.state.currentLesson.id, status.positionMillis/1000);
@@ -131,6 +131,17 @@ const CourseDetails = ({
     }
   };
 
+  const handlePayment = () => {
+   const url = `https://itedu.me/payment/${courseDetailContext.state.courseInfo.id}`
+   Linking.canOpenURL(url).then(supported => {
+    if (supported) {
+      Linking.openURL(url);
+    } else {
+      console.log("Don't know how to open URI: " + url);
+    }
+   });
+  };
+
   return (
     <ThemeContext.Consumer>
       {
@@ -141,30 +152,40 @@ const CourseDetails = ({
                 ? (
                   <>
                   {
-                    checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)
+                    courseDetailContext.state.isOwnCourse
                     ? (
-                      <YoutubePlayer
-                        ref={youtubeRef}
-                        videoId = {extractVideoIdFromYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)}
-                        height={230}
-                        onChangeState={(state) => {
-                          if (state === 'buffering' && !seeked) {
-                            youtubeRef.current.seekTo(courseDetailContext.state.currentLesson.currentTime)
-                            seeked = true;
-                          }
-                        }}
-                        onPlaybackRateChange={(e) => console.log('playback rate change: ', e)}
-                      />
-                    )
+                        checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)
+                        ? (
+                            <YoutubePlayer
+                              ref={youtubeRef}
+                              videoId = {extractVideoIdFromYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)}
+                              height={230}
+                              onChangeState={(state) => {
+                                if (state === 'buffering' && !seeked) {
+                                  youtubeRef.current.seekTo(courseDetailContext.state.currentLesson.currentTime)
+                                  seeked = true;
+                                }
+                              }}
+                              onPlaybackRateChange={(e) => console.log('playback rate change: ', e)}
+                            />
+                          )
+                          : (
+                            <Video
+                              ref={handlePlayback}
+                              resizeMode={Video.RESIZE_MODE_CONTAIN}
+                              useNativeControls
+                              usePoster={isLoadVideo}
+                              posterSource={{uri: 'https://i.pinimg.com/originals/85/e2/4b/85e24bd18e3658cd321688b4c34cc576.gif'}}
+                              style={styles.video}
+                              onPlaybackStatusUpdate={(status) => handlePlayVideo(status)}
+                            />
+                          )
+                      )
                     : (
-                      <Video
-                        ref={handlePlayback}
-                        resizeMode={Video.RESIZE_MODE_CONTAIN}
-                        useNativeControls
-                        usePoster={isLoadVideo}
-                        posterSource={{uri: 'https://i.pinimg.com/originals/85/e2/4b/85e24bd18e3658cd321688b4c34cc576.gif'}}
-                        style={styles.video}
-                        onPlaybackStatusUpdate={(status) => handlePlayVideo(status)}
+                      <Image
+                        source={{uri: courseDetailContext.state.courseInfo.imageUrl}}
+                        style={{height: 230}}
+                        resizeMode="cover"
                       />
                     )
                   }
@@ -222,16 +243,64 @@ const CourseDetails = ({
                           onClick={(f) => f}
                         />
                       </View>
-                      <View style={styles.progressBar}>
-                          <ProgressBar progress={courseDetailContext.state.process}/>
-                      </View>
-                      <View style={{ paddingHorizontal: 15 }}>
-                        <Content
-                          modules={courseDetailContext.state.sections}
-                          playingLesson={courseDetailContext.state.currentLesson.id}
-                          onClickLesson={(sectionId, lessonId) => handleChangeLesson(sectionId, lessonId)}
-                        />
-                      </View>
+
+                      {
+                        courseDetailContext.state.isOwnCourse
+                        ? (
+                          <>
+                            <View style={styles.progressBar}>
+                            <ProgressBar progress={courseDetailContext.state.process}/>
+                            </View>
+                            <View style={{ paddingHorizontal: 15 }}>
+                              <Content
+                                modules={courseDetailContext.state.sections}
+                                playingLesson={courseDetailContext.state.currentLesson.id}
+                                onClickLesson={(sectionId, lessonId) => handleChangeLesson(sectionId, lessonId)}
+                              />
+                            </View>
+                          </>
+                        )
+                        : (
+                          <View style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignSelf: 'center',
+                            padding: 20,
+                          }}>
+                            <Text style={{
+                              fontSize: 16,
+                              color: theme.textColor,
+                              textAlign: 'center',
+                            }}>{languageContext.state.Payment}</Text>
+                            <TouchableOpacity
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                paddingHorizontal: 15,
+                                paddingVertical: 10,
+                                borderRadius: 10,
+                                backgroundColor: '#006DF0',
+                                alignSelf: 'center',
+                                alignItems: 'center',
+                                marginTop: 15,
+                              }}
+
+                              onPress={() => handlePayment()}
+                            >
+                              <Image
+                                source={require('../../../assets/course-detail/buy-icon.png')}
+                                style={{width: 17, height: 17}}
+                              />
+                              <Text style={{
+                                fontSize: 15,
+                                fontWeight: '500',
+                                color: colorSource.white,
+                                marginLeft: 5,
+                              }}>{languageContext.state.Buy}</Text>
+                            </TouchableOpacity>
+                          </View>
+                        )
+                      }
                     </ScrollView>
                   </>
                 )

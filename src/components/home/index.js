@@ -95,7 +95,13 @@ const Home = ({ navigation }) => {
         ({ theme }) => (
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ backgroundColor: theme.background }}>
-                <Image source={require('../../../assets/common/explore-image.gif')} style={styles.homeImage} resizeMode="stretch"/>
+                <Image
+                  source={
+                    theme.type === 'LIGHT' 
+                    ? require('../../../assets/common/welcome-image.gif')
+                    : require('../../../assets/common/explore-image.gif')
+                  }
+                  style={styles.homeImage} resizeMode={theme.type === 'LIGHT' ? 'cover' : 'stretch'}/>
                 <SectionCourse
                   title={languageContext.state.Recommended}
                   courses={homeContext.state.homeScreen.recommended}

@@ -11,6 +11,7 @@ const {
   FINISH_REQUEST_DATA,
   RECEIVE_COURSE_SECTION,
   RECEIVE_PROCESS,
+  RECEIVE_OWN_COURSE_INFO,
 } = require('../constants/actions/CourseDetails');
 const { default: api } = require('../api/api');
 
@@ -57,43 +58,70 @@ const receiveProcess = (data) => ({
   data,
 });
 
+const receiveOwnCourseInfo = (data) => ({
+  type: RECEIVE_OWN_COURSE_INFO,
+  data,
+});
+
 export const fetchCourseInfo = (dispatch) => async (courseId) => {
   dispatch(requestData());
-  const responseOwnCourse = await api.get(`/user/check-own-course/${courseId}`);
-  if (responseOwnCourse) {
-    if (responseOwnCourse.payload.isUserOwnCourse) {
-      const response = await api.get(`/course/get-course-detail/${courseId}/null`);
-      const responseLike = await api.get(`/user/get-course-like-status/${courseId}`);
+  // const responseOwnCourse = await api.get(`/user/check-own-course/${courseId}`);
+  // if (responseOwnCourse) {
+  //   if (responseOwnCourse.payload.isUserOwnCourse) {
+  const response = await api.get(`/course/get-course-detail/${courseId}/null`);
+  const responseLike = await api.get(`/user/get-course-like-status/${courseId}`);
+
+  if (response) {
+    dispatch(receiveCourseDetails(response.payload));
+    try {
+      const recentLessonResponse = await api.get(`/course/last-watched-lesson/${courseId}`);
+      if (recentLessonResponse) {
+        dispatch(receiveCurrentLesson({
+          ...recentLessonResponse.payload,
+          id: recentLessonResponse.payload.lessonId,
+        }));
+      } else {
+        dispatch(receiveCurrentLesson(response.payload.section[0].lesson[0]));
+        const responseLesson = await api.get(`/lesson/video/${courseId}/${response.payload.section[0].lesson[0].id}`);
+        if (responseLesson) {
+          dispatch(receiveLessonVideo(responseLesson.payload));
+        }
+      }
+    } catch (e) {
+      dispatch(receiveCurrentLesson(null));
+    }
+  } else {
+    dispatch(requestFailed());
+  }
+
+  if (responseLike) {
+    dispatch(receiveLikeStatus(responseLike.likeStatus));
+  } else {
+    console.log('request like failed');
+  }
+
+  const checkOwnCourse = await api.get(`/user/check-own-course/${courseId}`);
+
+  if (checkOwnCourse) {
+    let ownCourseInfo = checkOwnCourse.payload.isUserOwnCourse;
+
+    if (!ownCourseInfo && response && response.payload.price === 0) {
+      const data = {
+        courseId,
+      };
+      const responseGetFreeCourse = await api.post('/payment/get-free-courses', data);
+      if (responseGetFreeCourse) {
+        ownCourseInfo = true;
+      } else {
+        ownCourseInfo = false;
+      }
+    }
+
+    dispatch(receiveOwnCourseInfo(ownCourseInfo));
+
+    if (ownCourseInfo) {
       const responseSection = await api.get(`/course/detail-with-lesson/${courseId}`);
       const responseProcess = await api.get(`/course/process-course/${courseId}`);
-      if (response) {
-        dispatch(receiveCourseDetails(response.payload));
-        try {
-          const recentLessonResponse = await api.get(`/course/last-watched-lesson/${courseId}`);
-          if (recentLessonResponse) {
-            dispatch(receiveCurrentLesson({
-              ...recentLessonResponse.payload,
-              id: recentLessonResponse.payload.lessonId,
-            }));
-          } else {
-            dispatch(receiveCurrentLesson(response.payload.section[0].lesson[0]));
-            const responseLesson = await api.get(`/lesson/video/${courseId}/${response.payload.section[0].lesson[0].id}`);
-            if (response) {
-              dispatch(receiveLessonVideo(responseLesson.payload));
-            }
-          }
-        } catch (e) {
-          dispatch(receiveCurrentLesson(null));
-        }
-      } else {
-        dispatch(requestFailed());
-      }
-
-      if (responseLike) {
-        dispatch(receiveLikeStatus(responseLike.likeStatus));
-      } else {
-        console.log('request like failed');
-      }
 
       if (responseSection) {
         dispatch(receiveCourseSection(responseSection.payload.section));
@@ -104,11 +132,7 @@ export const fetchCourseInfo = (dispatch) => async (courseId) => {
       if (responseProcess) {
         dispatch(receiveProcess(responseProcess.payload));
       }
-    } else {
-      dispatch(requestFailed());
     }
-  } else {
-    dispatch(requestFailed());
   }
   dispatch(finishRequestData());
 };

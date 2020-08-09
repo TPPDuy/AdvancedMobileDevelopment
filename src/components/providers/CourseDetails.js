@@ -13,6 +13,7 @@ const initialState = {
   currentLesson: null,
   sections: [],
   process: 0,
+  isOwnCourse: false,
 };
 
 const CourseDetailsProvider = (props) => {
