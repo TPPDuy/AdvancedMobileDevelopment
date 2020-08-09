@@ -91,13 +91,18 @@ const CourseDetails = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (courseDetailContext.state.currentLesson) {
-  //     console.log('play from: ', courseDetailContext.state.currentLesson.currentTime);
-  //     expoAVRef.current.playFromPositionAsync(courseDetailContext.state.currentLesson.currentTime || 0)
-  //   }
-  // }, [courseDetailContext.state.currentLesson]);
-
+  async function saveCurrentTime() {
+    if (courseDetailContext.state.currentLesson) {
+      if (!checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)) {
+        const status = await expoRef.getStatusAsync();
+        courseDetailContext.updateLearningTime(courseDetailContext.state.currentLesson.id, status.positionMillis/1000);
+      } else {
+        const currentTime = await youtubeRef.current.getCurrentTime();
+        courseDetailContext.updateLearningTime(courseDetailContext.state.currentLesson.id, currentTime);
+      }
+    }
+    navigation.pop();
+  }
   const handleChangeLesson = (sectionId, lessonId) => {
     if (lessonId !== courseDetailContext.state.currentLesson.id) {
       courseDetailContext.changeCurrentLesson(course, sectionId, lessonId);
@@ -113,11 +118,10 @@ const CourseDetails = ({
 
   const handlePlayVideo = (status) => {
     if (status) {
-      console.log('status', status);
       if (status.isLoaded) {
         setIsLoadVideo(false);
         if (!seeked) {
-          expoRef.setStatusAsync({ shouldPlay: true, positionMillis: 60000});
+          expoRef.setStatusAsync({ shouldPlay: true, positionMillis: courseDetailContext.state.currentLesson.currentTime * 1000});
           seeked = true;
         }
       }
@@ -160,7 +164,6 @@ const CourseDetails = ({
                         usePoster={isLoadVideo}
                         posterSource={{uri: 'https://i.pinimg.com/originals/85/e2/4b/85e24bd18e3658cd321688b4c34cc576.gif'}}
                         style={styles.video}
-                        positionMillis={60000}
                         onPlaybackStatusUpdate={(status) => handlePlayVideo(status)}
                       />
                     )
@@ -175,7 +178,7 @@ const CourseDetails = ({
                           marginBottom: 10,
                         }}>
                           <Text style={styles.title}>{courseDetailContext.state.courseInfo.title}</Text>
-                          <TouchableOpacity onPress={() => navigation.pop()}>
+                          <TouchableOpacity onPress={() => saveCurrentTime()}>
                             <Image source={require('../../../assets/common/close-icon.png')} style={styles.closeIcon}/>
                           </TouchableOpacity>
                         </View>
@@ -225,7 +228,7 @@ const CourseDetails = ({
                       <View style={{ paddingHorizontal: 15 }}>
                         <Content
                           modules={courseDetailContext.state.sections}
-                          playingLesson={courseDetailContext.state.currentLesson.id || courseDetailContext.state.currentLesson.lessonId}
+                          playingLesson={courseDetailContext.state.currentLesson.id}
                           onClickLesson={(sectionId, lessonId) => handleChangeLesson(sectionId, lessonId)}
                         />
                       </View>

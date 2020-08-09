@@ -71,7 +71,10 @@ export const fetchCourseInfo = (dispatch) => async (courseId) => {
         try {
           const recentLessonResponse = await api.get(`/course/last-watched-lesson/${courseId}`);
           if (recentLessonResponse) {
-            dispatch(receiveCurrentLesson(recentLessonResponse.payload));
+            dispatch(receiveCurrentLesson({
+              ...recentLessonResponse.payload,
+              id: recentLessonResponse.payload.lessonId,
+            }));
           } else {
             dispatch(receiveCurrentLesson(response.payload.section[0].lesson[0]));
             const responseLesson = await api.get(`/lesson/video/${courseId}/${response.payload.section[0].lesson[0].id}`);
@@ -133,4 +136,15 @@ export const updateLessonStatus = (dispatch) => async (lessonId) => {
     lessonId,
   };
   api.post('/lesson/update-status', data);
+};
+
+export const updateLearningTime = () => async (lessonId, currentTime) => {
+  console.log('update time', currentTime);
+  if (!Number.isNaN(currentTime)) {
+    const data = {
+      lessonId,
+      currentTime,
+    };
+    await api.put('/lesson/update-current-time-learn-video', data);
+  }
 };

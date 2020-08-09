@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useReducer } from 'react';
 import courseDetailsReducer from '../../reducers/CourseDetails';
-import { fetchCourseInfo, changeLikeStatus, getLessonWithVideo, updateLessonStatus } from '../../actions/CourseDetails';
+import { fetchCourseInfo, changeLikeStatus, getLessonWithVideo, updateLessonStatus, updateLearningTime } from '../../actions/CourseDetails';
 import { CHANGE_CURRENT_LESSON, REQUEST_DATA, FINISH_REQUEST_DATA } from '../../constants/actions/CourseDetails';
 
 const CourseDetailsContext = React.createContext();
@@ -37,6 +37,7 @@ const CourseDetailsProvider = (props) => {
         changeLikeStatus: changeLikeStatus(dispatch),
         getLessonVideo: getLessonWithVideo(dispatch),
         updateLessonStatus: updateLessonStatus(dispatch),
+        updateLearningTime: updateLearningTime(dispatch),
         changeCurrentLesson,
       }}>
         {props.children}

@@ -11,7 +11,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, StatusBar, SafeAreaView,
+  StyleSheet, StatusBar, SafeAreaView, AppRegistry,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Home from './src/components/home';
