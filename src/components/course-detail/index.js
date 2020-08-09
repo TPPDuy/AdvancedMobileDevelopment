@@ -58,7 +58,6 @@ const CourseDetails = ({
   var expoRef;
   var seeked = false;
   const [isFinishLesson, setIsFinishLesson] = useState(false);
-  const [isLoadVideo, setIsLoadVideo] = useState(true);
   console.log('course', route.params);
   useEffect(() => {
     courseDetailContext.getCourseInfo(course);
@@ -119,7 +118,6 @@ const CourseDetails = ({
   const handlePlayVideo = (status) => {
     if (status) {
       if (status.isLoaded) {
-        setIsLoadVideo(false);
         if (!seeked) {
           expoRef.setStatusAsync({ shouldPlay: true, positionMillis: courseDetailContext.state.currentLesson.currentTime * 1000});
           seeked = true;
@@ -174,8 +172,8 @@ const CourseDetails = ({
                               ref={handlePlayback}
                               resizeMode={Video.RESIZE_MODE_CONTAIN}
                               useNativeControls
-                              usePoster={isLoadVideo}
-                              posterSource={{uri: 'https://i.pinimg.com/originals/85/e2/4b/85e24bd18e3658cd321688b4c34cc576.gif'}}
+                              usePoster
+                              posterSource={{uri: courseDetailContext.state.courseInfo.imageUrl}}
                               style={styles.video}
                               onPlaybackStatusUpdate={(status) => handlePlayVideo(status)}
                             />
