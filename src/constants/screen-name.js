@@ -20,6 +20,7 @@ const screenName = {
   SkillDetails: 'Skill Details',
   CategoryDetails: 'Category Details',
   CategoryListDetails: 'Category List Details',
+  RelatedCourses: 'Related Courses',
   ListGroupPaths: 'List Group Paths',
   ListPaths: 'List Paths',
   PathDetails: 'Path Details',

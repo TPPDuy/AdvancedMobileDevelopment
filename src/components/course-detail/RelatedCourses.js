@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable global-require */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   View, ScrollView, TouchableOpacity, Text, StyleSheet, ImageBackground, FlatList,
 } from 'react-native';
@@ -11,7 +11,6 @@ import ItemCourse from '../common/ItemCourseRowType';
 import screenName from '../../constants/screen-name';
 import BackIcon from '../../../assets/common/back-icon.svg';
 import { ThemeContext } from '../../constants/theme';
-import { BrowseContext } from '../providers/Browse';
 import NoDataIcon from '../../../assets/common/no-data-icon.svg';
 import { LanguageContext } from '../providers/Language';
 
@@ -22,17 +21,16 @@ const renderFooter = () => (
   <View style={{ height: 20 }}/>
 );
 
-const CategoryListDetails = ({
+const RelatedCourses = ({
   route, navigation,
 }) => {
-  const category = route.params.data;
-  const browseContext = useContext(BrowseContext);
+  const { course } = route.params;
+  
+  console.log('realated courses: ', course);
   const languageContext = useContext(LanguageContext);
-  useEffect(() => {
-    browseContext.getCategoryDetails(category.id);
-  }, []);
-  const handleClickCourse = (course) => {
-    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
+
+  const handleClickCourse = (courseId) => {
+    navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course: courseId } });
   };
   return (
     <ThemeContext.Consumer>
@@ -42,7 +40,7 @@ const CategoryListDetails = ({
           return (
             <ScrollView style={{ ...styles.container, backgroundColor: theme.background }}>
               <ImageBackground
-                source={{ uri: 'https://images.unsplash.com/photo-1544256718-3bcf237f3974?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2251&q=80' }}
+                source={{ uri: course.imageUrl }}
                 style={styles.thumbnail}
                 resizeMode='cover'
               >
@@ -55,13 +53,12 @@ const CategoryListDetails = ({
                   >
                     <BackIcon width={25} height={25} style={{ fill: theme.textColor }}/>
                   </TouchableOpacity>
-                  <Text style={{ ...styles.title, color: titleColor }}>{category.name}</Text>
                 </LinearGradient>
               </ImageBackground>
               <FlatList
                 style={styles.listCourses}
                 horizontal={false}
-                data={browseContext.state.categoryDetails}
+                data={course.coursesLikeCategory}
                 renderItem={
                   ({ item }) => <ItemCourse
                                   name={item.title}
@@ -128,23 +125,14 @@ const styles = StyleSheet.create({
     height: '110%',
     width: '100%',
   },
-  title: {
-    color: colorSource.darkGray,
-    fontSize: 40,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 10,
-    paddingHorizontal: 15,
-    textAlign: 'center',
-  },
 });
 
-CategoryListDetails.propTypes = {
+RelatedCourses.propTypes = {
   route: PropTypes.object,
   navigation: PropTypes.object,
 };
 
-CategoryListDetails.defaultProps = {
+RelatedCourses.defaultProps = {
 };
 
-export default CategoryListDetails;
+export default RelatedCourses;

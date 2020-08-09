@@ -42,6 +42,7 @@ import UpdateProfile from './src/components/profile/UpdateProfile';
 import UpdatePassword from './src/components/profile/UpdatePassword';
 import UpdateEmail from './src/components/profile/UpdateEmail';
 import { LanguageProvider, LanguageContext } from './src/components/providers/Language';
+import RelatedCourses from './src/components/course-detail/RelatedCourses';
 
 
 const Tab = createBottomTabNavigator();
@@ -336,6 +337,11 @@ const CourseInfoScreen = () => (
             <Stack.Screen
               name={screenName.AuthorProfile}
               component={AuthorProfile}
+            />
+            <Stack.Screen
+              name={screenName.RelatedCourses}
+              component={RelatedCourses}
+              options={{ headerShown: false }}
             />
           </Stack.Navigator>
         </CourseDetailsProvider>

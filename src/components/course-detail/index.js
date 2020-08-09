@@ -140,6 +140,9 @@ const CourseDetails = ({
    });
   };
 
+  const handleRelatedCourses = () => {
+    navigation.navigate(screenName.RelatedCourses, { course: courseDetailContext.state.courseInfo })
+  }
   return (
     <ThemeContext.Consumer>
       {
@@ -204,6 +207,9 @@ const CourseDetails = ({
                         <ItemAuthorHorizontal
                           name={courseDetailContext.state.courseInfo.instructor.name}
                           avatar={courseDetailContext.state.courseInfo.instructor.avatar}
+                          onItemClick={() => 
+                            navigation.navigate(screenName.AuthorProfile, { id: courseDetailContext.state.courseInfo.instructor.id })
+                          }
                         />
                         <View style={styles.infoBlock}>
                           <Text style={styles.info}>
@@ -238,7 +244,7 @@ const CourseDetails = ({
                         <ButtonFunction
                           name={languageContext.state.RelatedCourses}
                           icon={require('../../../assets/course-detail/related-icon.png')}
-                          onClick={(f) => f}
+                          onClick={() => handleRelatedCourses()}
                         />
                       </View>
 

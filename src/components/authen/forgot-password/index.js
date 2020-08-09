@@ -34,7 +34,7 @@ const ForgotPassword = ({navigation}) => {
   }, [authenContext.state]);
 
   const handleForgotPass = () => {
-    profileContext.resetPassword(email);
+    authenContext.resetPassword(email);
   };
   return (
     <LinearGradient colors={['#006DF0', '#A156F6', '#00E7F0']} style={styles.container}>
