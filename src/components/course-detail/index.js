@@ -22,6 +22,8 @@ import { checkYoutubeUrl, extractVideoIdFromYoutubeUrl } from '../../utils/Commo
 import AnimatedLoader from 'react-native-animated-loader';
 import { LanguageContext } from '../providers/Language';
 import { duration } from 'moment';
+import Rating from './Rating';
+import { getProfile } from '../../storage/Storage';
 
 const ItemFunction = ({ name, icon, onClick = (f) => f }) => (
   <View style={styles.itemFunctionContainer}>
@@ -54,18 +56,30 @@ const CourseDetails = ({
   const { course } = route.params;
   const courseDetailContext = useContext(CourseDetailsContext);
   const languageContext = useContext(LanguageContext);
+  const [selectedTab, setSelectedTab] = useState(1);
+  const [userInfo, setUserInfo] = useState({});
   const youtubeRef = useRef();
   var expoRef;
   var seeked = false;
-  const [isFinishLesson, setIsFinishLesson] = useState(false);
-  console.log('course', route.params);
+  
+  const getUser = async () => {
+    const user = await getProfile();
+    if (user) setUserInfo(user);
+  }
   useEffect(() => {
     courseDetailContext.getCourseInfo(course);
+    getUser();
   }, []);
 
-  console.log('lesson', courseDetailContext.state.currentLesson);
+  useEffect(() => {
+    if (courseDetailContext.state.courseInfo) {
+      courseDetailContext.getUserRating(courseDetailContext.state.courseInfo.id);
+    }
+  }, [courseDetailContext.state.courseInfo]);
   let iconLike = courseDetailContext.state.isLiked ? require('../../../assets/course-detail/like-fill-icon.png') : require('../../../assets/course-detail/like-icon.png');
   
+
+
   const handleChangeLikeStatus = () => {
     courseDetailContext.changeLikeStatus(course);
   };
@@ -142,6 +156,13 @@ const CourseDetails = ({
 
   const handleRelatedCourses = () => {
     navigation.navigate(screenName.RelatedCourses, { course: courseDetailContext.state.courseInfo })
+  };
+
+  const handleSendRating = (rating) => {
+    console.log('send rating: ', rating);
+    if (rating) {
+      courseDetailContext.sendRating(courseDetailContext.state.courseInfo.id, rating);
+    }
   }
   return (
     <ThemeContext.Consumer>
@@ -255,12 +276,46 @@ const CourseDetails = ({
                             <View style={styles.progressBar}>
                             <ProgressBar progress={courseDetailContext.state.process}/>
                             </View>
+                            <View style={styles.tabContainer}>
+                              <TouchableOpacity style={styles.tab} onPress={() => setSelectedTab(1)}>
+                                <Text
+                                  style={selectedTab === 1 ? styles.selectedTabText : { ...styles.tabText, color: theme.textColor }}
+                                >
+                                  {languageContext.state.Lesson}
+                                </Text>
+                              </TouchableOpacity>
+                              <View style={{ height: '100%', width: 2, backgroundColor: theme.textColor }}/>
+                              <TouchableOpacity style={styles.tab} onPress={() => setSelectedTab(2)}>
+                                <Text
+                                    style={selectedTab === 2 ? styles.selectedTabText : { ...styles.tabText, color: theme.textColor }}
+                                  >
+                                    {languageContext.state.Rating}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
                             <View style={{ paddingHorizontal: 15 }}>
-                              <Content
-                                modules={courseDetailContext.state.sections}
-                                playingLesson={courseDetailContext.state.currentLesson.id}
-                                onClickLesson={(sectionId, lessonId) => handleChangeLesson(sectionId, lessonId)}
-                              />
+                              {
+                                selectedTab === 1
+                                ? (
+                                  <Content
+                                    modules={courseDetailContext.state.sections}
+                                    playingLesson={courseDetailContext.state.currentLesson.id}
+                                    onClickLesson={(sectionId, lessonId) => handleChangeLesson(sectionId, lessonId)}
+                                  />
+                                )
+                                : (
+                                  <>
+                                    <View style={{height:20}}/>
+                                    <Rating
+                                      user={userInfo}
+                                      userRating={courseDetailContext.state.userRating}
+                                      listRating={courseDetailContext.state.courseInfo.ratings.ratingList}
+                                      onSendRating={(ratingContent) => handleSendRating(ratingContent)}
+                                    />
+                                    <View style={{height:50}}/>
+                                  </>
+                                )
+                              }
                             </View>
                           </>
                         )
@@ -408,6 +463,26 @@ const styles = StyleSheet.create({
   nameFunction: {
     color: colorSource.white,
     fontSize: 14,
+  },
+  selectedTabText: {
+    color: colorSource.blue,
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  tab: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  tabContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    paddingVertical: 15,
+  },
+  tabText: {
+    fontSize: 17,
+    fontWeight: 'bold',
   },
   title: {
     color: colorSource.white,

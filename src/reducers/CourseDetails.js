@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 const {
   REQUEST_DATA,
   REQUEST_FAILED,
@@ -10,6 +11,8 @@ const {
   RECEIVE_PROCESS,
   CHANGE_CURRENT_LESSON,
   RECEIVE_OWN_COURSE_INFO,
+  RECEIVE_USER_RATING,
+  SEND_RATING_SUCCESS,
 } = require('../constants/actions/CourseDetails');
 
 const courseDetailsReducer = (state, action) => {
@@ -74,6 +77,16 @@ const courseDetailsReducer = (state, action) => {
       return {
         ...state,
         isOwnCourse: action.data,
+      };
+    case RECEIVE_USER_RATING:
+      return {
+        ...state,
+        userRating: action.data,
+      };
+    case SEND_RATING_SUCCESS:
+      return {
+        ...state,
+        userRating: action.data,
       };
     default:
       return state;

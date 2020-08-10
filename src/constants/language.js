@@ -62,6 +62,10 @@ const languages = {
     Rate: 'Đánh giá',
     Payment: 'Oops, đây là khóa học tính phí. Bạn cần thanh toán để có thể tham gia khóa học này!',
     Buy: 'Mua ngay',
+    ContentRating: 'Nhập đánh giá',
+    Send: 'Gửi',
+    Rating: 'Đánh giá',
+    Lesson: 'Bài học',
     // Course
     NoAuthorInfo: 'Không có thông tin giảng viên',
     Free: 'Miễn phí',
@@ -130,6 +134,10 @@ const languages = {
     Rate: 'Rate',
     Payment: 'Oops, this course is not free. You need to pay before joining this course!',
     Buy: 'Buy now',
+    ContentRating: 'Enter content',
+    Send: 'Send',
+    Rating: 'Rating',
+    Lesson: 'Lesson',
     // Course
     NoAuthorInfo: 'No author\'s info',
     Free: 'Free',
