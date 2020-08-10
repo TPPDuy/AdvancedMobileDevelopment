@@ -12,7 +12,14 @@ const searchReducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
-        searchResult: [],
+        searchResult: {
+          courses: {
+            data: [],
+          },
+          instructors: {
+            data: [],
+          },
+        },
       };
     case REQUEST_FAILED:
       return {
@@ -20,6 +27,7 @@ const searchReducer = (state, action) => {
         isLoading: false,
       };
     case RECEIVE_SEARCH_RESULT:
+      console.log('reducer: ', action.data);
       return {
         ...state,
         isLoading: false,

@@ -19,6 +19,8 @@ import { SearchContext } from '../providers/Search';
 import ListCourses from '../home/ListCourses';
 import screenName from '../../constants/screen-name';
 import { LanguageContext } from '../providers/Language';
+import ItemAuthorResult from './ItemAuthorResult';
+import NoDataIcon from '../../../assets/common/no-data-icon.svg';
 
 const verticalSeparator = () => (
     <View style={styles.verticalSeparator}/>
@@ -38,6 +40,7 @@ const SearchBar = ({
 }) => {
   const inputRef = useRef();
   const languageContext = useContext(LanguageContext);
+
   const handleSearch = () => {
     onSearch();
   };
@@ -86,7 +89,9 @@ const Search = ({ navigation }) => {
   const languageContext = useContext(LanguageContext);
   const [searchKey, setSearchKey] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(1);
 
+  console.log('search context: ', searchContext);
   const handleChooseItem = (name) => {
     handleSearch(name);
     setSearchKey(name);
@@ -94,6 +99,7 @@ const Search = ({ navigation }) => {
   const handleCancel = () => {
     setSearchKey('');
     setIsSearching(false);
+    setSelectedTab(1);
   };
   const handleSearch = (value) => {
     console.log('search key: ', value);
@@ -112,6 +118,16 @@ const Search = ({ navigation }) => {
     navigation.push(screenName.CourseInfoScreen, { screen: screenName.CourseDetails, params: { course } });
   };
 
+  const handleClickAuthor = (id) => {
+    navigation.navigate(screenName.AuthorProfile, { id });
+  };
+
+  const renderSeparator = (dividerColor) => (
+    <View style={{ height: 1, backgroundColor: dividerColor }}/>
+  );
+  const renderFooter = () => (
+    <View style={{ height: 20 }}/>
+  );
   return (
   <ThemeContext.Consumer>
     {
@@ -157,11 +173,11 @@ const Search = ({ navigation }) => {
                       <View style={styles.interestsBlock}>
                         {
                           searchContext.state.populars.map((item, index) => (
-                              <ItemPopular
-                                key={index}
-                                name={item}
-                                onClick={() => handleChooseItem(item)}
-                              />
+                            <ItemPopular
+                              key={index}
+                              name={item}
+                              onClick={() => handleChooseItem(item)}
+                            />
                           ))
                         }
                       </View>
@@ -169,12 +185,60 @@ const Search = ({ navigation }) => {
                   </View>
                 )
                 : (
-                  <View style={{ marginTop: 20 }}>
-                    <ListCourses
-                      title=''
-                      courses={searchContext.state.searchResult}
-                      onItemClick={(courseId) => handleClickCourse(courseId)}
-                    />
+                  <View style={{ display: 'flex', flexDirection: 'column' }}>
+                    <View style={styles.tabContainer}>
+                      <TouchableOpacity style={styles.tab} onPress={() => setSelectedTab(1)}>
+                        <Text
+                          style={selectedTab === 1 ? styles.selectedTabText : { ...styles.tabText, color: theme.textColor }}
+                        >
+                          {languageContext.state.Course}
+                        </Text>
+                      </TouchableOpacity>
+                      <View style={{ height: '100%', width: 2, backgroundColor: theme.textColor }}/>
+                      <TouchableOpacity style={styles.tab} onPress={() => setSelectedTab(2)}>
+                        <Text
+                            style={selectedTab === 2 ? styles.selectedTabText : { ...styles.tabText, color: theme.textColor }}
+                          >
+                            {languageContext.state.Author}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{ marginTop: 20 }}>
+                      {
+                        selectedTab === 1
+                          ? (
+                          <ListCourses
+                            title=''
+                            courses={searchContext.state.searchResult.courses.data}
+                            onItemClick={(courseId) => handleClickCourse(courseId)}
+                          />
+                          )
+                          : (
+                          <FlatList
+                            style={styles.listAuthors}
+                            horizontal={false}
+                            data={searchContext.state.searchResult.instructors.data}
+                            renderItem={({ item }) => <ItemAuthorResult
+                                                        name={item.name}
+                                                        avatar={item.avatar}
+                                                        numOfCourses={item.numcourses}
+                                                        textColor={theme.textColor}
+                                                        onItemClick={() => handleClickAuthor(item.id)}
+                                                      />
+                            }
+                            showsVerticalScrollIndicator={false}
+                            ItemSeparatorComponent={() => renderSeparator(theme.dividerLine)}
+                            ListFooterComponent={() => renderFooter()}
+                            ListEmptyComponent={() => (
+                              <View style={styles.emptyComponent}>
+                                <NoDataIcon width={50} height={50} />
+                                <Text style={{ fontSize: 14, color: theme.textColor, marginTop: 15 }}>{languageContext.state.NoAuthors}</Text>
+                              </View>
+                            )}
+                          />
+                          )
+                      }
+                    </View>
                   </View>
                 )
             }
@@ -218,6 +282,17 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingHorizontal: 10,
   },
+  emptyComponent: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
+    position: 'relative',
+    height: '100%',
+    marginBottom: '5%',
+    marginTop: '60%',
+  },
   iconSearch: {
     height: 15,
     width: 15,
@@ -240,6 +315,9 @@ const styles = StyleSheet.create({
     color: colorSource.white,
     fontSize: 12,
   },
+  listAuthors: {
+    paddingHorizontal: 15,
+  },
   loading: {
     height: 100,
     width: 100,
@@ -253,6 +331,26 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 15,
     paddingVertical: 5,
+  },
+  selectedTabText: {
+    color: colorSource.blue,
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  tab: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  tabContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    paddingVertical: 15,
+  },
+  tabText: {
+    fontSize: 17,
+    fontWeight: 'bold',
   },
   textInput: {
     color: colorSource.white,

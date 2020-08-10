@@ -45,6 +45,7 @@ const languages = {
     Student: 'học viên',
     NoUpdate: 'Không có cập nhật',
     Skill: 'Kỹ năng',
+    NoAuthors: 'Không tìm thấy giảng viên nào',
     // Profile
     UpdateInfo: 'Cập nhật thông tin',
     ChangeEmail: 'Thay đổi email',
@@ -64,6 +65,7 @@ const languages = {
     // Course
     NoAuthorInfo: 'Không có thông tin giảng viên',
     Free: 'Miễn phí',
+    Course: 'Khóa học',
   },
   eng: {
     status: 'eng',
@@ -111,6 +113,7 @@ const languages = {
     Student: 'student(s)',
     NoUpdate: 'No update',
     Skill: 'Skill',
+    NoAuthors: 'No author found',
     // Profile
     UpdateInfo: 'Update information',
     ChangeEmail: 'Change email',
@@ -130,6 +133,7 @@ const languages = {
     // Course
     NoAuthorInfo: 'No author\'s info',
     Free: 'Free',
+    Course: 'Course',
   },
 };
 export default languages;

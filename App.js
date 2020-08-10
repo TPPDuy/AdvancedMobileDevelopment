@@ -188,15 +188,46 @@ const FavoriteScreen = () => (
   </LanguageContext.Consumer>
 );
 const SearchScreen = () => (
-  <SearchProvider>
-    <Stack.Navigator>
-      <Stack.Screen
-        name={screenName.Search}
-        component={Search}
-        options={{ headerShown: false }}>
-      </Stack.Screen>
-    </Stack.Navigator>
-  </SearchProvider>
+  <LanguageContext.Consumer>
+    {
+      ({ state }) => (
+        <ThemeContext.Consumer>
+          {
+            ({ theme }) => (
+              <SearchProvider>
+                <Stack.Navigator
+                  screenOptions={
+                    {
+                      headerTitleStyle: {
+                        fontSize: 20,
+                        fontWeight: '500',
+                        color: theme.textColor,
+                      },
+                      headerStyle: {
+                        backgroundColor: theme.headerBackground,
+                      },
+                      headerTintColor: theme.textColor,
+                    }
+                  }
+                >
+                  <Stack.Screen
+                    name={screenName.Search}
+                    component={Search}
+                    options={{ headerShown: false, title: state.Search }}>
+                  </Stack.Screen>
+                  <Stack.Screen
+                    name={screenName.AuthorProfile}
+                    component={AuthorProfile}
+                    options={{ title: state.Author }}
+                  />
+                </Stack.Navigator>
+              </SearchProvider>
+            )
+          }
+        </ThemeContext.Consumer>
+      )
+    }
+  </LanguageContext.Consumer>
 );
 
 const MainScreens = () => (

@@ -36,10 +36,10 @@ export const performSearch = (dispatch) => async (recentSearch, searchKey, page)
       limit: 10,
       page,
     };
-    const response = await api.post('/course/search', data);
+    const response = await api.post('/course/searchV2', data);
     if (response) {
-      console.log('result search: ', response);
-      dispatch(receiveResult(response.payload.rows));
+      console.log('dispatch');
+      dispatch(receiveResult(response.payload));
     } else {
       console.log('search failed');
       dispatch(requestFailed());

@@ -9,7 +9,14 @@ const SearchContext = React.createContext();
 
 const initialState = {
   isLoading: false,
-  searchResult: [],
+  searchResult: {
+    courses: {
+      data: [],
+    },
+    instructors: {
+      data: [],
+    },
+  },
   recentSeach: [],
   populars: [
     'Android',
