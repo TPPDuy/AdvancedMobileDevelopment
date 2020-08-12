@@ -24,6 +24,7 @@ import { LanguageContext } from '../providers/Language';
 import { duration } from 'moment';
 import Rating from './Rating';
 import { getProfile } from '../../storage/Storage';
+import * as FileSystem from 'expo-file-system';
 
 const ItemFunction = ({ name, icon, onClick = (f) => f }) => (
   <View style={styles.itemFunctionContainer}>
@@ -58,6 +59,7 @@ const CourseDetails = ({
   const languageContext = useContext(LanguageContext);
   const [selectedTab, setSelectedTab] = useState(1);
   const [userInfo, setUserInfo] = useState({});
+  const [downloadProgress, setDownloadProgress] = useState(languageContext.state.Download);
   const youtubeRef = useRef();
   var expoRef;
   var seeked = false;
@@ -79,7 +81,6 @@ const CourseDetails = ({
   let iconLike = courseDetailContext.state.isLiked ? require('../../../assets/course-detail/like-fill-icon.png') : require('../../../assets/course-detail/like-icon.png');
   
 
-
   const handleChangeLikeStatus = () => {
     courseDetailContext.changeLikeStatus(course);
   };
@@ -88,7 +89,7 @@ const CourseDetails = ({
     try {
       const result = await Share.share({
         message:
-          'React Native | A framework for building native apps using React',
+          `https://itedu.me/course-detail/${courseDetailContext.state.courseInfo.id}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -104,6 +105,31 @@ const CourseDetails = ({
     }
   };
 
+  const updateProgress = (progress) => {
+    const progressPer = Math.round(progress.totalBytesWritten * 100 / progress.totalBytesExpectedToWrite);
+    setDownloadProgress(`${progressPer}%`);
+    console.log('progress: ', progressPer);
+  }
+  const handleDownloadCourse = async () => {
+    if (courseDetailContext.state.currentLesson
+      && courseDetailContext.state.isOwnCourse
+      && !checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)) {
+        const downloadResumable = FileSystem.createDownloadResumable(
+          courseDetailContext.state.currentLesson.videoUrl,
+          FileSystem.documentDirectory + `${new Date().toISOString()}.mp4`,
+          {},
+          updateProgress
+        );
+        
+        try {
+          const { uri } = await downloadResumable.downloadAsync();
+          console.log('Finished downloading to ', uri);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+  };
+
   async function saveCurrentTime() {
     if (courseDetailContext.state.currentLesson && courseDetailContext.state.isOwnCourse) {
       if (!checkYoutubeUrl(courseDetailContext.state.currentLesson.videoUrl)) {
@@ -116,6 +142,7 @@ const CourseDetails = ({
     }
     navigation.pop();
   }
+
   const handleChangeLesson = (sectionId, lessonId) => {
     if (lessonId !== courseDetailContext.state.currentLesson.id) {
       courseDetailContext.changeCurrentLesson(course, sectionId, lessonId);
@@ -255,7 +282,11 @@ const CourseDetails = ({
                               icon={require('../../../assets/course-detail/share-icon.png')}
                               onClick={() => handleShare()}
                             />
-                            <ItemFunction name={languageContext.state.Download} icon={require('../../../assets/course-detail/download-icon.png')}/>
+                            <ItemFunction
+                              name={downloadProgress}
+                              icon={require('../../../assets/course-detail/download-icon.png')}
+                              onClick={() => handleDownloadCourse()}
+                            />
                           </View>
                         </View>
                         <View style={styles.description}>
